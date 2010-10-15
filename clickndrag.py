@@ -6,14 +6,7 @@
 # Planned in mind at the Mosel valley in late July 2010
 # Actual work started on 01. Oct 2010
 
-pygame = None
-
-def init(pygame_module):
-    """Initialize clickndrag by giving the PyGame module.
-    """
-
-    global pygame
-    pygame = pygame_module
+import pygame
 
 class Plane:
     """A Plane is a surface in a hierarchy of surfaces.

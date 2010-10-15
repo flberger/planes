@@ -7,8 +7,8 @@
 
 # work started on 03. Oct 2010
 
-import clickndrag
 import pygame
+import clickndrag
 from collections import deque
 
 class ColorChangeSquare(clickndrag.Plane):
@@ -86,7 +86,6 @@ class DropDisplay(clickndrag.Display):
 
 def main():
 	pygame.init()
-	clickndrag.init(pygame)
 
 	print("setting up clock")
 	clock = pygame.time.Clock()
@@ -107,7 +106,7 @@ def main():
 	#
 	print("drop zone setup")
 	screen.sub(DropZone("dropzone", pygame.Rect((100, 100), (200, 100))))
-	screen.dropzone.draggable = False
+	screen.dropzone.draggable = True
 	screen.dropzone.grab_dropped_planes = True
 	screen.dropzone.image.fill((0, 0, 128))
 
