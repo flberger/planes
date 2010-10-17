@@ -1,0 +1,239 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>API docs for &ldquo;clickndrag.Plane&rdquo;</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <link href="apidocs.css" type="text/css" rel="stylesheet" />
+    
+    
+  </head>
+  <body>
+    <h1 class="class">Class c.Plane:</h1>
+    <p>
+      <span id="part">Part of <a href="clickndrag.html">clickndrag</a></span>
+      
+      <a href="classIndex.html#clickndrag.Plane">View In Hierarchy</a>
+    </p>
+    <div>
+      <p>Known subclasses: <a href="clickndrag.Display.html">clickndrag.Display</a></p>
+    </div>
+    <pre>A Plane is a surface in a hierarchy of surfaces.
+It shares some properties with pygame.sprite.Sprite.</pre>
+
+    
+    
+    <div id="splitTables">
+      <table class="children sortable" id="id2">
+  
+  
+<tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#__init__">__init__</a></td>
+    <td><tt>Initialize the Plane.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#sub">sub</a></td>
+    <td><tt>Add plane as a subplane of this Plane.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#__getattr__">__getattr__</a></td>
+    <td><tt>Access subplanes as attributes.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#render">render</a></td>
+    <td><tt>Draw a composite surface of this plane and all subplanes.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#get_plane_at">get_plane_at</a></td>
+    <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#update">update</a></td>
+    <td><tt>Update hook.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#clicked">clicked</a></td>
+    <td><tt>Called when there is a MOUSEDOWN event on this plane.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#dropped_upon">dropped_upon</a></td>
+    <td><tt>Called when a plane is dropped on top of this one.</tt></td>
+  </tr>
+  
+</table>
+      
+      
+    </div>
+    
+    
+    
+
+    <div class="function">
+  <a name="clickndrag.Plane.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    __init__(self, name, rect):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a></div>
+    <pre>Initialize the Plane.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.sub">
+    
+  </a>
+  <a name="sub">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    sub(self, plane):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Add plane as a subplane of this Plane.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.__getattr__">
+    
+  </a>
+  <a name="__getattr__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    __getattr__(self, name):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Access subplanes as attributes.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.render">
+    
+  </a>
+  <a name="render">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    render(self):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a></div>
+    <pre>Draw a composite surface of this plane and all subplanes.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.get_plane_at">
+    
+  </a>
+  <a name="get_plane_at">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    get_plane_at(self, coordinates):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.update">
+    
+  </a>
+  <a name="update">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    update(self):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Update hook.
+The default implementation calls update() on all subplanes.
+See pygame.sprite.Sprite.update.</pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.clicked">
+    
+  </a>
+  <a name="clicked">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    clicked(self):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Called when there is a MOUSEDOWN event on this plane.
+The default implementation does nothing.</pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.dropped_upon">
+    
+  </a>
+  <a name="dropped_upon">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    dropped_upon(self, plane, coordinates):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Called when a plane is dropped on top of this one.
+        </pre>
+  </div>
+</div>
+    <address>
+      <a href="index.html">API Documentation</a> for clickndrag, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2010-10-17 12:58:53.
+    </address>
+  </body>
+</html>
