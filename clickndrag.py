@@ -11,6 +11,31 @@ import pygame
 class Plane:
     """A Plane is a surface in a hierarchy of surfaces.
        It shares some properties with pygame.sprite.Sprite.
+
+       Attributes:
+       
+       Plane.name
+           Name of the plane
+
+       Plane.image
+           The pygame.Surface for this Plane
+
+       Plane.rect
+           The render position on the parent plane
+
+       Plane.rendersurface
+           A pygame.Surface displaying the composite of this plane and all
+           subplanes.
+
+       Plane.subplanes
+           Dict of subplanes
+
+       Plane.parent
+           Pointer to the parent plane.
+
+       Plane.draggable
+       Plane.grab_dropped_planes
+           Flags for Plane configuration
     """
 
     def __init__(self, name, rect):
@@ -142,11 +167,29 @@ class Display(Plane):
         """Calling pygame.display.set_mode.
         """
 
+        # Init Pygame, just to be on the safe side.
+        # pygame.init() can safely be called more than once.
+        #
+        pygame.init()
+
         Plane.__init__(self, "display", pygame.Rect((0, 0), resolution_tuple))
 
         # In this case the rendersurface is the pygame display
         #
-        self.rendersurface = pygame.display.set_mode(resolution_tuple)
+        try:
+            self.rendersurface = pygame.display.set_mode(resolution_tuple)
+
+        except pygame.error:
+
+            # Microsoft Windows SDL error: "No available video device"
+            # For a list see
+            # http://www.libsdl.org/cgi/docwiki.cgi/SDL_envvars
+            #
+            import os
+
+            os.environ['SDL_VIDEODRIVER']='windib'
+
+            self.rendersurface = pygame.display.set_mode(resolution_tuple)
 
         self.draggable = False
 
