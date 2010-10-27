@@ -38,8 +38,15 @@ class Plane:
            Flags for Plane configuration
     """
 
-    def __init__(self, name, rect):
+    def __init__(self, name, rect, drag = False, grab = False):
         """Initialize the Plane.
+           name is the name of the plane which can also be used
+           as an attribute.
+           rect is an instance of pygame.Rect giving width, height
+           and render position.
+           drag is a flag indicating whether this plane can be dragged.
+           grab is a flag indicating whether other planes can be dropped
+           on this one.
         """
 
         self.name = name
@@ -49,6 +56,9 @@ class Plane:
         # Rect is relative to the parent plane, not to the display!
         #
         self.rect = rect
+
+        self.draggable = drag
+        self.grab_dropped_planes = grab
 
         # Plane.image is the image of this very plane.
         # Plane.rendersurface is the composite of this
@@ -64,9 +74,6 @@ class Plane:
         # Upon creation, there is none.
         #
         self.parent = None
-
-        self.draggable = True
-        self.grab_dropped_planes = False
 
     def sub(self, plane):
         """Add plane as a subplane of this Plane.

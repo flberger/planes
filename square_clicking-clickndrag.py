@@ -13,9 +13,9 @@ from collections import deque
 
 class ColorChangeSquare(clickndrag.Plane):
 
-	def __init__(self, name, rect):
+	def __init__(self, name, rect, drag = False, grab = False):
 
-		clickndrag.Plane.__init__(self, name, rect)
+		clickndrag.Plane.__init__(self, name, rect, drag, grab)
 
 		# custom extensions for movement, color
 		#
@@ -100,14 +100,12 @@ def main():
 	# square sprite setup
 	#
 	print("square setup")
-	screen.sub(ColorChangeSquare("square", pygame.Rect((25, 25), (50, 50))))
+	screen.sub(ColorChangeSquare("square", pygame.Rect((25, 25), (50, 50)), drag = True))
 
 	# dropzone setup
 	#
 	print("drop zone setup")
-	screen.sub(DropZone("dropzone", pygame.Rect((100, 100), (200, 100))))
-	screen.dropzone.draggable = True
-	screen.dropzone.grab_dropped_planes = True
+	screen.sub(DropZone("dropzone", pygame.Rect((100, 100), (200, 100)), drag = True, grab = True))
 	screen.dropzone.image.fill((0, 0, 128))
 
 	# main loop
