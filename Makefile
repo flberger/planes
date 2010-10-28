@@ -1,5 +1,5 @@
 help:
-	@echo Targets: docs
+	@echo Targets: docs, clean
 
 docs: 
 	rm -fv *.pyc
@@ -7,3 +7,7 @@ docs:
 	                                                --add-module clickndrag.py \
 	                                                --make-html \
 	                                                --html-output doc/
+
+clean:
+	rm -fv *.pyc
+	rm -fv */*.pyc
