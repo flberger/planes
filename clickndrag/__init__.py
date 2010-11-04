@@ -30,6 +30,9 @@ class Plane:
        Plane.subplanes
            Dict of subplanes
 
+       Plane.subplanes_list
+           A list of subplane names, in order of their addition
+
        Plane.parent
            Pointer to the parent plane.
 
@@ -69,6 +72,7 @@ class Plane:
         self.rendersurface = self.image
 
         self.subplanes = {}
+        self.subplanes_list = []
 
         # Parent stores the parent plane.
         # Upon creation, there is none.
@@ -79,6 +83,7 @@ class Plane:
         """Add plane as a subplane of this Plane.
         """
 
+        self.subplanes_list.append(plane.name)
         self.subplanes[plane.name] = plane
         plane.parent = self
 
@@ -95,7 +100,7 @@ class Plane:
         return(self.subplanes[name])
 
     def render(self):
-        """Draw a composite surface of this plane and all subplanes.
+        """Draw a composite surface of this plane and all subplanes, in order of their addition.
         """
 
         # We only need to render if self.rendersurface does not point
@@ -107,16 +112,18 @@ class Plane:
             #
             self.rendersurface.blit(self.image, (0, 0))
 
-            if len(self.subplanes.keys()):
+            if self.subplanes_list:
 
                 # Then render and blit all subplanes
                 #
-                for plane in self.subplanes.values():
+                for name in self.subplanes_list:
+                    plane = self.subplanes[name]
                     plane.render()
                     self.rendersurface.blit(plane.rendersurface, plane.rect)
 
     def get_plane_at(self, coordinates):
         """Return the (sub)plane and the succeeding parent coordinates at the given coordinates.
+           Subplanes are tested in reverse order of their addition (i.e. latest first).
         """
 
         # It's probaly me.
@@ -124,9 +131,9 @@ class Plane:
         return_plane = self
         return_coordinates = coordinates
 
-        # TODO: First come, first served. What about multiple planes at one point?
-        #
-        for plane in self.subplanes.values():
+        for name in self.subplanes_list:
+
+            plane = self.subplanes[name]
 
             if plane.rect.collidepoint(coordinates):
 

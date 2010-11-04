@@ -15,11 +15,13 @@ import threading
 print("creating window")
 
 window = clickndrag.Display((400, 300))
-pygame.display.set_caption("Click'n'Drag Interacive Live Test")
+pygame.display.set_caption("Click'n'Drag Interactive Live Test")
 
 red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
+yellow = (255, 255, 0)
+white = (255, 255, 255)
 
 def mainloop(fps):
     """Runs a pygame / clickndrag main loop.
@@ -70,7 +72,7 @@ Plane.grab_dropped_planes - Flags for Plane configuration
 
 Plane.sub(Plane)          - Add plane as a subplane of this Plane.
 
-red, green, blue          - Color tuples for your convenience
+red, green, blue, yellow, white - Color tuples for your convenience
 print(help)               - Print this help text
 """
 
