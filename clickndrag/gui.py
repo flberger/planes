@@ -64,8 +64,8 @@ class Button(clickndrag.Plane):
         self.image.unlock()
 
         # Print label
-        #
-        font = pygame.font.Font(None, self.rect.height - 4)
+
+        font = pygame.font.Font(None, int(self.rect.height * 2 / 3))
 
         # Give background for speedup
         #
@@ -78,5 +78,7 @@ class Button(clickndrag.Plane):
         """Called when there is a MOUSEDOWN event on this plane.
            Calls Button.callback(Button.argument).
         """
-
-        self.callback(self.argument)
+        if self.argument is None:
+            self.callback()
+        else:
+            self.callback(self.argument)
