@@ -1,10 +1,9 @@
 help:
 	@echo Targets: docs, clean
 
-docs: 
-	rm -fv *.pyc
+docs: clean
 	/home/florian/temp/python/pydoctor/bin/pydoctor --verbose \
-	                                                --add-module clickndrag.py \
+	                                                --add-package clickndrag \
 	                                                --make-html \
 	                                                --html-output doc/
 

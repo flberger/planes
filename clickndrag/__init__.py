@@ -93,6 +93,16 @@ class Plane:
         if self.rendersurface == self.image:
             self.rendersurface = pygame.Surface(self.rect.size)
 
+    def remove_sub(self, name):
+        """Remove a subplane by name.
+        """
+
+        if name in self.subplanes_list:
+
+            del self.subplanes[name]
+
+            del self.subplanes_list[self.subplanes_list.index(name)]
+
     def __getattr__(self, name):
         """Access subplanes as attributes.
         """
@@ -166,19 +176,32 @@ class Plane:
 
         if self.grab_dropped_planes:
 
-            del plane.parent.subplanes[plane.name]
+            plane.parent.remove_sub(plane.name)
 
-            index = plane.parent.subplanes_list.index(plane.name)
-
-            del plane.parent.subplanes_list[index]
+            plane.rect.center = coordinates
 
             self.sub(plane)
 
-            plane.rect.center = coordinates
+    def destroy(self):
+        """Remove this Plane from the parent plane and delete all pygame Surfaces.
+        """
+
+        if self.parent is not None:
+            self.parent.remove_sub(self.name)
+            self.parent = None
+
+        self.image = self.rendersurface = None
+        self.subplanes = self.subplanes_list = None
+        self.rect = self.draggable =  self.grab_dropped_planes = None
 
 class Display(Plane):
     """Click'n'Drag main screen class.
        A Display instance serves as the root Plane in clickndrag.
+
+       Additional attributes:
+
+       Display.dragged_plane
+           The currently dragged plane
     """
 
     def __init__(self, resolution_tuple):
@@ -248,7 +271,7 @@ class Display(Plane):
                         self.dragged_plane.rendersurface.set_alpha(170, pygame.RLEACCEL)
 
             elif (event.type == pygame.MOUSEBUTTONUP
-            and event.button == 1):
+                  and event.button == 1):
 
                 if self.dragged_plane != None:
 
@@ -261,6 +284,8 @@ class Display(Plane):
                         target_plane.dropped_upon(self.dragged_plane.source, coordinates)
 
                     self.dragged_plane = None
+
+            return
 
     def render(self):
         """Plane.render plus drawing of the dragged plane.

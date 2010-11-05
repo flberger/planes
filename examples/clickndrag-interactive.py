@@ -31,8 +31,8 @@ blue = (0, 0, 255)
 yellow = (255, 255, 0)
 white = (255, 255, 255)
 
-def click():
-    print("click!")
+def click(*args):
+    print("Click! args: {}".format(args))
 
 plane = clickndrag.Plane("plane", pygame.Rect((100, 100), (100, 100)))
 

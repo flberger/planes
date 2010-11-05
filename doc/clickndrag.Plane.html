@@ -17,7 +17,7 @@
       <a href="classIndex.html#clickndrag.Plane">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="clickndrag.Display.html">clickndrag.Display</a></p>
+      <p>Known subclasses: <a href="clickndrag.Display.html">clickndrag.Display</a>, <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a>, <a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a></p>
     </div>
     <pre>A Plane is a surface in a hierarchy of surfaces.
 It shares some properties with pygame.sprite.Sprite.
@@ -40,6 +40,9 @@ Plane.rendersurface
 Plane.subplanes
     Dict of subplanes
 
+Plane.subplanes_list
+    A list of subplane names, in order of their addition
+
 Plane.parent
     Pointer to the parent plane.
 
@@ -50,7 +53,7 @@ Plane.grab_dropped_planes
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id2">
+      <table class="children sortable" id="id4">
   
   
 <tr class="method">
@@ -69,6 +72,12 @@ Plane.grab_dropped_planes
     
     
     <td>Method</td>
+    <td><a href="clickndrag.Plane.html#remove_sub">remove_sub</a></td>
+    <td><tt>Remove a subplane by name.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
     <td><a href="clickndrag.Plane.html#__getattr__">__getattr__</a></td>
     <td><tt>Access subplanes as attributes.</tt></td>
   </tr><tr class="method">
@@ -76,7 +85,7 @@ Plane.grab_dropped_planes
     
     <td>Method</td>
     <td><a href="clickndrag.Plane.html#render">render</a></td>
-    <td><tt>Draw a composite surface of this plane and all subplanes.</tt></td>
+    <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
   </tr><tr class="method">
     
     
@@ -101,6 +110,12 @@ Plane.grab_dropped_planes
     <td>Method</td>
     <td><a href="clickndrag.Plane.html#dropped_upon">dropped_upon</a></td>
     <td><tt>Called when a plane is dropped on top of this one.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#destroy">destroy</a></td>
+    <td><tt>Remove this Plane from the parent plane and delete all pygame Surfaces.</tt></td>
   </tr>
   
 </table>
@@ -125,7 +140,7 @@ Plane.grab_dropped_planes
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a></div>
+    <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a>, <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a>, <a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a></div>
     <pre>Initialize the Plane.
 name is the name of the plane which can also be used
 as an attribute.
@@ -151,6 +166,24 @@ on this one.</pre>
   <div class="functionBody">
     
     <pre>Add plane as a subplane of this Plane.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.remove_sub">
+    
+  </a>
+  <a name="remove_sub">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    remove_sub(self, name):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Remove a subplane by name.
         </pre>
   </div>
 </div><div class="function">
@@ -186,7 +219,7 @@ on this one.</pre>
   </div>
   <div class="functionBody">
     <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a></div>
-    <pre>Draw a composite surface of this plane and all subplanes.
+    <pre>Draw a composite surface of this plane and all subplanes, in order of their addition.
         </pre>
   </div>
 </div><div class="function">
@@ -205,7 +238,7 @@ on this one.</pre>
   <div class="functionBody">
     
     <pre>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.
-        </pre>
+Subplanes are tested in reverse order of their addition (i.e. latest first).</pre>
   </div>
 </div><div class="function">
   <a name="clickndrag.Plane.update">
@@ -221,7 +254,7 @@ on this one.</pre>
     
   </div>
   <div class="functionBody">
-    
+    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a></div>
     <pre>Update hook.
 The default implementation calls update() on all subplanes.
 See pygame.sprite.Sprite.update.</pre>
@@ -240,7 +273,7 @@ See pygame.sprite.Sprite.update.</pre>
     
   </div>
   <div class="functionBody">
-    
+    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.Button.html">clickndrag.gui.Button</a>, <a href="clickndrag.gui.Option.html">clickndrag.gui.Option</a></div>
     <pre>Called when there is a MOUSEDOWN event on this plane.
 The default implementation does nothing.</pre>
   </div>
@@ -262,9 +295,27 @@ The default implementation does nothing.</pre>
     <pre>Called when a plane is dropped on top of this one.
         </pre>
   </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.destroy">
+    
+  </a>
+  <a name="destroy">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    destroy(self):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Remove this Plane from the parent plane and delete all pygame Surfaces.
+        </pre>
+  </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for clickndrag, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2010-10-27 17:20:45.
+      <a href="index.html">API Documentation</a> for clickndrag, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2010-11-05 15:23:23.
     </address>
   </body>
 </html>
