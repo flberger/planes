@@ -7,6 +7,14 @@
 
 # work started on 03. Oct 2010
 
+import sys
+
+# Add current and parent directory. One of them is supposed to contain the
+# clickndrag package.
+#
+sys.path.append("../")
+sys.path.append("./")
+
 import pygame
 import clickndrag
 from collections import deque

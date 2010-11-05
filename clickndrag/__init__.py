@@ -168,6 +168,10 @@ class Plane:
 
             del plane.parent.subplanes[plane.name]
 
+            index = plane.parent.subplanes_list.index(plane.name)
+
+            del plane.parent.subplanes_list[index]
+
             self.sub(plane)
 
             plane.rect.center = coordinates
