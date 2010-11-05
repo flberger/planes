@@ -184,6 +184,8 @@ class Option(Label):
     """
 
     def clicked(self):
+        """Highlight this option and register as parent.selected.
+        """
 
         for name in self.parent.subplanes_list:
             plane = self.parent.subplanes[name]
