@@ -31,6 +31,15 @@ blue = (0, 0, 255)
 yellow = (255, 255, 0)
 white = (255, 255, 255)
 
+def click():
+    print("click!")
+
+plane = clickndrag.Plane("plane", pygame.Rect((100, 100), (100, 100)))
+
+button = clickndrag.gui.Button("Button",
+                               pygame.Rect((10, 10), (100, 50)),
+                               click)
+
 def mainloop(fps):
     """Runs a pygame / clickndrag main loop.
        fps is the framerate.
@@ -67,7 +76,7 @@ print("starting mainloop thread")
 
 mainloop_thread.start()
 
-help = """If you have started this script with 'python -i' or imported it as a
+helptext = """If you have started this script with 'python -i' or imported it as a
 module, you can now interact with clickndrag. Use the 'window' object.
 
 Plane(name, rect, drag=False, grab=False)
@@ -80,8 +89,13 @@ Plane.grab_dropped_planes - Flags for Plane configuration
 
 Plane.sub(Plane)          - Add plane as a subplane of this Plane.
 
+click()                   - A convenience callback function
+
+plane, button             - Test instances, try window.sub(plane)
+
 red, green, blue, yellow, white - Color tuples for your convenience
-print(help)               - Print this help text
+
+print(helptext)           - Print this help text
 """
 
-print(help)
+print(helptext)

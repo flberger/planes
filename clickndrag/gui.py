@@ -8,7 +8,75 @@
 import clickndrag
 import pygame
 
-class Button(clickndrag.Plane):
+class Label(clickndrag.Plane):
+    """A clickndrag.Plane which displays a text.
+
+       Additional attributes:
+
+       Label.text
+           The text to be written on the Label
+
+       Label.cached_text
+           Cache to catch changes
+
+       Label.font
+           Pygame Font instance
+
+       Label.color
+           The current background color for this Label
+
+       Label.cached_color
+           A cache for color changes
+
+       Label.original_color
+           The original color
+    """
+
+    def __init__(self, name, text, rect):
+        """Initialise the Label.
+           text is the text to be written on the Label.
+        """
+
+        # Call base class init
+        #
+        clickndrag.Plane.__init__(self, name, rect, drag = False, grab = False)
+
+        self.color = self.cached_color = self.original_color = (127, 127, 127)
+
+        self.text = text
+        self.cached_text = None
+
+        self.font = pygame.font.Font(None, int(self.rect.height * 2 / 3))
+
+        self.redraw()
+
+    def update(self):
+        """Renew the text on the label, then call the base class method.
+        """
+
+        self.redraw()
+
+        clickndrag.Plane.update(self)
+
+    def redraw(self):
+        """Redraw the Label if necessary.
+        """
+
+        if (self.text != self.cached_text
+            or self.color != self.cached_color):
+
+            self.image.fill(self.color)
+
+            # Give background for speedup
+            #
+            fontsurf = self.font.render(self.text, True, (0, 0, 0), self.color)
+            self.image.blit(fontsurf, (int(self.rect.width / 2 - fontsurf.get_width() / 2),
+                                       int(self.rect.height / 2 - fontsurf.get_height() / 2)))
+
+            self.cached_text = self.text
+            self.cached_color = self.color
+
+class Button(Label):
     """A clickndrag plane which displays a text and reacts on mouse clicks.
 
        Additional attributes:
@@ -18,6 +86,9 @@ class Button(clickndrag.Plane):
 
        Button.argument
            The argument to call the function with.
+
+       Button.clicked_counter
+           Counted down when the button is clicked and displays a different color
     """
 
     def __init__(self, label, rect, callback, argument = None):
@@ -34,14 +105,25 @@ class Button(clickndrag.Plane):
 
         # Call base class init
         #
-        clickndrag.Plane.__init__(self, name, rect, drag = False, grab = False)
+        Label.__init__(self, name, label, rect)
 
         self.callback = callback
         self.argument = argument
 
-        # Gray embossed button with a 1px border.
+        self.clicked_counter = 0
+
+        self.redraw()
+
+    def redraw(self):
+        """Redraw the Button.
+        """
+
+        # First redraw base Label
         #
-        self.image.fill((127, 127, 127))
+        Label.redraw(self)
+
+        # Embossed button with a 1px border.
+        # TODO: this is always redrawn. Replace with a condition.
 
         self.image.lock()
 
@@ -63,21 +145,32 @@ class Button(clickndrag.Plane):
 
         self.image.unlock()
 
-        # Print label
+    def update(self):
+        """Change color if clicked, then call the base class method.
+        """
 
-        font = pygame.font.Font(None, int(self.rect.height * 2 / 3))
+        if self.clicked_counter:
 
-        # Give background for speedup
-        #
-        fontsurf = font.render(label, True, (0, 0, 0), (127, 127, 127))
-        self.image.blit(fontsurf, (int(self.rect.width / 2 - fontsurf.get_width() / 2),
-                                   int(self.rect.height / 2 - fontsurf.get_height() / 2)))
+            self.clicked_counter = self.clicked_counter - 1
 
+            if not self.clicked_counter:
+
+                # Just turned zero, restore original background
+                #
+                self.color = self.original_color
+
+        Label.update(self)
 
     def clicked(self):
         """Called when there is a MOUSEDOWN event on this plane.
            Calls Button.callback(Button.argument).
         """
+
+        self.clicked_counter = 4
+        self.color = (63, 63, 63)
+
+        self.redraw()
+
         if self.argument is None:
             self.callback()
         else:

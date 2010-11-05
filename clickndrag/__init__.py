@@ -222,7 +222,7 @@ class Display(Plane):
         for event in event_list:
 
             if (event.type == pygame.MOUSEBUTTONDOWN
-            and event.button == 1):
+                and event.button == 1):
 
                 clicked_plane = self.get_plane_at(event.pos)[0]
 
