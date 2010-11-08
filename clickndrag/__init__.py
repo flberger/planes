@@ -54,7 +54,10 @@ class Plane:
 
         self.name = name
 
-        self.image = pygame.Surface(rect.size)
+        # We need to initialise with the slow SRCALPHA, but otherwise we would
+        # not be able to blit images with per-pixel alpha
+        #
+        self.image = pygame.Surface(rect.size, flags = pygame.SRCALPHA)
 
         # Rect is relative to the parent plane, not to the display!
         #
@@ -213,12 +216,8 @@ class Display(Plane):
         #
         pygame.init()
 
-        Plane.__init__(self, "display", pygame.Rect((0, 0), resolution_tuple))
-
-        # In this case the rendersurface is the pygame display
-        #
         try:
-            self.rendersurface = pygame.display.set_mode(resolution_tuple)
+            display = pygame.display.set_mode(resolution_tuple)
 
         except pygame.error:
 
@@ -230,7 +229,14 @@ class Display(Plane):
 
             os.environ['SDL_VIDEODRIVER']='windib'
 
-            self.rendersurface = pygame.display.set_mode(resolution_tuple)
+            display = pygame.display.set_mode(resolution_tuple)
+
+        Plane.__init__(self, "display", pygame.Rect((0, 0), resolution_tuple))
+
+        self.rendersurface = display
+
+        # In this case the rendersurface is the pygame display
+
 
         self.draggable = False
 
