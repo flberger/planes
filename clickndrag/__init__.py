@@ -130,18 +130,29 @@ class Plane:
         #
         if self.rendersurface != self.image:
 
-            # First blit this plane's image
+            # Is this correct? Maybe the user has updated the image, but
+            # when there are no subplanes, there is no need to render.
             #
-            self.rendersurface.blit(self.image, (0, 0))
+            if not self.subplanes:
 
-            if self.subplanes_list:
-
-                # Then render and blit all subplanes
+                # Fix the pointer
                 #
-                for name in self.subplanes_list:
-                    plane = self.subplanes[name]
-                    plane.render()
-                    self.rendersurface.blit(plane.rendersurface, plane.rect)
+                self.rendersurface = self.image
+
+            else:
+
+                # First blit this plane's image
+                #
+                self.rendersurface.blit(self.image, (0, 0))
+
+                if self.subplanes_list:
+
+                    # Then render and blit all subplanes
+                    #
+                    for name in self.subplanes_list:
+                        plane = self.subplanes[name]
+                        plane.render()
+                        self.rendersurface.blit(plane.rendersurface, plane.rect)
 
     def get_plane_at(self, coordinates):
         """Return the (sub)plane and the succeeding parent coordinates at the given coordinates.
