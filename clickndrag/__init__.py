@@ -50,6 +50,7 @@ class Plane:
            drag is a flag indicating whether this plane can be dragged.
            grab is a flag indicating whether other planes can be dropped
            on this one.
+           Planes are filled with solid black color by default.
         """
 
         self.name = name
@@ -58,6 +59,10 @@ class Plane:
         # not be able to blit images with per-pixel alpha
         #
         self.image = pygame.Surface(rect.size, flags = pygame.SRCALPHA)
+
+        # Transparent by default, so let's paint it black
+        #
+        self.image.fill((0, 0, 0, 255))
 
         # Rect is relative to the parent plane, not to the display!
         #
@@ -96,15 +101,19 @@ class Plane:
         if self.rendersurface == self.image:
             self.rendersurface = pygame.Surface(self.rect.size)
 
-    def remove_sub(self, name):
-        """Remove a subplane by name.
+    def remove(self, *names):
+        """Without arguments, remove all subplanes. With strings as arguments, remove them by name.
         """
 
-        if name in self.subplanes_list:
+        if not names:
+            self.subplanes = {}
+            self.subplanes_list = []
 
-            del self.subplanes[name]
-
-            del self.subplanes_list[self.subplanes_list.index(name)]
+        else:
+            for name in names:
+                if name in self.subplanes_list:
+                    del self.subplanes[name]
+                    del self.subplanes_list[self.subplanes_list.index(name)]
 
     def __getattr__(self, name):
         """Access subplanes as attributes.
@@ -233,10 +242,9 @@ class Display(Plane):
 
         Plane.__init__(self, "display", pygame.Rect((0, 0), resolution_tuple))
 
-        self.rendersurface = display
-
         # In this case the rendersurface is the pygame display
-
+        #
+        self.rendersurface = display
 
         self.draggable = False
 

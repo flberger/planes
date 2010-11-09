@@ -35,6 +35,7 @@ def click(*args):
     print("Click! args: {}".format(args))
 
 plane = clickndrag.Plane("plane", pygame.Rect((100, 100), (100, 100)))
+plane.image.fill(yellow)
 
 button = clickndrag.gui.Button("Button",
                                pygame.Rect((10, 10), (100, 50)),
