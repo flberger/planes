@@ -188,7 +188,7 @@ class Plane:
 
         if self.grab_dropped_planes:
 
-            plane.parent.remove_sub(plane.name)
+            plane.parent.remove(plane.name)
 
             plane.rect.center = coordinates
 
@@ -199,7 +199,7 @@ class Plane:
         """
 
         if self.parent is not None:
-            self.parent.remove_sub(self.name)
+            self.parent.remove(self.name)
             self.parent = None
 
         self.image = self.rendersurface = None
