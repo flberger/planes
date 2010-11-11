@@ -23,6 +23,7 @@ import threading
 print("creating window")
 
 window = clickndrag.Display((400, 300))
+window.grab_dropped_planes = True
 pygame.display.set_caption("Click'n'Drag Interactive Live Test")
 
 red = (255, 0, 0)
@@ -34,7 +35,10 @@ white = (255, 255, 255)
 def click(*args):
     print("Click! args: {}".format(args))
 
-plane = clickndrag.Plane("plane", pygame.Rect((100, 100), (100, 100)))
+plane = clickndrag.Plane("plane",
+                         pygame.Rect((100, 100), (100, 100)),
+                         drag = True)
+
 plane.image.fill(yellow)
 
 button = clickndrag.gui.Button("Button",

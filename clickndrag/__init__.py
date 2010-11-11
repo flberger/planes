@@ -12,6 +12,9 @@ class Plane:
     """A Plane is a surface in a hierarchy of surfaces.
        It shares some properties with pygame.sprite.Sprite.
 
+       Planes are not thread safe! Accessing a Plane from several threads may
+       produce unexpected results and errors.
+
        Attributes:
        
        Plane.name
@@ -92,8 +95,11 @@ class Plane:
         self.subplanes_list = []
 
     def sub(self, plane):
-        """Add plane as a subplane of this Plane.
+        """Remove the Plane from its current parent and add it as a subplane of this Plane.
         """
+
+        if plane.parent is not None:
+            plane.parent.remove(plane.name)
 
         self.subplanes_list.append(plane.name)
         self.subplanes[plane.name] = plane
@@ -224,15 +230,16 @@ class Plane:
             self.sub(plane)
 
     def destroy(self):
-        """Remove this Plane from the parent plane and delete all pygame Surfaces.
+        """Remove this Plane from the parent plane, remove all subplanes and delete all pygame Surfaces.
         """
 
         if self.parent is not None:
             self.parent.remove(self.name)
             self.parent = None
 
+        self.remove()
+
         self.image = self.rendersurface = None
-        self.subplanes = self.subplanes_list = None
         self.rect = self.draggable =  self.grab_dropped_planes = None
 
     def __repr__(self):
