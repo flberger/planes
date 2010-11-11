@@ -20,21 +20,21 @@ class Plane:
        Plane.image
            The pygame.Surface for this Plane
 
-       Plane.rect
-           The render position on the parent plane
-
        Plane.rendersurface
            A pygame.Surface displaying the composite of this plane and all
            subplanes.
+
+       Plane.rect
+           The render position on the parent plane
+
+       Plane.parent
+           Pointer to the parent plane.
 
        Plane.subplanes
            Dict of subplanes
 
        Plane.subplanes_list
            A list of subplane names, in order of their addition
-
-       Plane.parent
-           Pointer to the parent plane.
 
        Plane.draggable
        Plane.grab_dropped_planes
@@ -64,13 +64,6 @@ class Plane:
         #
         self.image.fill((0, 0, 0, 255))
 
-        # Rect is relative to the parent plane, not to the display!
-        #
-        self.rect = rect
-
-        self.draggable = drag
-        self.grab_dropped_planes = grab
-
         # Plane.image is the image of this very plane.
         # Plane.rendersurface is the composite of this
         # plane and all subplanes.
@@ -79,13 +72,20 @@ class Plane:
         #
         self.rendersurface = self.image
 
-        self.subplanes = {}
-        self.subplanes_list = []
+        # Rect is relative to the parent plane, not to the display!
+        #
+        self.rect = rect
+
+        self.draggable = drag
+        self.grab_dropped_planes = grab
 
         # Parent stores the parent plane.
         # Upon creation, there is none.
         #
         self.parent = None
+
+        self.subplanes = {}
+        self.subplanes_list = []
 
     def sub(self, plane):
         """Add plane as a subplane of this Plane.
@@ -106,12 +106,17 @@ class Plane:
         """
 
         if not names:
+
+            for name in self.subplanes_list:
+                self.subplanes[name].parent = None
+
             self.subplanes = {}
             self.subplanes_list = []
 
         else:
             for name in names:
                 if name in self.subplanes_list:
+                    self.subplanes[name].parent = None
                     del self.subplanes[name]
                     del self.subplanes_list[self.subplanes_list.index(name)]
 
@@ -132,8 +137,10 @@ class Plane:
 
             # Is this correct? Maybe the user has updated the image, but
             # when there are no subplanes, there is no need to render.
+            # Except for the 'display' root Plane, of course: overwriting
+            # the rendersurface would make it invisible and inaccessible.
             #
-            if not self.subplanes:
+            if not self.subplanes and self.name != 'display':
 
                 # Fix the pointer
                 #
@@ -141,7 +148,11 @@ class Plane:
 
             else:
 
-                # First blit this plane's image
+                # Observe alpha! First clear the rendersurface.
+                #
+                self.rendersurface.fill((0, 0, 0, 0))
+                
+                # Then blit this plane's image
                 #
                 self.rendersurface.blit(self.image, (0, 0))
 
@@ -216,6 +227,24 @@ class Plane:
         self.image = self.rendersurface = None
         self.subplanes = self.subplanes_list = None
         self.rect = self.draggable =  self.grab_dropped_planes = None
+
+    def __repr__(self):
+        """Readable string representation.
+        """
+
+        parent_name = "None"
+
+        if self.parent is not None:
+            parent_name = self.parent.name
+            
+        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab_dropped_planes={}>".format(self.name,
+                                                      "{}@{}".format(self.image, id(self.image)),
+                                                      "{}@{}".format(self.rendersurface, id(self.rendersurface)),
+                                                      self.rect,
+                                                      parent_name,
+                                                      self.subplanes_list,
+                                                      self.draggable,
+                                                      self.grab_dropped_planes))
 
 class Display(Plane):
     """Click'n'Drag main screen class.

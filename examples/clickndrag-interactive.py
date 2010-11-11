@@ -77,8 +77,14 @@ print("starting mainloop thread")
 
 mainloop_thread.start()
 
-helptext = """If you have started this script with 'python -i' or imported it as a
-module, you can now interact with clickndrag. Use the 'window' object.
+helptext = """---------------------------------------------------------------------------
+If you have started this script with 'python -i' or imported it as a
+module, you can now interact with clickndrag.
+
+window                          - Root window, instance of clickndrag.Display
+plane, button                   - Test instances, try window.sub(plane)
+red, green, blue, yellow, white - Color tuples for your convenience
+click()                         - A convenience callback function
 
 Plane(name, rect, drag=False, grab=False)
 
@@ -90,13 +96,8 @@ Plane.grab_dropped_planes - Flags for Plane configuration
 
 Plane.sub(Plane)          - Add plane as a subplane of this Plane.
 
-click()                   - A convenience callback function
-
-plane, button             - Test instances, try window.sub(plane)
-
-red, green, blue, yellow, white - Color tuples for your convenience
-
 print(helptext)           - Print this help text
+---------------------------------------------------------------------------
 """
 
 print(helptext)
