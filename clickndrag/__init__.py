@@ -37,8 +37,12 @@ class Plane:
            A list of subplane names, in order of their addition
 
        Plane.draggable
+           If True, this Plane can be dragged and dropped.
+
        Plane.grab_dropped_planes
-           Flags for Plane configuration
+          If True, this Plane will remove dropped Planes from
+          their parent Plane and make it a subplane of this one.
+          Handled in Plane.dropped_upon()
     """
 
     def __init__(self, name, rect, drag = False, grab = False):
@@ -206,6 +210,9 @@ class Plane:
 
     def dropped_upon(self, plane, coordinates):
         """Called when a plane is dropped on top of this one.
+           If Plane.grab_dropped_planes is True, the default implementation
+           will remove the dropped Plane from its parent and make it a
+           subplane of this one.
         """
 
         if self.grab_dropped_planes:
