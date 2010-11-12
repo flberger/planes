@@ -73,6 +73,10 @@ class Label(clickndrag.Plane):
             self.image.blit(fontsurf, (int(self.rect.width / 2 - fontsurf.get_width() / 2),
                                        int(self.rect.height / 2 - fontsurf.get_height() / 2)))
 
+            # Force redraw in render()
+            #
+            self.last_rect = None
+
             self.cached_text = self.text
             self.cached_color = self.color
 
@@ -188,10 +192,19 @@ class Option(Label):
         """
 
         for name in self.parent.subplanes_list:
+
             plane = self.parent.subplanes[name]
             plane.color = plane.original_color
 
+            # Force redraw in render()
+            #
+            plane.last_rect = None
+
         self.color = (191, 95, 0)
+
+        # Force redraw in render()
+        #
+        self.last_rect = None
 
         self.parent.selected = self
         
