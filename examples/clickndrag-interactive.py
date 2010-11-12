@@ -45,12 +45,13 @@ button = clickndrag.gui.Button("Button",
                                pygame.Rect((10, 10), (100, 50)),
                                click)
 
+clock = pygame.time.Clock()
+fps = clock.get_fps
+
 def mainloop(fps):
     """Runs a pygame / clickndrag main loop.
        fps is the framerate.
     """
-
-    clock = pygame.time.Clock()
 
     print("about to start main loop")
 
@@ -76,7 +77,7 @@ def mainloop(fps):
 
 mainloop_thread = threading.Thread(target = mainloop,
                                    name = "mainloop",
-                                   args = (25,))
+                                   args = (200,))
 print("starting mainloop thread")
 
 mainloop_thread.start()
@@ -88,6 +89,7 @@ module, you can now interact with clickndrag.
 window                          - Root window, instance of clickndrag.Display
 plane, button                   - Test instances, try window.sub(plane)
 red, green, blue, yellow, white - Color tuples for your convenience
+fps()                           - print current framerate
 click()                         - A convenience callback function
 
 Plane(name, rect, drag=False, grab=False)

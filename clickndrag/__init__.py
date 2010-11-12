@@ -46,6 +46,12 @@ class Plane:
           If True, this Plane will remove dropped Planes from
           their parent Plane and make it a subplane of this one.
           Handled in Plane.dropped_upon()
+
+       Plane.last_image_id
+          Caches object id of the image at last rendering for efficiency.
+
+       Plane.last_rect
+          Caches rect at last rendering for efficiency.
     """
 
     def __init__(self, name, rect, drag = False, grab = False):
@@ -94,16 +100,29 @@ class Plane:
         self.subplanes = {}
         self.subplanes_list = []
 
+        # Caches for efficient rendering
+        #
+        self.last_image_id = id(self.image)
+
+        # Initialize to None to trigger a rendering
+        #
+        self.last_rect = None
+
     def sub(self, plane):
         """Remove the Plane from its current parent and add it as a subplane of this Plane.
         """
 
         if plane.parent is not None:
+
             plane.parent.remove(plane.name)
 
         self.subplanes_list.append(plane.name)
         self.subplanes[plane.name] = plane
         plane.parent = self
+
+        # Reset to None to trigger a rendering
+        #
+        plane.last_rect = None
 
         # Now that there is a subplane, if not already done so,
         # create an actual rendersurface for this plane.
@@ -123,12 +142,22 @@ class Plane:
             self.subplanes = {}
             self.subplanes_list = []
 
+            # We do not need to worry about rendering here: once all subplanes
+            # are gone, render() will point the rendersurface to image and
+            # redraw.
+
         else:
             for name in names:
                 if name in self.subplanes_list:
                     self.subplanes[name].parent = None
                     del self.subplanes[name]
                     del self.subplanes_list[self.subplanes_list.index(name)]
+
+            # If there are still subplanes, then trigger a redraw of all of them
+            # by setting their last_rect to None.
+            #
+            for plane in self.subplanes.values():
+                plane.last_rect = None                
 
     def __getattr__(self, name):
         """Access subplanes as attributes.
@@ -138,42 +167,81 @@ class Plane:
 
     def render(self):
         """Draw a composite surface of this plane and all subplanes, in order of their addition.
+           Returns True if anything has been rendered (i.e. if
+           Plane.rendersurface has changed), False otherwise.
         """
 
         # We only need to render if self.rendersurface does not point
         # to self.image.
         #
-        if self.rendersurface != self.image:
+        if self.rendersurface == self.image:
 
+            return False
+
+        else:
             # Is this correct? Maybe the user has updated the image, but
             # when there are no subplanes, there is no need to render.
-            # Except for the 'display' root Plane, of course: overwriting
-            # the rendersurface would make it invisible and inaccessible.
             #
-            if not self.subplanes and self.name != 'display':
+            if not self.subplanes:
 
                 # Fix the pointer
                 #
                 self.rendersurface = self.image
 
+                return True
+
             else:
+                # At this point, we know that rendersurface differs from image
+                # and that there are subplanes.
 
-                # Observe alpha! First clear the rendersurface.
+                # If the image of this plane or any subplane has changed or if
+                # a subplane has moved: redraw everything.
+                # (The alternative would be to check for rect collisions to see
+                # where the background can be restored by using image, or
+                # caching inbetween rendering steps).
+                # TODO: This doesn't catch draw and blit operations outside render()!
                 #
-                self.rendersurface.fill((0, 0, 0, 0))
-                
-                # Then blit this plane's image
-                #
-                self.rendersurface.blit(self.image, (0, 0))
+                subplane_changed = False
 
-                if self.subplanes_list:
+                for name in self.subplanes_list:
 
-                    # Then render and blit all subplanes
+                    plane = self.subplanes[name]
+
+                    if plane.render():
+
+                        subplane_changed = True
+
+                    elif plane.rect != plane.last_rect:
+
+                        subplane_changed = True
+
+                        # We need a copy!
+                        #
+                        plane.last_rect = pygame.Rect(plane.rect)
+
+                if id(self.image) != self.last_image_id or subplane_changed:
+
+                    # Observe alpha! First clear the rendersurface.
+                    #
+                    self.rendersurface.fill((0, 0, 0, 0))
+                    
+                    # Then blit this plane's image
+                    #
+                    self.rendersurface.blit(self.image, (0, 0))
+
+                    # Subplanes are already rendered. Force-blit them in order.
                     #
                     for name in self.subplanes_list:
-                        plane = self.subplanes[name]
-                        plane.render()
-                        self.rendersurface.blit(plane.rendersurface, plane.rect)
+
+                        self.rendersurface.blit(self.subplanes[name].rendersurface,
+                                                self.subplanes[name].rect)
+
+                    self.last_image_id = id(self.image)
+
+                    return True
+
+                else:
+                    return False
 
     def get_plane_at(self, coordinates):
         """Return the (sub)plane and the succeeding parent coordinates at the given coordinates.
@@ -219,15 +287,19 @@ class Plane:
            If Plane.grab_dropped_planes is True, the default implementation
            will remove the dropped Plane from its parent and make it a
            subplane of this one.
+           If the dropped Plane is already a subplane of this one, its position
+           is updated.
         """
 
         if self.grab_dropped_planes:
 
-            plane.parent.remove(plane.name)
-
             plane.rect.center = coordinates
 
-            self.sub(plane)
+            if plane.name not in self.subplanes_list:
+
+                plane.parent.remove(plane.name)
+
+                self.sub(plane)
 
     def destroy(self):
         """Remove this Plane from the parent plane, remove all subplanes and delete all pygame Surfaces.
@@ -251,20 +323,25 @@ class Plane:
         if self.parent is not None:
             parent_name = self.parent.name
             
-        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab_dropped_planes={}>".format(self.name,
+        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab_dropped_planes={} last_image_id={} last_rect={}>".format(self.name,
                                                       "{}@{}".format(self.image, id(self.image)),
                                                       "{}@{}".format(self.rendersurface, id(self.rendersurface)),
                                                       self.rect,
                                                       parent_name,
                                                       self.subplanes_list,
                                                       self.draggable,
-                                                      self.grab_dropped_planes))
+                                                      self.grab_dropped_planes,
+                                                      self.last_image_id,
+                                                      self.last_rect))
 
 class Display(Plane):
     """Click'n'Drag main screen class.
        A Display instance serves as the root Plane in clickndrag.
 
        Additional attributes:
+
+       Display.display
+           The Pygame display Surface
 
        Display.dragged_plane
            The currently dragged plane
@@ -280,7 +357,7 @@ class Display(Plane):
         pygame.init()
 
         try:
-            display = pygame.display.set_mode(resolution_tuple)
+            self.display = pygame.display.set_mode(resolution_tuple)
 
         except pygame.error:
 
@@ -292,13 +369,9 @@ class Display(Plane):
 
             os.environ['SDL_VIDEODRIVER']='windib'
 
-            display = pygame.display.set_mode(resolution_tuple)
+            self.display = pygame.display.set_mode(resolution_tuple)
 
         Plane.__init__(self, "display", pygame.Rect((0, 0), resolution_tuple))
-
-        # In this case the rendersurface is the pygame display
-        #
-        self.rendersurface = display
 
         self.draggable = False
 
@@ -341,7 +414,7 @@ class Display(Plane):
             elif (event.type == pygame.MOUSEBUTTONUP
                   and event.button == 1):
 
-                if self.dragged_plane != None:
+                if self.dragged_plane is not None:
 
                     target_plane, coordinates = self.get_plane_at(event.pos)
 
@@ -353,18 +426,27 @@ class Display(Plane):
 
                     self.dragged_plane = None
 
+                    # Render without dragged Plane and force-blit to Pygame
+                    # display
+                    #
+                    Plane.render(self)
+                    self.display.blit(self.rendersurface, (0, 0))
+
             return
 
     def render(self):
-        """Plane.render plus drawing of the dragged plane.
+        """Call base class render(), then blit to the Pygame display.
         """
 
-        Plane.render(self)
+        if Plane.render(self) or self.dragged_plane is not None:
 
-        # Dragged plane on top
-        #
-        if self.dragged_plane != None:
+            self.display.blit(self.rendersurface, (0, 0))
 
-            self.dragged_plane.rect.center = pygame.mouse.get_pos()
+            if self.dragged_plane is not None:
 
-            self.rendersurface.blit(self.dragged_plane.rendersurface, self.dragged_plane.rect)
+                # Dragged plane on top
+                #
+                self.dragged_plane.rect.center = pygame.mouse.get_pos()
+
+                self.display.blit(self.dragged_plane.rendersurface,
+                                  self.dragged_plane.rect)
