@@ -429,16 +429,18 @@ class Display(Plane):
                     # Render without dragged Plane and force-blit to Pygame
                     # display
                     #
-                    Plane.render(self)
-                    self.display.blit(self.rendersurface, (0, 0))
+                    self.render(force = True)
 
             return
 
-    def render(self):
-        """Call base class render(), then blit to the Pygame display.
+    def render(self, force = False):
+        """Call base class render(), then blit to the Pygame display if something has changed.
+           If force is True, blit to Pygame display regardless.
         """
 
-        if Plane.render(self) or self.dragged_plane is not None:
+        # Test for Plane.render() first to trigger the rendering
+        #
+        if Plane.render(self) or force or self.dragged_plane is not None:
 
             self.display.blit(self.rendersurface, (0, 0))
 
