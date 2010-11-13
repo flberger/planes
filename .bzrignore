@@ -1,3 +1,4 @@
 *pyc
 .bzrignore
 commit.txt
+*.ttf

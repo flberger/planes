@@ -41,12 +41,19 @@ class Label(clickndrag.Plane):
         #
         clickndrag.Plane.__init__(self, name, rect, drag = False, grab = False)
 
-        self.color = self.cached_color = self.original_color = (127, 127, 127)
+        self.color = self.cached_color = self.original_color = (150, 150, 150)
 
         self.text = text
         self.cached_text = None
 
-        self.font = pygame.font.Font(None, int(self.rect.height * 2 / 3))
+        try:
+            self.font = pygame.font.Font("Vera.ttf", int(self.rect.height * 0.4))
+
+        except:
+
+            # Use default font
+            #
+            self.font = pygame.font.Font(None, int(self.rect.height * 2 / 3))
 
         self.redraw()
 
