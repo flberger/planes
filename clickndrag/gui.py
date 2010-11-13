@@ -95,19 +95,15 @@ class Button(Label):
        Button.callback
            The callback function to be called upon clicking.
 
-       Button.argument
-           The argument to call the function with.
-
        Button.clicked_counter
            Counted down when the button is clicked and displays a different color
     """
 
-    def __init__(self, label, rect, callback, argument = None):
+    def __init__(self, label, rect, callback):
         """Initialise the Button.
            label is the Text to be written on the button.
            rect is an instance of pygame.Rect giving the dimensions.
            callback is the function to be called when the Button is clicked.
-           argument is the argument the function will be called with.
         """
 
         # name is the alphanumeric-only-lower case-version of label
@@ -118,8 +114,9 @@ class Button(Label):
         #
         Label.__init__(self, name, label, rect)
 
-        self.callback = callback
-        self.argument = argument
+        # Overwrite Plane base class attribute
+        #
+        self.clicked_callback = callback
 
         self.clicked_counter = 0
 
@@ -174,7 +171,7 @@ class Button(Label):
 
     def clicked(self):
         """Called when there is a MOUSEDOWN event on this plane.
-           Calls Button.callback(Button.argument).
+           Changes the Button color for some frames and calls the base class implementation.
         """
 
         self.clicked_counter = 4
@@ -185,10 +182,9 @@ class Button(Label):
 
         self.redraw()
 
-        if self.argument is None:
-            self.callback()
-        else:
-            self.callback(self.argument)
+        # Call base class implementation which will call the callback
+        #
+        Label.clicked(self)
 
 class Option(Label):
     """A subclass of Label which handles mouseclicks, to be used in an OptionList.
@@ -229,6 +225,8 @@ class OptionList(clickndrag.Plane):
     def __init__(self, name, rect, option_list, callback):
         """Initialise the OptionList.
            option_list is a list of strings to be displayed as options.
+           callback is a function to be called with the selected Option instance
+           as argument once the selection is made.
         """
 
         # Call base class init
@@ -266,8 +264,8 @@ class OptionList(clickndrag.Plane):
         self.option0.color = (191, 95, 0)
         self.selected = self.option0
         
-    def selection_made(self):
-        """Called when the user confirmed an option from the OptionList.
+    def selection_made(self, plane):
+        """Button callback called when the user confirmed an option from the OptionList.
            Calls OptionList.callback(self.selected) and destroys the OptionList.
         """
 

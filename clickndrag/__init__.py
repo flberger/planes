@@ -52,9 +52,21 @@ class Plane:
 
        Plane.last_rect
           Caches rect at last rendering for efficiency.
+
+       Plane.clicked_callback
+          Callback function when this plane has been clicked
+
+       Plane.dropped_upon_callback
+          Callback function when a plane has been dropped upon this plane
     """
 
-    def __init__(self, name, rect, drag = False, grab = False):
+    def __init__(self,
+                 name,
+                 rect,
+                 drag = False,
+                 grab = False,
+                 clicked_callback = None,
+                 dropped_upon_callback = None):
         """Initialize the Plane.
            name is the name of the plane which can also be used
            as an attribute.
@@ -63,6 +75,8 @@ class Plane:
            drag is a flag indicating whether this plane can be dragged.
            grab is a flag indicating whether other planes can be dropped
            on this one.
+           clicked_callback and dropped_upon_callback, if given, must be
+           functions.
            Planes are filled with solid black color by default.
         """
 
@@ -107,6 +121,11 @@ class Plane:
         # Initialize to None to trigger a rendering
         #
         self.last_rect = None
+
+        # Save callbacks
+        #
+        self.clicked_callback = clicked_callback
+        self.dropped_upon_callback = dropped_upon_callback
 
     def sub(self, plane):
         """Remove the Plane from its current parent and add it as a subplane of this Plane.
@@ -277,10 +296,14 @@ class Plane:
 
     def clicked(self):
         """Called when there is a MOUSEDOWN event on this plane.
-           The default implementation does nothing.
+           If Plane.clicked_callback is set, it is called with this Plane as
+           argument.
         """
 
-        pass
+        if self.clicked_callback is not None:
+            self.clicked_callback(self)
+
+        return
 
     def dropped_upon(self, plane, coordinates):
         """Called when a plane is dropped on top of this one.
@@ -289,6 +312,8 @@ class Plane:
            subplane of this one.
            If the dropped Plane is already a subplane of this one, its position
            is updated.
+           If Plane.dropped_upon_callback is set, it is called with plane and
+           coordinates as arguments.
         """
 
         if self.grab_dropped_planes:
@@ -300,6 +325,11 @@ class Plane:
                 plane.parent.remove(plane.name)
 
                 self.sub(plane)
+
+        if self.dropped_upon_callback is not None:
+            self.dropped_upon_callback(plane, coordinates)
+
+        return
 
     def destroy(self):
         """Remove this Plane from the parent plane, remove all subplanes and delete all pygame Surfaces.
