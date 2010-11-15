@@ -23,27 +23,32 @@ class Label(clickndrag.Plane):
            Pygame Font instance
 
        Label.color
-           The current background color for this Label
+           The original background color for this Label
+
+       Label.current_color
+           The current background color
 
        Label.cached_color
            A cache for color changes
-
-       Label.original_color
-           The original color
     """
 
-    def __init__(self, name, text, rect):
+    def __init__(self, name, text, rect, color = (150, 150, 150)):
         """Initialise the Label.
-           text is the text to be written on the Label.
+           text is the text to be written on the Label. If text is None, it is
+           replaced by an empty string.
         """
 
         # Call base class init
         #
         clickndrag.Plane.__init__(self, name, rect, drag = False, grab = False)
 
-        self.color = self.cached_color = self.original_color = (150, 150, 150)
+        self.color = self.cached_color = self.current_color = color
 
-        self.text = text
+        if text is not None:
+            self.text = text
+        else:
+            self.text = ""
+
         self.cached_text = None
 
         try:
@@ -70,13 +75,13 @@ class Label(clickndrag.Plane):
         """
 
         if (self.text != self.cached_text
-            or self.color != self.cached_color):
+            or self.current_color != self.cached_color):
 
-            self.image.fill(self.color)
+            self.image.fill(self.current_color)
 
             # Give background for speedup
             #
-            fontsurf = self.font.render(self.text, True, (0, 0, 0), self.color)
+            fontsurf = self.font.render(self.text, True, (0, 0, 0), self.current_color)
             self.image.blit(fontsurf, (int(self.rect.width / 2 - fontsurf.get_width() / 2),
                                        int(self.rect.height / 2 - fontsurf.get_height() / 2)))
 
@@ -85,7 +90,7 @@ class Label(clickndrag.Plane):
             self.last_rect = None
 
             self.cached_text = self.text
-            self.cached_color = self.color
+            self.cached_color = self.current_color
 
 class Button(Label):
     """A clickndrag plane which displays a text and reacts on mouse clicks.
@@ -99,7 +104,7 @@ class Button(Label):
            Counted down when the button is clicked and displays a different color
     """
 
-    def __init__(self, label, rect, callback):
+    def __init__(self, label, rect, callback, color = (150, 150, 150)):
         """Initialise the Button.
            label is the Text to be written on the button.
            rect is an instance of pygame.Rect giving the dimensions.
@@ -112,7 +117,7 @@ class Button(Label):
 
         # Call base class init
         #
-        Label.__init__(self, name, label, rect)
+        Label.__init__(self, name, label, rect, color)
 
         # Overwrite Plane base class attribute
         #
@@ -165,7 +170,7 @@ class Button(Label):
 
                 # Just turned zero, restore original background
                 #
-                self.color = self.original_color
+                self.current_color = self.color
 
         Label.update(self)
 
@@ -178,7 +183,7 @@ class Button(Label):
 
         # Half-bright
         #
-        self.color = list(map(lambda i: int(i * 0.5), self.color))
+        self.current_color = list(map(lambda i: int(i * 0.5), self.current_color))
 
         self.redraw()
 
@@ -197,13 +202,13 @@ class Option(Label):
         for name in self.parent.subplanes_list:
 
             plane = self.parent.subplanes[name]
-            plane.color = plane.original_color
+            plane.current_color = plane.color
 
             # Force redraw in render()
             #
             plane.last_rect = None
 
-        self.color = (191, 95, 0)
+        self.current_color = (191, 95, 0)
 
         # Force redraw in render()
         #
@@ -261,7 +266,7 @@ class OptionList(clickndrag.Plane):
 
         self.sub(button)
 
-        self.option0.color = (191, 95, 0)
+        self.option0.current_color = (191, 95, 0)
         self.selected = self.option0
         
     def selection_made(self, plane):

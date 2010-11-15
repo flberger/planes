@@ -312,8 +312,8 @@ class Plane:
            subplane of this one.
            If the dropped Plane is already a subplane of this one, its position
            is updated.
-           If Plane.dropped_upon_callback is set, it is called with plane and
-           coordinates as arguments.
+           If Plane.dropped_upon_callback is set, it is called with
+           Plane.dropped_upon_callback(self, plane, coordinates)
         """
 
         if self.grab_dropped_planes:
@@ -327,7 +327,7 @@ class Plane:
                 self.sub(plane)
 
         if self.dropped_upon_callback is not None:
-            self.dropped_upon_callback(plane, coordinates)
+            self.dropped_upon_callback(self, plane, coordinates)
 
         return
 
@@ -353,7 +353,7 @@ class Plane:
         if self.parent is not None:
             parent_name = self.parent.name
             
-        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab_dropped_planes={} last_image_id={} last_rect={}>".format(self.name,
+        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab_dropped_planes={} last_image_id={} last_rect={} clicked_callback={} dropped_upon_callback={}>".format(self.name,
                                                       "{}@{}".format(self.image, id(self.image)),
                                                       "{}@{}".format(self.rendersurface, id(self.rendersurface)),
                                                       self.rect,
@@ -362,7 +362,9 @@ class Plane:
                                                       self.draggable,
                                                       self.grab_dropped_planes,
                                                       self.last_image_id,
-                                                      self.last_rect))
+                                                      self.last_rect,
+                                                      self.clicked_callback,
+                                                      self.dropped_upon_callback))
 
 class Display(Plane):
     """Click'n'Drag main screen class.
