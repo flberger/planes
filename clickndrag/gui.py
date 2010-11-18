@@ -191,6 +191,86 @@ class Button(Label):
         #
         Label.clicked(self)
 
+class Container(clickndrag.Plane):
+    """A Container for Planes.
+       If a subplane is added via sub(), the container places it below any existing
+       subplanes and resizes itself to fit the width and height of the subplanes.
+
+       Additional attributes:
+
+       Container.padding
+           Space between subplanes and border, in pixels
+
+       Container.color
+           The original background color for this Container
+    """
+
+    def __init__(self, name, padding = 0, color = (150, 150, 150)):
+        """Initialise.
+           Container.image is initialised to a 0x0 px Surface.
+        """
+
+        # Call base class
+        #
+        clickndrag.Plane.__init__(self, name, pygame.Rect((0, 0), (0, 0)))
+
+        self.padding = padding
+        self.color = color
+
+    def sub(self, plane):
+        """Resize the container, update the position of plane and add it as a subplane.
+        """
+
+        # Containers have a 1px black border. Observe this when calculating width
+        # and height.
+        # Existing subplanes are already incorporated in self.rect.
+
+        # Conditionally fit new width
+        #
+        if plane.rect.width > self.rect.width - 2 * self.padding - 2:
+
+            self.rect.width = plane.rect.width + 2 * self.padding + 2
+
+        # Mandatory fit new height, observe padding
+        #
+        if not self.rect.height:
+
+            # No subplanes yet
+
+            plane.rect.topleft = (1 + self.padding, 1 + self.padding)
+
+            self.rect.height = plane.rect.height + 2 * self.padding + 2
+
+        else:
+            plane.rect.topleft = (1 + self.padding, self.rect.height - 1)
+
+            self.rect.height = self.rect.height + plane.rect.height + self.padding
+
+        # Create Surface with background color and black border
+        #
+        self.image = pygame.Surface(self.rect.size)
+        self.image.fill(self.color)
+        pygame.draw.lines(self.image,
+                          (0, 0, 0),
+                          True,
+                          ((0, 0),
+                           (self.rect.width - 1, 0),
+                           (self.rect.width - 1, self.rect.height - 1),
+                           (0, self.rect.height - 1)))
+
+        # Create a new rendersurface
+        #
+        self.rendersurface = pygame.Surface(self.rect.size)
+
+        # Finally add the subplane by calling the base class method
+        #
+        clickndrag.Plane.sub(self, plane)
+
+    def remove(self, *names):
+        """TODO
+        """
+        pass
+
 class Option(Label):
     """A subclass of Label which handles mouseclicks, to be used in an OptionList.
     """
@@ -216,7 +296,7 @@ class Option(Label):
 
         self.parent.selected = self
         
-class OptionList(clickndrag.Plane):
+class OptionList(Container):
     """A list of options to select from.
 
        Options are subplanes of OptionList, named option0, option1, ..., optionN
@@ -227,7 +307,7 @@ class OptionList(clickndrag.Plane):
            The selected Option
     """
 
-    def __init__(self, name, rect, option_list, callback):
+    def __init__(self, name, option_list, callback):
         """Initialise the OptionList.
            option_list is a list of strings to be displayed as options.
            callback is a function to be called with the selected Option instance
@@ -236,32 +316,26 @@ class OptionList(clickndrag.Plane):
 
         # Call base class init
         #
-        clickndrag.Plane.__init__(self, name, rect, drag = False, grab = False)
+        Container.__init__(self, name)
 
         # TODO: copied from Button.__init__. Maybe inherit from a third class 'Callback'?
         #
         self.callback = callback
 
-        # Compute the size of the Options that make up the OptionList.
-        # Add one for the confirmation button.
+        # Add options and OK button
         #
-        option_width = rect.width
-        option_height = int(rect.height / (len(option_list) + 1))
-
-        y = 0
-
         for text in option_list:
 
+            # TODO: hardcoded option width and height - replace with argument
+            #
             option = Option("option" + str(option_list.index(text)),
                            text,
-                           pygame.Rect((0, y), (option_width, option_height)))
+                           pygame.Rect((0, 0), (90, 30)))
 
             self.sub(option)
 
-            y = y + option_height
-
         button = Button("OK",
-                        pygame.Rect((0, y), (option_width, option_height)),
+                        pygame.Rect((0, 0), (90, 30)),
                         self.selection_made)
 
         self.sub(button)

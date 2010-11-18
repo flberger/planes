@@ -19,6 +19,7 @@ import pygame
 import clickndrag
 import clickndrag.gui
 import threading
+import code
 
 print("creating window")
 
@@ -48,9 +49,34 @@ button = clickndrag.gui.Button("Button",
 clock = pygame.time.Clock()
 fps = clock.get_fps
 
+helptext = """---------------------------------------------------------------------------
+You can now interact with clickndrag.
+
+window                          - Root window, instance of clickndrag.Display
+plane, button                   - Test instances, try window.sub(plane)
+red, green, blue, yellow, white - Color tuples for your convenience
+fps()                           - print current framerate
+click()                         - A convenience callback function
+
+Plane(name, rect, drag=False, grab=False)
+
+Plane.image               - The pygame.Surface for a Plane
+Plane.rect                - The render position on the parent plane
+Plane.subplanes           - Dict of subplanes
+Plane.draggable           - Flags for Plane configuration
+Plane.grab_dropped_planes - Flags for Plane configuration
+
+Plane.sub(Plane)          - Add plane as a subplane of this Plane.
+
+print(helptext)           - Print this help text
+---------------------------------------------------------------------------
+"""
+
 def mainloop(fps):
     """Runs a pygame / clickndrag main loop.
        fps is the framerate.
+       This must be run in the main thread, otherwise pygame.event will not
+       receive any events under MS Windows.
     """
 
     print("about to start main loop")
@@ -75,35 +101,22 @@ def mainloop(fps):
         #
         clock.tick(fps)
 
-mainloop_thread = threading.Thread(target = mainloop,
-                                   name = "mainloop",
-                                   args = (200,))
-print("starting mainloop thread")
+def run_interactive_console(locals_dict):
 
-mainloop_thread.start()
+    ic = code.InteractiveConsole(locals_dict)
 
-helptext = """---------------------------------------------------------------------------
-If you have started this script with 'python -i' or imported it as a
-module, you can now interact with clickndrag.
+    ic.interact(helptext)
 
-window                          - Root window, instance of clickndrag.Display
-plane, button                   - Test instances, try window.sub(plane)
-red, green, blue, yellow, white - Color tuples for your convenience
-fps()                           - print current framerate
-click()                         - A convenience callback function
+if __name__ == "__main__":
 
-Plane(name, rect, drag=False, grab=False)
+    interactive_console_thread = threading.Thread(target = run_interactive_console,
+                                                  name = "interactive_console",
+                                                  args = (locals(),))
 
-Plane.image               - The pygame.Surface for a Plane
-Plane.rect                - The render position on the parent plane
-Plane.subplanes           - Dict of subplanes
-Plane.draggable           - Flags for Plane configuration
-Plane.grab_dropped_planes - Flags for Plane configuration
+    print("starting interactive console thread")
 
-Plane.sub(Plane)          - Add plane as a subplane of this Plane.
+    interactive_console_thread.start()
 
-print(helptext)           - Print this help text
----------------------------------------------------------------------------
-"""
+    print("starting main loop in main thread")
 
-print(helptext)
+    mainloop(60)

@@ -2,3 +2,4 @@
 .bzrignore
 commit.txt
 *.ttf
+*.png
