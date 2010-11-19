@@ -352,7 +352,7 @@ class Plane:
             self.parent.remove(self.name)
             self.parent = None
 
-        self.remove()
+        self.remove_all()
 
         self.image = self.rendersurface = None
         self.rect = self.draggable =  self.grab_dropped_planes = None
