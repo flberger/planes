@@ -149,34 +149,47 @@ class Plane:
         if self.rendersurface == self.image:
             self.rendersurface = pygame.Surface(self.rect.size)
 
-    def remove(self, *names):
-        """Without arguments, remove all subplanes. With strings as arguments, remove them by name.
+    def remove(self, plane_identifier):
+        """Remove subplane by name or Plane instance.
         """
 
-        if not names:
+        # Accept Plane name as well as Plane instance
+        #
+        if isinstance(plane_identifier, Plane):
 
-            for name in self.subplanes_list:
-                self.subplanes[name].parent = None
-
-            self.subplanes = {}
-            self.subplanes_list = []
-
-            # We do not need to worry about rendering here: once all subplanes
-            # are gone, render() will point the rendersurface to image and
-            # redraw.
+            name = plane_identifier.name
 
         else:
-            for name in names:
-                if name in self.subplanes_list:
-                    self.subplanes[name].parent = None
-                    del self.subplanes[name]
-                    del self.subplanes_list[self.subplanes_list.index(name)]
+            name = plane_identifier
 
-            # If there are still subplanes, then trigger a redraw of all of them
-            # by setting their last_rect to None.
-            #
-            for plane in self.subplanes.values():
-                plane.last_rect = None                
+        if name in self.subplanes_list:
+            self.subplanes[name].parent = None
+            del self.subplanes[name]
+            del self.subplanes_list[self.subplanes_list.index(name)]
+
+        # If there are still subplanes, then trigger a redraw of all of them
+        # by setting their last_rect to None.
+        #
+        for plane in self.subplanes.values():
+            plane.last_rect = None                
+
+        return
+
+    def remove_all(self):
+        """Remove all subplanes.
+        """
+
+        for name in self.subplanes_list:
+            self.subplanes[name].parent = None
+
+        self.subplanes = {}
+        self.subplanes_list = []
+
+        # We do not need to worry about rendering here: once all subplanes
+        # are gone, render() will point the rendersurface to image and
+        # redraw.
+
+        return
 
     def __getattr__(self, name):
         """Access subplanes as attributes.

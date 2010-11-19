@@ -217,9 +217,36 @@ class Container(clickndrag.Plane):
         self.padding = padding
         self.color = color
 
+    def redraw(self):
+        """Redraw Container.image from the dimensions in Containter.rect.
+           This also creates a new Container.rendersurface.
+        """
+        # Create Surface with background color and black border
+        #
+        self.image = pygame.Surface(self.rect.size)
+
+        self.image.fill(self.color)
+
+        pygame.draw.lines(self.image,
+                          (0, 0, 0),
+                          True,
+                          ((0, 0),
+                           (self.rect.width - 1, 0),
+                           (self.rect.width - 1, self.rect.height - 1),
+                           (0, self.rect.height - 1)))
+
+        # Create a new rendersurface
+        #
+        self.rendersurface = pygame.Surface(self.rect.size)
+
     def sub(self, plane):
         """Resize the container, update the position of plane and add it as a subplane.
         """
+
+        # First add the subplane by calling the base class method.
+        # This also cares for re-adding an already existing subplane.
+        #
+        clickndrag.Plane.sub(self, plane)
 
         # Containers have a 1px black border. Observe this when calculating width
         # and height.
@@ -246,30 +273,50 @@ class Container(clickndrag.Plane):
 
             self.rect.height = self.rect.height + plane.rect.height + self.padding
 
-        # Create Surface with background color and black border
-        #
-        self.image = pygame.Surface(self.rect.size)
-        self.image.fill(self.color)
-        pygame.draw.lines(self.image,
-                          (0, 0, 0),
-                          True,
-                          ((0, 0),
-                           (self.rect.width - 1, 0),
-                           (self.rect.width - 1, self.rect.height - 1),
-                           (0, self.rect.height - 1)))
+        self.redraw()
 
-        # Create a new rendersurface
-        #
-        self.rendersurface = pygame.Surface(self.rect.size)
-
-        # Finally add the subplane by calling the base class method
-        #
-        clickndrag.Plane.sub(self, plane)
-
-    def remove(self, *names):
-        """TODO
+    def remove(self, plane_identifier):
+        """Remove the subplane, then reposition remaining subplanes and resize the container.
         """
-        pass
+
+        # Accept Plane name as well as Plane instance
+        #
+        if isinstance(plane_identifier, clickndrag.Plane):
+
+            name = plane_identifier.name
+
+        else:
+            name = plane_identifier
+
+        # Save the height of the removed plane
+        #
+        height_removed = self.subplanes[name].rect.height + self.padding
+
+        clickndrag.Plane.remove(self, name)
+
+        # Reposition remaining subplanes.
+        #
+        top = 1 + self.padding
+
+        for name in self.subplanes_list:
+            rect = self.subplanes[name].rect
+            rect.top = top
+            top = top + rect.height + self.padding
+
+        # Now shrink and redraw.
+        #
+        self.rect.height = self.rect.height - height_removed
+
+        self.redraw()
+
+    def remove_all(self):
+        """Remove all subplanes and shrink accordingly.
+        """
+
+        for name in self.subplanes_list:
+            self.remove(name)
+
+        return
 
 class Option(Label):
     """A subclass of Label which handles mouseclicks, to be used in an OptionList.

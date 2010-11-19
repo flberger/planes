@@ -3,78 +3,65 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.OptionList&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.Container&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.OptionList(<a href="clickndrag.gui.Container.html">Container</a>):</h1>
+    <h1 class="class">Class c.g.Container(<a href="clickndrag.Plane.html">clickndrag.Plane</a>):</h1>
     <p>
       <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.OptionList">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.Container">View In Hierarchy</a>
     </p>
     <div>
-      
+      <p>Known subclasses: <a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a></p>
     </div>
-    <pre>A list of options to select from.
-
-Options are subplanes of OptionList, named option0, option1, ..., optionN
+    <pre>A Container for Planes.
+If a subplane is added via sub(), the container places it below any existing
+subplanes and resizes itself to fit the width and height of the subplanes.
 
 Additional attributes:
 
-OptionList.selected
-    The selected Option</pre>
+Container.padding
+    Space between subplanes and border, in pixels
+
+Container.color
+    The original background color for this Container</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id17">
+      <table class="children sortable" id="id12">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.OptionList.html#__init__">__init__</a></td>
-    <td><tt>Initialise the OptionList.</tt></td>
+    <td><a href="clickndrag.gui.Container.html#__init__">__init__</a></td>
+    <td><tt>Initialise.</tt></td>
   </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.gui.OptionList.html#selection_made">selection_made</a></td>
-    <td><tt>Button callback called when the user confirmed an option from the OptionList.</tt></td>
-  </tr>
-  
-</table>
-      
-        <p>
-          Inherited from <a href="clickndrag.gui.Container.html">Container</a>:
-        </p>
-        <table class="children sortable" id="id18">
-  
-  
-<tr class="basemethod">
     
     
     <td>Method</td>
     <td><a href="clickndrag.gui.Container.html#redraw">redraw</a></td>
     <td><tt>Redraw Container.image from the dimensions in Containter.rect.</tt></td>
-  </tr><tr class="basemethod">
+  </tr><tr class="method">
     
     
     <td>Method</td>
     <td><a href="clickndrag.gui.Container.html#sub">sub</a></td>
     <td><tt>Resize the container, update the position of plane and add it as a subplane.</tt></td>
-  </tr><tr class="basemethod">
+  </tr><tr class="method">
     
     
     <td>Method</td>
     <td><a href="clickndrag.gui.Container.html#remove">remove</a></td>
     <td><tt>Remove the subplane, then reposition remaining subplanes and resize the container.</tt></td>
-  </tr><tr class="basemethod">
+  </tr><tr class="method">
     
     
     <td>Method</td>
@@ -85,9 +72,9 @@ OptionList.selected
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Container.html">Container</a>):
+          Inherited from <a href="clickndrag.Plane.html">Plane</a>:
         </p>
-        <table class="children sortable" id="id19">
+        <table class="children sortable" id="id13">
   
   
 <tr class="basemethod">
@@ -149,7 +136,7 @@ OptionList.selected
     
 
     <div class="function">
-  <a name="clickndrag.gui.OptionList.__init__">
+  <a name="clickndrag.gui.Container.__init__">
     
   </a>
   <a name="__init__">
@@ -158,33 +145,85 @@ OptionList.selected
   <div class="functionHeader">
     
     def
-    __init__(self, name, option_list, callback):
+    __init__(self, name, padding=0, color=(150, 150, 150)):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#__init__">clickndrag.gui.Container.__init__</a></div>
-    <pre>Initialise the OptionList.
-option_list is a list of strings to be displayed as options.
-callback is a function to be called with the selected Option instance
-as argument once the selection is made.</pre>
+    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#__init__">clickndrag.Plane.__init__</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a></div>
+    <pre>Initialise.
+Container.image is initialised to a 0x0 px Surface.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.OptionList.selection_made">
+  <a name="clickndrag.gui.Container.redraw">
     
   </a>
-  <a name="selection_made">
+  <a name="redraw">
     
   </a>
   <div class="functionHeader">
     
     def
-    selection_made(self, plane):
+    redraw(self):
     
   </div>
   <div class="functionBody">
     
-    <pre>Button callback called when the user confirmed an option from the OptionList.
-Calls OptionList.callback(self.selected) and destroys the OptionList.</pre>
+    <pre>Redraw Container.image from the dimensions in Containter.rect.
+This also creates a new Container.rendersurface.</pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.Container.sub">
+    
+  </a>
+  <a name="sub">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    sub(self, plane):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#sub">clickndrag.Plane.sub</a></div>
+    <pre>Resize the container, update the position of plane and add it as a subplane.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.Container.remove">
+    
+  </a>
+  <a name="remove">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    remove(self, plane_identifier):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#remove">clickndrag.Plane.remove</a></div>
+    <pre>Remove the subplane, then reposition remaining subplanes and resize the container.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.Container.remove_all">
+    
+  </a>
+  <a name="remove_all">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    remove_all(self):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#remove_all">clickndrag.Plane.remove_all</a></div>
+    <pre>Remove all subplanes and shrink accordingly.
+        </pre>
   </div>
 </div>
     <address>

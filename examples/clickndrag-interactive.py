@@ -25,6 +25,7 @@ print("creating window")
 
 window = clickndrag.Display((400, 300))
 window.grab_dropped_planes = True
+window.image.fill((127, 127, 127))
 pygame.display.set_caption("Click'n'Drag Interactive Live Test")
 
 red = (255, 0, 0)
@@ -37,14 +38,17 @@ def click(*args):
     print("Click! args: {}".format(args))
 
 plane = clickndrag.Plane("plane",
-                         pygame.Rect((100, 100), (100, 100)),
+                         pygame.Rect((200, 50), (100, 100)),
                          drag = True)
 
 plane.image.fill(yellow)
 
 button = clickndrag.gui.Button("Button",
-                               pygame.Rect((10, 10), (100, 50)),
+                               pygame.Rect((50, 50), (100, 50)),
                                click)
+
+container = clickndrag.gui.Container("container", padding = 10)
+container.rect.topleft = (250, 50)
 
 clock = pygame.time.Clock()
 fps = clock.get_fps
