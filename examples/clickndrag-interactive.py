@@ -8,6 +8,7 @@
 # work started on 04. November 2010
 
 import sys
+import readline
 
 # Add current and parent directory. One of them is supposed to contain the
 # clickndrag package.

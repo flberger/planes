@@ -79,11 +79,18 @@ class Label(clickndrag.Plane):
 
             self.image.fill(self.current_color)
 
-            # Give background for speedup
+            # Text is centered on rect.
+            # Give background for speedup.
             #
             fontsurf = self.font.render(self.text, True, (0, 0, 0), self.current_color)
-            self.image.blit(fontsurf, (int(self.rect.width / 2 - fontsurf.get_width() / 2),
-                                       int(self.rect.height / 2 - fontsurf.get_height() / 2)))
+
+            centered_rect = fontsurf.get_rect()
+
+            # Get a neutral center of self.rect
+            #
+            centered_rect.center = pygame.Rect((0, 0), self.rect.size).center
+
+            self.image.blit(fontsurf, centered_rect)
 
             # Force redraw in render()
             #
@@ -264,14 +271,20 @@ class Container(clickndrag.Plane):
 
             # No subplanes yet
 
-            plane.rect.topleft = (1 + self.padding, 1 + self.padding)
+            plane.rect.topleft = (0, 1 + self.padding)
 
             self.rect.height = plane.rect.height + 2 * self.padding + 2
 
         else:
-            plane.rect.topleft = (1 + self.padding, self.rect.height - 1)
+            plane.rect.topleft = (0, self.rect.height - 1)
 
             self.rect.height = self.rect.height + plane.rect.height + self.padding
+
+        # Re-center all subplanes.
+        #
+        for name in self.subplanes_list:
+            rect = self.subplanes[name].rect
+            rect.left = int((self.rect.width - rect.width) / 2)
 
         self.redraw()
 
@@ -313,7 +326,10 @@ class Container(clickndrag.Plane):
         """Remove all subplanes and shrink accordingly.
         """
 
-        for name in self.subplanes_list:
+        # Cave: loop while modifying loop item source. Create a new list.
+        #
+        for name in list(self.subplanes_list):
+
             self.remove(name)
 
         return
@@ -396,5 +412,31 @@ class OptionList(Container):
         """
 
         self.callback(self.selected)
+
+        self.destroy()
+
+class OkBox(Container):
+    """A box which displays a message and an OK button.
+       It is destroyed when OK is clicked.
+    """
+
+    def __init__(self, message):
+        """Initialise.
+        """
+
+        # Base class __init__()
+        # We need a unique random name an just use this instance's id.
+        #
+        Container.__init__(self, str(id(self)), padding = 5)
+
+        self.sub(Label("message",
+                       message,
+                       pygame.Rect((0, 0), (len(message) * 7, 30))))
+
+        self.sub(Button("OK", pygame.Rect((0, 0), (50, 30)), self.ok))
+
+    def ok(self, plane):
+        """Button clicked callback which destroys the OkBox.
+        """
 
         self.destroy()
