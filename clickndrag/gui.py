@@ -426,6 +426,7 @@ class OkBox(Container):
 
         # Base class __init__()
         # We need a unique random name an just use this instance's id.
+        # TODO: prefix with some letters to make it usable via attribute calls
         #
         Container.__init__(self, str(id(self)), padding = 5)
 

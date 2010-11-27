@@ -491,9 +491,19 @@ class Display(Plane):
 
             if self.dragged_plane is not None:
 
-                # Dragged plane on top
+                # For some reason MOUSEBUTTONUP is sometimes missed.
+                # Check whether button is still pressed
                 #
-                self.dragged_plane.rect.center = pygame.mouse.get_pos()
+                if pygame.mouse.get_pressed() != (0, 0, 0):
 
-                self.display.blit(self.dragged_plane.rendersurface,
-                                  self.dragged_plane.rect)
+                    # Dragged plane on top
+                    #
+                    self.dragged_plane.rect.center = pygame.mouse.get_pos()
+
+                    self.display.blit(self.dragged_plane.rendersurface,
+                                      self.dragged_plane.rect)
+
+                else:
+                    # Delete without dropping
+                    #
+                    self.dragged_plane = None
