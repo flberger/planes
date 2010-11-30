@@ -103,7 +103,7 @@ class Plane:
         #
         self.rect = rect
 
-        self.draggable = drag
+        self.draggable = draggable
         self.dropzone = dropzone
 
         # Parent stores the parent plane.
