@@ -40,7 +40,7 @@ class Label(clickndrag.Plane):
 
         # Call base class init
         #
-        clickndrag.Plane.__init__(self, name, rect, drag = False, grab = False)
+        clickndrag.Plane.__init__(self, name, rect, draggable = False, dropzone = False)
 
         self.color = self.cached_color = self.current_color = color
 
@@ -358,7 +358,7 @@ class Option(Label):
         self.last_rect = None
 
         self.parent.selected = self
-        
+
 class OptionList(Container):
     """A list of options to select from.
 
@@ -405,7 +405,7 @@ class OptionList(Container):
 
         self.option0.current_color = (191, 95, 0)
         self.selected = self.option0
-        
+
     def selection_made(self, plane):
         """Button callback called when the user confirmed an option from the OptionList.
            Calls OptionList.callback(self.selected) and destroys the OptionList.

@@ -16,7 +16,7 @@ class Plane:
        produce unexpected results and errors.
 
        Attributes:
-       
+
        Plane.name
            Name of the plane
 
@@ -42,7 +42,7 @@ class Plane:
        Plane.draggable
            If True, this Plane can be dragged and dropped.
 
-       Plane.grab_dropped_planes
+       Plane.dropzone
           If True, this Plane will remove dropped Planes from
           their parent Plane and make it a subplane of this one.
           Handled in Plane.dropped_upon()
@@ -63,8 +63,8 @@ class Plane:
     def __init__(self,
                  name,
                  rect,
-                 drag = False,
-                 grab = False,
+                 draggable = False,
+                 dropzone = False,
                  clicked_callback = None,
                  dropped_upon_callback = None):
         """Initialize the Plane.
@@ -72,8 +72,8 @@ class Plane:
            as an attribute.
            rect is an instance of pygame.Rect giving width, height
            and render position.
-           drag is a flag indicating whether this plane can be dragged.
-           grab is a flag indicating whether other planes can be dropped
+           draggable is a flag indicating whether this plane can be dragged.
+           dropzone is a flag indicating whether other planes can be dropped
            on this one.
            clicked_callback and dropped_upon_callback, if given, must be
            functions.
@@ -104,7 +104,7 @@ class Plane:
         self.rect = rect
 
         self.draggable = drag
-        self.grab_dropped_planes = grab
+        self.dropzone = dropzone
 
         # Parent stores the parent plane.
         # Upon creation, there is none.
@@ -171,7 +171,7 @@ class Plane:
         # by setting their last_rect to None.
         #
         for plane in self.subplanes.values():
-            plane.last_rect = None                
+            plane.last_rect = None
 
         return
 
@@ -256,7 +256,7 @@ class Plane:
                     # Observe alpha! First clear the rendersurface.
                     #
                     self.rendersurface.fill((0, 0, 0, 0))
-                    
+
                     # Then blit this plane's image
                     #
                     self.rendersurface.blit(self.image, (0, 0))
@@ -320,7 +320,7 @@ class Plane:
 
     def dropped_upon(self, plane, coordinates):
         """Called when a plane is dropped on top of this one.
-           If Plane.grab_dropped_planes is True, the default implementation
+           If Plane.dropzone is True, the default implementation
            will remove the dropped Plane from its parent and make it a
            subplane of this one.
            If the dropped Plane is already a subplane of this one, its position
@@ -329,7 +329,7 @@ class Plane:
            Plane.dropped_upon_callback(self, plane, coordinates)
         """
 
-        if self.grab_dropped_planes:
+        if self.dropzone:
 
             plane.rect.center = coordinates
 
@@ -355,7 +355,7 @@ class Plane:
         self.remove_all()
 
         self.image = self.rendersurface = None
-        self.rect = self.draggable =  self.grab_dropped_planes = None
+        self.rect = self.draggable =  self.dropzone = None
 
     def __repr__(self):
         """Readable string representation.
@@ -365,15 +365,15 @@ class Plane:
 
         if self.parent is not None:
             parent_name = self.parent.name
-            
-        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab_dropped_planes={} last_image_id={} last_rect={} clicked_callback={} dropped_upon_callback={}>".format(self.name,
+
+        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} dropzone={} last_image_id={} last_rect={} clicked_callback={} dropped_upon_callback={}>".format(self.name,
                                                       "{}@{}".format(self.image, id(self.image)),
                                                       "{}@{}".format(self.rendersurface, id(self.rendersurface)),
                                                       self.rect,
                                                       parent_name,
                                                       self.subplanes_list,
                                                       self.draggable,
-                                                      self.grab_dropped_planes,
+                                                      self.dropzone,
                                                       self.last_image_id,
                                                       self.last_rect,
                                                       self.clicked_callback,
