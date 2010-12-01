@@ -42,7 +42,7 @@ class Plane:
        Plane.draggable
            If True, this Plane can be dragged and dropped.
 
-       Plane.dropzone
+       Plane.grab
           If True, this Plane will remove dropped Planes from
           their parent Plane and make it a subplane of this one.
           Handled in Plane.dropped_upon()
@@ -64,7 +64,7 @@ class Plane:
                  name,
                  rect,
                  draggable = False,
-                 dropzone = False,
+                 grab = False,
                  clicked_callback = None,
                  dropped_upon_callback = None):
         """Initialize the Plane.
@@ -73,7 +73,7 @@ class Plane:
            rect is an instance of pygame.Rect giving width, height
            and render position.
            draggable is a flag indicating whether this plane can be dragged.
-           dropzone is a flag indicating whether other planes can be dropped
+           grab is a flag indicating whether other planes can be dropped
            on this one.
            clicked_callback and dropped_upon_callback, if given, must be
            functions.
@@ -104,7 +104,7 @@ class Plane:
         self.rect = rect
 
         self.draggable = draggable
-        self.dropzone = dropzone
+        self.grab = grab
 
         # Parent stores the parent plane.
         # Upon creation, there is none.
@@ -319,17 +319,19 @@ class Plane:
         return
 
     def dropped_upon(self, plane, coordinates):
-        """Called when a plane is dropped on top of this one.
-           If Plane.dropzone is True, the default implementation
-           will remove the dropped Plane from its parent and make it a
-           subplane of this one.
+        """If a plane is dropped on top of this one, call dropped_upon_callback() and conditionally grab it.
+
+           If Plane.grab is True, the default implementation will remove the
+           dropped Plane from its parent and make it a subplane of this one.
+
            If the dropped Plane is already a subplane of this one, its position
            is updated.
+
            If Plane.dropped_upon_callback is set, it is called with
            Plane.dropped_upon_callback(self, plane, coordinates)
         """
 
-        if self.dropzone:
+        if self.grab:
 
             plane.rect.center = coordinates
 
@@ -355,7 +357,7 @@ class Plane:
         self.remove_all()
 
         self.image = self.rendersurface = None
-        self.rect = self.draggable =  self.dropzone = None
+        self.rect = self.draggable =  self.grab = None
 
     def __repr__(self):
         """Readable string representation.
@@ -366,14 +368,14 @@ class Plane:
         if self.parent is not None:
             parent_name = self.parent.name
 
-        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} dropzone={} last_image_id={} last_rect={} clicked_callback={} dropped_upon_callback={}>".format(self.name,
+        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab={} last_image_id={} last_rect={} clicked_callback={} dropped_upon_callback={}>".format(self.name,
                                                       "{}@{}".format(self.image, id(self.image)),
                                                       "{}@{}".format(self.rendersurface, id(self.rendersurface)),
                                                       self.rect,
                                                       parent_name,
                                                       self.subplanes_list,
                                                       self.draggable,
-                                                      self.dropzone,
+                                                      self.grab,
                                                       self.last_image_id,
                                                       self.last_rect,
                                                       self.clicked_callback,

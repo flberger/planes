@@ -40,7 +40,7 @@ class Label(clickndrag.Plane):
 
         # Call base class init
         #
-        clickndrag.Plane.__init__(self, name, rect, draggable = False, dropzone = False)
+        clickndrag.Plane.__init__(self, name, rect, draggable = False, grab = False)
 
         self.color = self.cached_color = self.current_color = color
 
