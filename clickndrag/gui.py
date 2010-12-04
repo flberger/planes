@@ -489,7 +489,7 @@ class TextBox(Label):
         return
 
     def keydown(self, keydown_event):
-        """Add unicode_character to self.text.
+        """If prinable, add keydown_event.unicode to self.text.
         """
 
         if keydown_event.unicode.isprintable():
