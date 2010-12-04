@@ -509,6 +509,8 @@ class Display(Plane):
                   and self.key_sensitive_list
                   and self.key_sensitive_list[-1].parent is not None):
 
+                # TODO: remove destroyed Planes from key_sensitive_list
+
                 # Notify the latest registered listener
                 #
                 self.key_sensitive_list[-1].keydown(event)

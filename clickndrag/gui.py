@@ -511,12 +511,19 @@ class TextBox(Label):
 
             self.image.fill(self.current_color)
 
-            # Text is left-aligned on rect.
             # Give background for speedup.
             #
             fontsurf = self.font.render(self.text, True, (0, 0, 0), self.current_color)
 
-            self.image.blit(fontsurf, (0, 0))
+            # Text is left-aligned on rect, except when it is larger than the
+            # Label, in which case it is right-aligned.
+            #
+            if fontsurf.get_rect().width > self.rect.width:
+
+                self.image.blit(fontsurf, (self.rect.width - fontsurf.get_rect().width, 0))
+
+            else:
+                self.image.blit(fontsurf, (0, 0))
 
             # Force redraw in render()
             #

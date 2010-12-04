@@ -1,0 +1,204 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>API docs for &ldquo;clickndrag.gui.TextBox&rdquo;</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <link href="apidocs.css" type="text/css" rel="stylesheet" />
+    
+    
+  </head>
+  <body>
+    <h1 class="class">Class c.g.TextBox(<a href="clickndrag.gui.Label.html">Label</a>):</h1>
+    <p>
+      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
+      
+      <a href="classIndex.html#clickndrag.gui.TextBox">View In Hierarchy</a>
+    </p>
+    <div>
+      
+    </div>
+    <pre>A box where the user can type text.
+    </pre>
+
+    
+    
+    <div id="splitTables">
+      <table class="children sortable" id="id23">
+  
+  
+<tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.TextBox.html#__init__">__init__</a></td>
+    <td><tt>Initialise the TextBox.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.TextBox.html#keydown">keydown</a></td>
+    <td><tt>If prinable, add keydown_event.unicode to self.text.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.TextBox.html#redraw">redraw</a></td>
+    <td><tt>Redraw the TextBox if necessary.</tt></td>
+  </tr>
+  
+</table>
+      
+        <p>
+          Inherited from <a href="clickndrag.gui.Label.html">Label</a>:
+        </p>
+        <table class="children sortable" id="id24">
+  
+  
+<tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.Label.html#update">update</a></td>
+    <td><tt>Renew the text on the label, then call the base class method.</tt></td>
+  </tr>
+  
+</table>
+      
+        <p>
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Label.html">Label</a>):
+        </p>
+        <table class="children sortable" id="id25">
+  
+  
+<tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#sub">sub</a></td>
+    <td><tt>Remove the Plane from its current parent and add it as a subplane of this Plane.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#remove">remove</a></td>
+    <td><tt>Remove subplane by name or Plane instance.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#remove_all">remove_all</a></td>
+    <td><tt>Remove all subplanes.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#__getattr__">__getattr__</a></td>
+    <td><tt>Access subplanes as attributes.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#render">render</a></td>
+    <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#get_plane_at">get_plane_at</a></td>
+    <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#clicked">clicked</a></td>
+    <td><tt>Called when there is a MOUSEDOWN event on this plane.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#dropped_upon">dropped_upon</a></td>
+    <td><tt>If a plane is dropped on top of this one, call dropped_upon_callback() and conditionally grab it.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#destroy">destroy</a></td>
+    <td><tt>Remove this Plane from the parent plane, remove all subplanes and delete all pygame Surfaces.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#__repr__">__repr__</a></td>
+    <td><tt>Readable string representation.</tt></td>
+  </tr>
+  
+</table>
+      
+      
+    </div>
+    
+    
+    
+
+    <div class="function">
+  <a name="clickndrag.gui.TextBox.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    __init__(self, name, rect, color=(250, 250, 250)):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Label.html#__init__">clickndrag.gui.Label.__init__</a></div>
+    <pre>Initialise the TextBox.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.TextBox.keydown">
+    
+  </a>
+  <a name="keydown">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    keydown(self, keydown_event):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>If prinable, add keydown_event.unicode to self.text.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.TextBox.redraw">
+    
+  </a>
+  <a name="redraw">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    redraw(self):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Label.html#redraw">clickndrag.gui.Label.redraw</a></div>
+    <pre>Redraw the TextBox if necessary.
+        </pre>
+  </div>
+</div>
+    <address>
+      <a href="index.html">API Documentation</a> for clickndrag, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2010-12-04 13:54:29.
+    </address>
+  </body>
+</html>
