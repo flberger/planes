@@ -127,6 +127,8 @@ class Plane:
         self.clicked_callback = clicked_callback
         self.dropped_upon_callback = dropped_upon_callback
 
+        return
+
     def sub(self, plane):
         """Remove the Plane from its current parent and add it as a subplane of this Plane.
         """
@@ -148,6 +150,8 @@ class Plane:
         #
         if self.rendersurface == self.image:
             self.rendersurface = pygame.Surface(self.rect.size)
+
+        return
 
     def remove(self, plane_identifier):
         """Remove subplane by name or Plane instance.
@@ -307,6 +311,8 @@ class Plane:
 
             plane.update()
 
+        return
+
     def clicked(self):
         """Called when there is a MOUSEDOWN event on this plane.
            If Plane.clicked_callback is set, it is called with this Plane as
@@ -359,6 +365,8 @@ class Plane:
         self.image = self.rendersurface = None
         self.rect = self.draggable =  self.grab = None
 
+        return
+
     def __repr__(self):
         """Readable string representation.
         """
@@ -381,6 +389,8 @@ class Plane:
                                                       self.clicked_callback,
                                                       self.dropped_upon_callback))
 
+        return
+
 class Display(Plane):
     """Click'n'Drag main screen class.
        A Display instance serves as the root Plane in clickndrag.
@@ -392,6 +402,9 @@ class Display(Plane):
 
        Display.dragged_plane
            The currently dragged plane
+
+       Display.key_sensitive_list
+           A list of Planes to be notified of Pygame keyboard events
     """
 
     def __init__(self, resolution_tuple):
@@ -425,6 +438,20 @@ class Display(Plane):
         # Keep track of the dragged plane
         #
         self.dragged_plane = None
+
+        self.key_sensitive_list = []
+
+        return
+
+    def key_sensitive(self, plane):
+        """Register the Plane given as sensitive to Pygame keyboard events.
+           Display will call plane.keydown(KEYDOWN_event) when a key is are
+           pressed and the Plane has a parent.
+        """
+
+        self.key_sensitive_list.append(plane)
+
+        return
 
     def process(self, event_list):
         """Process a pygame event list.
@@ -478,6 +505,14 @@ class Display(Plane):
                     #
                     self.render(force = True)
 
+            elif (event.type == pygame.KEYDOWN
+                  and self.key_sensitive_list
+                  and self.key_sensitive_list[-1].parent is not None):
+
+                # Notify the latest registered listener
+                #
+                self.key_sensitive_list[-1].keydown(event)
+
             return
 
     def render(self, force = False):
@@ -509,3 +544,5 @@ class Display(Plane):
                     # Delete without dropping
                     #
                     self.dragged_plane = None
+
+        return

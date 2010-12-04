@@ -52,7 +52,7 @@ class Label(clickndrag.Plane):
         self.cached_text = None
 
         try:
-            self.font = pygame.font.Font("Vera.ttf", int(self.rect.height * 0.4))
+            self.font = pygame.font.Font("Vera.ttf", int(self.rect.height * 0.45))
 
         except:
 
@@ -62,6 +62,8 @@ class Label(clickndrag.Plane):
 
         self.redraw()
 
+        return
+
     def update(self):
         """Renew the text on the label, then call the base class method.
         """
@@ -69,6 +71,8 @@ class Label(clickndrag.Plane):
         self.redraw()
 
         clickndrag.Plane.update(self)
+
+        return
 
     def redraw(self):
         """Redraw the Label if necessary.
@@ -98,6 +102,8 @@ class Label(clickndrag.Plane):
 
             self.cached_text = self.text
             self.cached_color = self.current_color
+
+        return
 
 class Button(Label):
     """A clickndrag plane which displays a text and reacts on mouse clicks.
@@ -134,6 +140,8 @@ class Button(Label):
 
         self.redraw()
 
+        return
+
     def redraw(self):
         """Redraw the Button.
         """
@@ -165,6 +173,8 @@ class Button(Label):
 
         self.image.unlock()
 
+        return
+
     def update(self):
         """Change color if clicked, then call the base class method.
         """
@@ -180,6 +190,8 @@ class Button(Label):
                 self.current_color = self.color
 
         Label.update(self)
+
+        return
 
     def clicked(self):
         """Called when there is a MOUSEDOWN event on this plane.
@@ -197,6 +209,8 @@ class Button(Label):
         # Call base class implementation which will call the callback
         #
         Label.clicked(self)
+
+        return
 
 class Container(clickndrag.Plane):
     """A Container for Planes.
@@ -224,6 +238,8 @@ class Container(clickndrag.Plane):
         self.padding = padding
         self.color = color
 
+        return
+
     def redraw(self):
         """Redraw Container.image from the dimensions in Containter.rect.
            This also creates a new Container.rendersurface.
@@ -245,6 +261,8 @@ class Container(clickndrag.Plane):
         # Create a new rendersurface
         #
         self.rendersurface = pygame.Surface(self.rect.size)
+
+        return
 
     def sub(self, plane):
         """Resize the container, update the position of plane and add it as a subplane.
@@ -288,6 +306,8 @@ class Container(clickndrag.Plane):
 
         self.redraw()
 
+        return
+
     def remove(self, plane_identifier):
         """Remove the subplane, then reposition remaining subplanes and resize the container.
         """
@@ -321,6 +341,8 @@ class Container(clickndrag.Plane):
         self.rect.height = self.rect.height - height_removed
 
         self.redraw()
+
+        return
 
     def remove_all(self):
         """Remove all subplanes and shrink accordingly.
@@ -359,6 +381,8 @@ class Option(Label):
 
         self.parent.selected = self
 
+        return
+
 class OptionList(Container):
     """A list of options to select from.
 
@@ -393,18 +417,20 @@ class OptionList(Container):
             #
             option = Option("option" + str(option_list.index(text)),
                            text,
-                           pygame.Rect((0, 0), (90, 30)))
+                           pygame.Rect((0, 0), (200, 30)))
 
             self.sub(option)
 
         button = Button("OK",
-                        pygame.Rect((0, 0), (90, 30)),
+                        pygame.Rect((0, 0), (200, 30)),
                         self.selection_made)
 
         self.sub(button)
 
         self.option0.current_color = (191, 95, 0)
         self.selected = self.option0
+
+        return
 
     def selection_made(self, plane):
         """Button callback called when the user confirmed an option from the OptionList.
@@ -414,6 +440,8 @@ class OptionList(Container):
         self.callback(self.selected)
 
         self.destroy()
+
+        return
 
 class OkBox(Container):
     """A box which displays a message and an OK button.
@@ -436,8 +464,65 @@ class OkBox(Container):
 
         self.sub(Button("OK", pygame.Rect((0, 0), (50, 30)), self.ok))
 
+        return
+
     def ok(self, plane):
         """Button clicked callback which destroys the OkBox.
         """
 
         self.destroy()
+
+        return
+
+class TextBox(Label):
+    """A box where the user can type text.
+    """
+
+    def __init__(self, name, rect, color = (250, 250, 250)):
+        """Initialise the TextBox.
+        """
+
+        # Call base class
+        #
+        Label.__init__(self, name, None, rect, color)
+
+        return
+
+    def keydown(self, keydown_event):
+        """Add unicode_character to self.text.
+        """
+
+        if keydown_event.unicode.isprintable():
+
+            self.text = self.text + keydown_event.unicode
+
+        elif keydown_event.key == pygame.K_BACKSPACE:
+
+            self.text = self.text[:-1]
+
+        return
+
+    def redraw(self):
+        """Redraw the TextBox if necessary.
+        """
+
+        if (self.text != self.cached_text
+            or self.current_color != self.cached_color):
+
+            self.image.fill(self.current_color)
+
+            # Text is left-aligned on rect.
+            # Give background for speedup.
+            #
+            fontsurf = self.font.render(self.text, True, (0, 0, 0), self.current_color)
+
+            self.image.blit(fontsurf, (0, 0))
+
+            # Force redraw in render()
+            #
+            self.last_rect = None
+
+            self.cached_text = self.text
+            self.cached_color = self.current_color
+
+        return

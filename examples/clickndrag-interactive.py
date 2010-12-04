@@ -40,7 +40,7 @@ def click(*args):
 
 plane = clickndrag.Plane("plane",
                          pygame.Rect((200, 50), (100, 100)),
-                         drag = True)
+                         draggable = True)
 
 plane.image.fill(yellow)
 
@@ -51,17 +51,20 @@ button = clickndrag.gui.Button("Button",
 container = clickndrag.gui.Container("container", padding = 10)
 container.rect.topleft = (250, 50)
 
+textbox = clickndrag.gui.TextBox("textbox", pygame.Rect((10, 10), (200, 30)))
+window.key_sensitive(textbox)
+
 clock = pygame.time.Clock()
 fps = clock.get_fps
 
 helptext = """---------------------------------------------------------------------------
 You can now interact with clickndrag.
 
-window                          - Root window, instance of clickndrag.Display
-plane, button                   - Test instances, try window.sub(plane)
-red, green, blue, yellow, white - Color tuples for your convenience
-fps()                           - print current framerate
-click()                         - A convenience callback function
+window                            - Root window, instance of clickndrag.Display
+plane, button, textbox, container - Test instances, try window.sub(plane)
+red, green, blue, yellow, white   - Color tuples for your convenience
+fps()                             - print current framerate
+click()                           - A convenience callback function
 
 Plane(name, rect, drag=False, grab=False)
 
