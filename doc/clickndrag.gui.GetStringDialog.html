@@ -3,65 +3,78 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.Container&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.GetStringDialog&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.Container(<a href="clickndrag.Plane.html">clickndrag.Plane</a>):</h1>
+    <h1 class="class">Class c.g.GetStringDialog(<a href="clickndrag.gui.Container.html">Container</a>):</h1>
     <p>
       <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.Container">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.GetStringDialog">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="clickndrag.gui.GetStringDialog.html">clickndrag.gui.GetStringDialog</a>, <a href="clickndrag.gui.OkBox.html">clickndrag.gui.OkBox</a>, <a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a></p>
+      
     </div>
-    <pre>A Container for Planes.
-If a subplane is added via sub(), the container places it below any existing
-subplanes and resizes itself to fit the width and height of the subplanes.
+    <pre>A combination of Container, Label, TextBox and Button that asks the user for a string.
+
+A GetStringDialog must always be a subplane of Display.
 
 Additional attributes:
 
-Container.padding
-    Space between subplanes and border, in pixels
-
-Container.color
-    The original background color for this Container</pre>
+GetStringDialog.callback
+    The callback to be called callback(string) when the input is confirmed.</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id12">
+      <table class="children sortable" id="id26">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#__init__">__init__</a></td>
-    <td><tt>Initialise.</tt></td>
+    <td><a href="clickndrag.gui.GetStringDialog.html#__init__">__init__</a></td>
+    <td><tt>Open the GetStringDialog as a subplane of display.</tt></td>
   </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.GetStringDialog.html#ok">ok</a></td>
+    <td><tt>Button callback to destroy the GetStringDialog and call GetStringDialog.callback(string).</tt></td>
+  </tr>
+  
+</table>
+      
+        <p>
+          Inherited from <a href="clickndrag.gui.Container.html">Container</a>:
+        </p>
+        <table class="children sortable" id="id27">
+  
+  
+<tr class="basemethod">
     
     
     <td>Method</td>
     <td><a href="clickndrag.gui.Container.html#redraw">redraw</a></td>
     <td><tt>Redraw Container.image from the dimensions in Containter.rect.</tt></td>
-  </tr><tr class="method">
+  </tr><tr class="basemethod">
     
     
     <td>Method</td>
     <td><a href="clickndrag.gui.Container.html#sub">sub</a></td>
     <td><tt>Resize the container, update the position of plane and add it as a subplane.</tt></td>
-  </tr><tr class="method">
+  </tr><tr class="basemethod">
     
     
     <td>Method</td>
     <td><a href="clickndrag.gui.Container.html#remove">remove</a></td>
     <td><tt>Remove the subplane, then reposition remaining subplanes and resize the container.</tt></td>
-  </tr><tr class="method">
+  </tr><tr class="basemethod">
     
     
     <td>Method</td>
@@ -72,9 +85,9 @@ Container.color
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a>:
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id13">
+        <table class="children sortable" id="id28">
   
   
 <tr class="basemethod">
@@ -136,7 +149,7 @@ Container.color
     
 
     <div class="function">
-  <a name="clickndrag.gui.Container.__init__">
+  <a name="clickndrag.gui.GetStringDialog.__init__">
     
   </a>
   <a name="__init__">
@@ -145,85 +158,31 @@ Container.color
   <div class="functionHeader">
     
     def
-    __init__(self, name, padding=0, color=(150, 150, 150)):
+    __init__(self, prompt, callback, display):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#__init__">clickndrag.Plane.__init__</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.GetStringDialog.html">clickndrag.gui.GetStringDialog</a>, <a href="clickndrag.gui.OkBox.html">clickndrag.gui.OkBox</a>, <a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a></div>
-    <pre>Initialise.
-Container.image is initialised to a 0x0 px Surface.</pre>
-  </div>
-</div><div class="function">
-  <a name="clickndrag.gui.Container.redraw">
-    
-  </a>
-  <a name="redraw">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    redraw(self):
-    
-  </div>
-  <div class="functionBody">
-    
-    <pre>Redraw Container.image from the dimensions in Containter.rect.
-This also creates a new Container.rendersurface.</pre>
-  </div>
-</div><div class="function">
-  <a name="clickndrag.gui.Container.sub">
-    
-  </a>
-  <a name="sub">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    sub(self, plane):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#sub">clickndrag.Plane.sub</a></div>
-    <pre>Resize the container, update the position of plane and add it as a subplane.
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#__init__">clickndrag.gui.Container.__init__</a></div>
+    <pre>Open the GetStringDialog as a subplane of display.
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.Container.remove">
+  <a name="clickndrag.gui.GetStringDialog.ok">
     
   </a>
-  <a name="remove">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    remove(self, plane_identifier):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#remove">clickndrag.Plane.remove</a></div>
-    <pre>Remove the subplane, then reposition remaining subplanes and resize the container.
-        </pre>
-  </div>
-</div><div class="function">
-  <a name="clickndrag.gui.Container.remove_all">
-    
-  </a>
-  <a name="remove_all">
+  <a name="ok">
     
   </a>
   <div class="functionHeader">
     
     def
-    remove_all(self):
+    ok(self, plane):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#remove_all">clickndrag.Plane.remove_all</a></div>
-    <pre>Remove all subplanes and shrink accordingly.
-        </pre>
+    
+    <pre>Button callback to destroy the GetStringDialog and call GetStringDialog.callback(string).
+The callback should call render() and flip the display to remove the GetStringDialog from the screen.</pre>
   </div>
 </div>
     <address>

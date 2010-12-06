@@ -533,3 +533,54 @@ class TextBox(Label):
             self.cached_color = self.current_color
 
         return
+
+class GetStringDialog(Container):
+    """A combination of Container, Label, TextBox and Button that asks the user for a string.
+
+       A GetStringDialog must always be a subplane of Display.
+
+       Additional attributes:
+
+       GetStringDialog.callback
+           The callback to be called callback(string) when the input is confirmed.
+    """
+
+    # TODO: this could be merged with OkBox into a class "ConfirmBox"
+
+    def __init__(self, prompt, callback, display):
+        """Open the GetStringDialog as a subplane of display.
+        """
+
+        # Initialise container
+        #
+        Container.__init__(self, "get_string_dialog", padding = 5)
+
+        self.callback = callback
+
+        self.sub(Label("prompt", prompt, pygame.Rect((0, 0), (200, 30))))
+
+        textbox = TextBox("textbox", pygame.Rect((0, 0), (200, 30)))
+
+        self.sub(textbox)
+
+        display.key_sensitive(textbox)
+
+        self.sub(Button("OK",
+                        pygame.Rect((0, 0), (90, 30)),
+                        self.ok))
+
+        return
+
+    def ok(self, plane):
+        """Button callback to destroy the GetStringDialog and call GetStringDialog.callback(string).
+           The callback should call render() and flip the display to remove the GetStringDialog from the screen.
+        """
+
+        callback = self.callback
+        string = self.textbox.text
+
+        self.destroy()
+
+        callback(string)
+
+        return

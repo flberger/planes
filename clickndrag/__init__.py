@@ -357,8 +357,8 @@ class Plane:
         """
 
         if self.parent is not None:
+
             self.parent.remove(self.name)
-            self.parent = None
 
         self.remove_all()
 
