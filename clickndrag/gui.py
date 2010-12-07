@@ -537,8 +537,6 @@ class TextBox(Label):
 class GetStringDialog(Container):
     """A combination of Container, Label, TextBox and Button that asks the user for a string.
 
-       A GetStringDialog must always be a subplane of Display.
-
        Additional attributes:
 
        GetStringDialog.callback

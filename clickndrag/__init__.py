@@ -6,6 +6,13 @@
 # Planned in mind at the Mosel valley in late July 2010
 # Actual work started on 01. Oct 2010
 
+# clickndrag will not work with Python versions prior to 3.x.
+#
+import sys
+
+if sys.version_info[0] != 3:
+    raise Exception("clickndrag needs Python 3 to work. Your Python version is: " + sys.version)
+
 import pygame
 
 class Plane:
