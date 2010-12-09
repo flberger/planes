@@ -138,11 +138,16 @@ class Plane:
 
     def sub(self, plane):
         """Remove the Plane from its current parent and add it as a subplane of this Plane.
+           If a subplane with the same name already exists, it is silently replaced by the new plane.
         """
 
         if plane.parent is not None:
 
             plane.parent.remove(plane.name)
+
+        if plane.name in self.subplanes_list:
+
+            del self.subplanes_list[self.subplanes_list.index(plane.name)]
 
         self.subplanes_list.append(plane.name)
         self.subplanes[plane.name] = plane
@@ -410,8 +415,8 @@ class Display(Plane):
        Display.dragged_plane
            The currently dragged plane
 
-       Display.key_sensitive_list
-           A list of Planes to be notified of Pygame keyboard events
+       Display.key_sensitive_plane
+           The Plane to be notified of Pygame keyboard events. Initially None.
     """
 
     def __init__(self, resolution_tuple):
@@ -446,7 +451,7 @@ class Display(Plane):
         #
         self.dragged_plane = None
 
-        self.key_sensitive_list = []
+        self.key_sensitive_plane = None
 
         return
 
@@ -456,7 +461,7 @@ class Display(Plane):
            pressed and the Plane has a parent.
         """
 
-        self.key_sensitive_list.append(plane)
+        self.key_sensitive_plane = plane
 
         return
 
@@ -513,14 +518,14 @@ class Display(Plane):
                     self.render(force = True)
 
             elif (event.type == pygame.KEYDOWN
-                  and self.key_sensitive_list
-                  and self.key_sensitive_list[-1].parent is not None):
+                  and self.key_sensitive_plane
+                  and self.key_sensitive_plane.parent is not None):
 
-                # TODO: remove destroyed Planes from key_sensitive_list
+                # TODO: remove a destroyed Plane from key_sensitive_plane
 
                 # Notify the latest registered listener
                 #
-                self.key_sensitive_list[-1].keydown(event)
+                self.key_sensitive_plane.keydown(event)
 
             return
 

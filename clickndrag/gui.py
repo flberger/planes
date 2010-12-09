@@ -8,6 +8,9 @@
 import clickndrag
 import pygame
 
+BACKGROUND_COLOR = (150, 150, 150)
+HIGHLIGHT_COLOR = (191, 95, 0)
+
 class Label(clickndrag.Plane):
     """A clickndrag.Plane which displays a text.
 
@@ -32,7 +35,7 @@ class Label(clickndrag.Plane):
            A cache for color changes
     """
 
-    def __init__(self, name, text, rect, color = (150, 150, 150)):
+    def __init__(self, name, text, rect, color = BACKGROUND_COLOR):
         """Initialise the Label.
            text is the text to be written on the Label. If text is None, it is
            replaced by an empty string.
@@ -117,7 +120,7 @@ class Button(Label):
            Counted down when the button is clicked and displays a different color
     """
 
-    def __init__(self, label, rect, callback, color = (150, 150, 150)):
+    def __init__(self, label, rect, callback, color = BACKGROUND_COLOR):
         """Initialise the Button.
            label is the Text to be written on the button.
            rect is an instance of pygame.Rect giving the dimensions.
@@ -226,7 +229,7 @@ class Container(clickndrag.Plane):
            The original background color for this Container
     """
 
-    def __init__(self, name, padding = 0, color = (150, 150, 150)):
+    def __init__(self, name, padding = 0, color = BACKGROUND_COLOR):
         """Initialise.
            Container.image is initialised to a 0x0 px Surface.
         """
@@ -373,7 +376,7 @@ class Option(Label):
             #
             plane.last_rect = None
 
-        self.current_color = (191, 95, 0)
+        self.current_color = HIGHLIGHT_COLOR
 
         # Force redraw in render()
         #
@@ -394,7 +397,7 @@ class OptionList(Container):
            The selected Option
     """
 
-    def __init__(self, name, option_list, callback):
+    def __init__(self, name, option_list, callback, width = 200, lineheight = 30):
         """Initialise the OptionList.
            option_list is a list of strings to be displayed as options.
            callback is a function to be called with the selected Option instance
@@ -413,21 +416,19 @@ class OptionList(Container):
         #
         for text in option_list:
 
-            # TODO: hardcoded option width and height - replace with argument
-            #
             option = Option("option" + str(option_list.index(text)),
                            text,
-                           pygame.Rect((0, 0), (200, 30)))
+                           pygame.Rect((0, 0), (width, lineheight)))
 
             self.sub(option)
 
         button = Button("OK",
-                        pygame.Rect((0, 0), (200, 30)),
+                        pygame.Rect((0, 0), (width, lineheight)),
                         self.selection_made)
 
         self.sub(button)
 
-        self.option0.current_color = (191, 95, 0)
+        self.option0.current_color = HIGHLIGHT_COLOR
         self.selected = self.option0
 
         return
@@ -476,6 +477,8 @@ class OkBox(Container):
 
 class TextBox(Label):
     """A box where the user can type text.
+       To actually receive key events, the TextBox must be registered with the
+       Display using Display.key_sensitive(TextBox).
     """
 
     def __init__(self, name, rect, color = (250, 250, 250)):
