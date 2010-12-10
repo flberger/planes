@@ -3,3 +3,5 @@
 commit.txt
 *.ttf
 *.png
+dist
+build
