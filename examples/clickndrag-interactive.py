@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """Run an interactive Click'n'Drag-Session.
 
    Start this script with 'python -i' or import it as a module

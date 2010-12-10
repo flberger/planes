@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """Square clicking in classic PyGame
 
    (c) Florian Berger <fberger@florian-berger.de>

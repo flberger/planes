@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """Square clicking using Click'n'Drag
 
    (c) Florian Berger <fberger@florian-berger.de>
