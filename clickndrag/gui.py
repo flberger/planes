@@ -11,6 +11,19 @@ import pygame
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
 
+def draw_border(plane, color):
+    """Draw a border around plane.
+    """
+    pygame.draw.lines(plane.image,
+                      color,
+                      True,
+                      ((0, 0),
+                       (plane.rect.width - 1, 0),
+                       (plane.rect.width - 1, plane.rect.height - 1),
+                       (0, plane.rect.height - 1)))
+
+    return
+
 class Label(clickndrag.Plane):
     """A clickndrag.Plane which displays a text.
 
@@ -253,13 +266,7 @@ class Container(clickndrag.Plane):
 
         self.image.fill(self.color)
 
-        pygame.draw.lines(self.image,
-                          (0, 0, 0),
-                          True,
-                          ((0, 0),
-                           (self.rect.width - 1, 0),
-                           (self.rect.width - 1, self.rect.height - 1),
-                           (0, self.rect.height - 1)))
+        draw_border(self, (0, 0, 0))
 
         # Create a new rendersurface
         #
@@ -583,5 +590,69 @@ class GetStringDialog(Container):
         self.destroy()
 
         callback(string)
+
+        return
+
+class ScrollingPlane(clickndrag.Plane):
+    """This class implements a fixed-dimension plane with a scroll bar to scroll its content plane.
+    """
+
+    def __init__(self, name, rect, content_plane, draggable = False, grab = False, clicked_callback = None, dropped_upon_callback = None):
+        """Initalise.
+           rect states the dimensions without the scroll bar.
+        """
+
+        rect.width = rect.width + 12
+
+        # Call base class
+        #
+        clickndrag.Plane.__init__(self, name, rect, draggable, grab, clicked_callback, dropped_upon_callback)
+
+        self.image.fill(BACKGROUND_COLOR)
+
+        self.sub(clickndrag.Plane("content", pygame.Rect((0, 0),
+                                                         (self.rect.width - 12, self.rect.height))))
+
+        content_plane.rect.topleft = (0, 0)
+        self.content.sub(content_plane)
+
+        scrollbar_container = clickndrag.Plane("scrollbar_container",
+                                               pygame.Rect((self.rect.width - 12, 0),
+                                                           (12, self.rect.height)))
+
+        scrollbar_container.image.fill(BACKGROUND_COLOR)
+        draw_border(scrollbar_container, (0, 0, 0))
+
+        def scrollbar_container_clicked(plane):
+            """Clicked callback which repositions the content Plane and scrollbar according to the y-position of the mouse.
+            """
+            x, y = pygame.mouse.get_pos()
+
+            new_y = y - self.rect.top
+
+            # Align scrollbar at bottom
+            #
+            if new_y > self.rect.height - self.scrollbar_container.scrollbar.rect.height - 2:
+                new_y = self.rect.height - self.scrollbar_container.scrollbar.rect.height - 2
+
+            self.scrollbar_container.scrollbar.rect.top = new_y
+
+            content_plane = self.content.subplanes[self.content.subplanes_list[0]]
+            content_plane.rect.top = int(0 - new_y / self.rect.height * content_plane.rect.height)
+
+            return
+
+        scrollbar_container.clicked_callback = scrollbar_container_clicked
+
+        self.sub(scrollbar_container)
+
+        # Scrollbar height reflects the proportions
+        #
+        self.scrollbar_container.sub(clickndrag.Plane("scrollbar", pygame.Rect((2, 2),
+                                                                          (8, int(self.rect.height / content_plane.rect.height * self.rect.height)))))
+
+        # Half-bright color taken from Button.clicked()
+        #
+        self.scrollbar_container.scrollbar.image.fill(list(map(lambda i : int(i * 0.5), BACKGROUND_COLOR)))
 
         return
