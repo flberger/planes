@@ -12,4 +12,4 @@ clean:
 	rm -fv */*.pyc
 
 user_install:
-    python3 setup.py install --user
+	python3 setup.py install --user

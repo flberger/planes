@@ -6,9 +6,12 @@
 # work started on 10. December 2010
 
 import distutils.core
+import glob
+
+VERSION = "0.1.0a1"
 
 distutils.core.setup(name = "clickndrag",
-                     version = "0.1.0a1",
+                     version = VERSION,
                      author = "Florian Berger",
                      author_email = "fberger@florian-berger.de",
                      url = "http://florian-berger.de/software/clickndrag/",
@@ -18,4 +21,5 @@ distutils.core.setup(name = "clickndrag",
                      requires = ["pygame (>=1.9.1)"],
                      provides = ["clickndrag"],
                      scripts = ["examples/clickndrag-interactive.py"],
-                     package_data = {"clickndrag" : ["doc/*"]})
+                     data_files = [("share/doc/clickndrag-{}".format(VERSION),
+                                    glob.glob("doc/*.*"))])
