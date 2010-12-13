@@ -7,6 +7,7 @@
 
 import distutils.core
 import glob
+import os.path
 
 VERSION = "0.1.0a1"
 
@@ -22,4 +23,4 @@ distutils.core.setup(name = "clickndrag",
                      provides = ["clickndrag"],
                      scripts = ["examples/clickndrag-interactive.py"],
                      data_files = [("share/doc/clickndrag-{}".format(VERSION),
-                                    glob.glob("doc/*.*"))])
+                                    glob.glob(os.path.join("doc", "*.*")))])
