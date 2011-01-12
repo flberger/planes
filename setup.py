@@ -16,7 +16,7 @@ import distutils.core
 import glob
 import os.path
 
-VERSION = "0.1.0a1"
+VERSION = "0.1.0"
 
 distutils.core.setup(name = "clickndrag",
                      version = VERSION,
