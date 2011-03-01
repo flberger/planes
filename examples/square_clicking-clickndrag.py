@@ -2,10 +2,25 @@
 
 """Square clicking using Click'n'Drag
 
-   (c) Florian Berger <fberger@florian-berger.de>
+   Copyright 2010 Florian Berger <fberger@florian-berger.de>
 
    Based on a pure PyGame implementation
 """
+
+# This file is part of clickndrag.
+#
+# clickndrag is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# clickndrag is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with clickndrag.  If not, see <http://www.gnu.org/licenses/>.
 
 # work started on 03. Oct 2010
 

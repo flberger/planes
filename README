@@ -15,8 +15,8 @@ In addition, the clickndrag.gui module uses clickndrag to provide basic GUI
 elements like container, label, text box, option list and button.
 
 
-Prequisites
------------
+Prerequisites
+-------------
 
 Python >= 3.0      http://www.python.org
 PyGame >= 1.9.1    http://pygame.org/

@@ -1,7 +1,22 @@
 """Click'n'Drag
    A Hierarchical Surface Framework for PyGame
-   (c) Florian Berger <fberger@florian-berger.de>
+   Copyright 2010 Florian Berger <fberger@florian-berger.de>
 """
+
+# This file is part of clickndrag.
+#
+# clickndrag is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# clickndrag is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with clickndrag.  If not, see <http://www.gnu.org/licenses/>.
 
 # Planned in mind at the Mosel valley in late July 2010
 # Actual work started on 01. Oct 2010
@@ -17,31 +32,31 @@ import pygame
 
 class Plane:
     """A Plane is a surface in a hierarchy of surfaces.
-       It shares some properties with pygame.sprite.Sprite.
+       Concept-wise it bears some similarities to pygame.sprite.Sprite.
 
-       Planes are not thread safe! Accessing a Plane from several threads may
-       produce unexpected results and errors.
+       Planes are currently not thread safe! Accessing a Plane from several
+       threads may produce unexpected results and errors.
 
        Attributes:
 
        Plane.name
-           Name of the plane
+           Name of the plane.
 
        Plane.image
-           The pygame.Surface for this Plane
+           The pygame.Surface for this Plane.
 
        Plane.rendersurface
            A pygame.Surface displaying the composite of this plane and all
            subplanes.
 
        Plane.rect
-           The render position on the parent plane
+           The render position on the parent plane.
 
        Plane.parent
-           Pointer to the parent plane.
+           The parent plane.
 
        Plane.subplanes
-           Dict of subplanes
+           Dict of subplanes, identified by their name.
 
        Plane.subplanes_list
            A list of subplane names, in order of their addition
@@ -61,10 +76,10 @@ class Plane:
           Caches rect at last rendering for efficiency.
 
        Plane.clicked_callback
-          Callback function when this plane has been clicked
+          Callback function when this plane has been clicked.
 
        Plane.dropped_upon_callback
-          Callback function when a plane has been dropped upon this plane
+          Callback function when a plane has been dropped upon this plane.
     """
 
     def __init__(self,
@@ -89,10 +104,11 @@ class Plane:
 
         self.name = name
 
-        # We need to initialise with the slow SRCALPHA, but otherwise we would
-        # not be able to blit images with per-pixel alpha
+        # We do not use the SRCALPHA flag because it considerably slows down the
+        # rendering. If an application needs per-pixel alpha, it can always
+        # substitute Plane.image with an RGBA Surface.
         #
-        self.image = pygame.Surface(rect.size, flags = pygame.SRCALPHA)
+        self.image = pygame.Surface(rect.size)
 
         # Transparent by default, so let's paint it black
         #
@@ -137,7 +153,7 @@ class Plane:
         return
 
     def sub(self, plane):
-        """Remove the Plane from its current parent and add it as a subplane of this Plane.
+        """Remove the Plane given from its current parent and add it as a subplane of this Plane.
            If a subplane with the same name already exists, it is silently replaced by the new plane.
         """
 
@@ -157,11 +173,15 @@ class Plane:
         #
         plane.last_rect = None
 
-        # Now that there is a subplane, if not already done so,
-        # create an actual rendersurface for this plane.
+        # Now that there is a subplane, make clear that the rendersurface no
+        # longer equals the image.
         #
         if self.rendersurface == self.image:
-            self.rendersurface = pygame.Surface(self.rect.size)
+
+            # We do not create a Surface here since render() will create a new
+            # one from Plane.image anyway, so we would just waste memory.
+            #
+            self.rendersurface = None
 
         return
 
@@ -222,7 +242,7 @@ class Plane:
         # We only need to render if self.rendersurface does not point
         # to self.image.
         #
-        if self.rendersurface == self.image:
+        if self.rendersurface is self.image:
 
             return False
 
@@ -269,13 +289,12 @@ class Plane:
 
                 if id(self.image) != self.last_image_id or subplane_changed:
 
-                    # Observe alpha! First clear the rendersurface.
+                    # Instead of clearing an existing Surface, we copy
+                    # Plane.image. This is a little slower but has the huge
+                    # benefit of creating an RGBA Surface with per pixel alpha
+                    # if needed.
                     #
-                    self.rendersurface.fill((0, 0, 0, 0))
-
-                    # Then blit this plane's image
-                    #
-                    self.rendersurface.blit(self.image, (0, 0))
+                    self.rendersurface = self.image.copy()
 
                     # Subplanes are already rendered. Force-blit them in order.
                     #
@@ -316,7 +335,7 @@ class Plane:
     def update(self):
         """Update hook.
            The default implementation calls update() on all subplanes.
-           See pygame.sprite.Sprite.update.
+           Compare pygame.sprite.Sprite.update.
         """
 
         for plane in self.subplanes.values():
