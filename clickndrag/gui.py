@@ -36,6 +36,7 @@
 
 import clickndrag
 import pygame
+import os.path
 
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
@@ -48,11 +49,12 @@ pygame.font.init()
 # Taken from fabula.PygameUserInterface.
 #
 try:
-    BIG_FONT = pygame.font.Font("Vera.ttf", 30)
-    SMALL_FONT = pygame.font.Font("Vera.ttf", 12)
+    BIG_FONT = pygame.font.Font(os.path.join(os.path.dirname(__file__), "Vera.ttf"), 30)
+    SMALL_FONT = pygame.font.Font(os.path.join(os.path.dirname(__file__), "Vera.ttf"), 12)
 
 except:
     # TODO: log used font: pygame.font.get_default_font()
+    #print("Could not load {}".format(os.path.join(os.path.dirname(__file__), "Vera.ttf")))
     BIG_FONT = pygame.font.Font(None, 40)
     SMALL_FONT = pygame.font.Font(None, 20)
 
