@@ -14,7 +14,7 @@ clean:
 ifdef PYTHON
 
 user_install:
-	$(PYTHON) setup.py install --user
+	$(PYTHON) setup.py install --user --record user_install-filelist.txt
 
 sdist:
 	$(PYTHON) setup.py sdist --force-manifest --formats=bztar,zip

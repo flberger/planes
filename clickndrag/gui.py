@@ -1,6 +1,20 @@
 """Click'n'Drag Gprahical User Interface Module
 
-   Copyright 2010 Florian Berger <fberger@florian-berger.de
+   Copyright 2010 Florian Berger <fberger@florian-berger.de>
+
+   Global variables:
+
+   BACKGROUND_COLOR
+       Defaults to (150, 150, 150).
+
+   HIGHLIGHT_COLOR
+       Defaults to (191, 95, 0).
+
+   BIG_FONT
+       A pygame.font.Font instance, large pointsize.
+
+   SMALL_FONT
+       A pygame.font.Font instance, small pointsize.
 """
 
 # This file is part of clickndrag.
@@ -26,6 +40,22 @@ import pygame
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
 
+# Initialise the font module. This can safely be called more than once.
+#
+pygame.font.init()
+
+# Initialise font instances.
+# Taken from fabula.PygameUserInterface.
+#
+try:
+    BIG_FONT = pygame.font.Font("Vera.ttf", 30)
+    SMALL_FONT = pygame.font.Font("Vera.ttf", 12)
+
+except:
+    # TODO: log used font: pygame.font.get_default_font()
+    BIG_FONT = pygame.font.Font(None, 40)
+    SMALL_FONT = pygame.font.Font(None, 20)
+
 def draw_border(plane, color):
     """Draw a border around plane.
     """
@@ -49,9 +79,6 @@ class Label(clickndrag.Plane):
 
        Label.cached_text
            Cache to catch changes
-
-       Label.font
-           Pygame Font instance
 
        Label.color
            The original background color for this Label
@@ -82,15 +109,6 @@ class Label(clickndrag.Plane):
 
         self.cached_text = None
 
-        try:
-            self.font = pygame.font.Font("Vera.ttf", int(self.rect.height * 0.45))
-
-        except:
-
-            # Use default font
-            #
-            self.font = pygame.font.Font(None, int(self.rect.height * 2 / 3))
-
         self.redraw()
 
         return
@@ -117,7 +135,7 @@ class Label(clickndrag.Plane):
             # Text is centered on rect.
             # Give background for speedup.
             #
-            fontsurf = self.font.render(self.text, True, (0, 0, 0), self.current_color)
+            fontsurf = SMALL_FONT.render(self.text, True, (0, 0, 0), self.current_color)
 
             centered_rect = fontsurf.get_rect()
 
@@ -538,7 +556,7 @@ class TextBox(Label):
 
             # Give background for speedup.
             #
-            fontsurf = self.font.render(self.text, True, (0, 0, 0), self.current_color)
+            fontsurf = SMALL_FONT.render(self.text, True, (0, 0, 0), self.current_color)
 
             # Text is left-aligned on rect, except when it is larger than the
             # Label, in which case it is right-aligned.
@@ -610,6 +628,17 @@ class GetStringDialog(Container):
 
 class ScrollingPlane(clickndrag.Plane):
     """This class implements a fixed-dimension plane with a scroll bar to scroll its content plane.
+       Subplane structure:
+
+       ScrollingPlane
+       |
+       +---content
+       |   |
+       |   +---content_plane from __init__()
+       |
+       +---scrollbar_container
+           |
+           +---scrollbar
     """
 
     def __init__(self, name, rect, content_plane, draggable = False, grab = False, clicked_callback = None, dropped_upon_callback = None):
