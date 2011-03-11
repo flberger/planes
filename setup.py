@@ -31,7 +31,7 @@ import distutils.core
 import glob
 import os.path
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 distutils.core.setup(name = "clickndrag",
                      version = VERSION,
@@ -46,4 +46,4 @@ distutils.core.setup(name = "clickndrag",
                      scripts = ["examples/clickndrag-interactive.py"],
                      package_data = {"clickndrag" : ["Vera.ttf"]},
                      data_files = [("share/doc/clickndrag-{}".format(VERSION),
-                                    glob.glob(os.path.join("doc", "*.*")))])
+                                    glob.glob(os.path.join("doc", "*.*")) + ["NEWS"])])

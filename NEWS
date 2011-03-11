@@ -1,0 +1,22 @@
+NEWS for Click'n'Drag
+=====================
+
+0.2.0
+-----
+
+Released on 11 March 2011.
+
+Added proper GPL licensing. Performance improvements: Planes now use per-pixel 
+alpha only when neccessary, and utilise video RAM if available. clickndrag now 
+includes Bitstream Vera as default font. gui.TextBox and gui.GetStringDialog can 
+now be confirmed using the RETURN key. Added showcase clickndrag-interactive.py. 
+Documentation updates.
+
+
+0.1.0
+-----
+
+Released on 12 January 2011.
+
+This is the first alpha release. The API is still likely to change. API docs are 
+provided, but examples and how-tos are still missing.
