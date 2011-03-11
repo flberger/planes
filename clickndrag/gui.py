@@ -346,6 +346,7 @@ class Container(clickndrag.Plane):
         # Re-center all subplanes.
         #
         for name in self.subplanes_list:
+
             rect = self.subplanes[name].rect
             rect.left = int((self.rect.width - rect.width) / 2)
 
@@ -521,20 +522,27 @@ class TextBox(Label):
     """A box where the user can type text.
        To actually receive key events, the TextBox must be registered with the
        Display using Display.key_sensitive(TextBox).
+       Attributes:
+       TextBox.text
+           Standard Label attribute, holding the text typed so far.
     """
 
-    def __init__(self, name, rect, color = (250, 250, 250)):
+    def __init__(self, name, rect, return_callback = None, color = (250, 250, 250)):
         """Initialise the TextBox.
+           If return_callback is given, return_callback(TextBox.text) will be
+           called then [RETURN] is pressed.
         """
 
         # Call base class
         #
         Label.__init__(self, name, None, rect, color)
 
+        self.return_callback = return_callback
+
         return
 
     def keydown(self, keydown_event):
-        """If prinable, add keydown_event.unicode to self.text.
+        """If printable, add keydown_event.unicode to self.text.
         """
 
         if keydown_event.unicode.isprintable():
@@ -544,6 +552,10 @@ class TextBox(Label):
         elif keydown_event.key == pygame.K_BACKSPACE:
 
             self.text = self.text[:-1]
+
+        elif keydown_event.key == pygame.K_RETURN and self.return_callback is not None:
+
+            self.return_callback(self.text)
 
         return
 
@@ -591,7 +603,11 @@ class GetStringDialog(Container):
     # TODO: this could be merged with OkBox into a class "ConfirmBox"
 
     def __init__(self, prompt, callback, display):
-        """Open the GetStringDialog as a subplane of display.
+        """Initialise.
+           callback should call render() and flip the display to remove the
+           GetStringDialog from the screen.
+           display.key_sensitive() will be used to register the TextBox of this
+           dialog.
         """
 
         # Initialise container
@@ -602,7 +618,9 @@ class GetStringDialog(Container):
 
         self.sub(Label("prompt", prompt, pygame.Rect((0, 0), (200, 30))))
 
-        textbox = TextBox("textbox", pygame.Rect((0, 0), (200, 30)))
+        textbox = TextBox("textbox",
+                          pygame.Rect((0, 0), (200, 30)),
+                          return_callback = self.return_key)
 
         self.sub(textbox)
 
@@ -616,7 +634,6 @@ class GetStringDialog(Container):
 
     def ok(self, plane):
         """Button callback to destroy the GetStringDialog and call GetStringDialog.callback(string).
-           The callback should call render() and flip the display to remove the GetStringDialog from the screen.
         """
 
         callback = self.callback
@@ -625,6 +642,19 @@ class GetStringDialog(Container):
         self.destroy()
 
         callback(string)
+
+        return
+
+    def return_key(self, text):
+        """Return key callback to destroy the GetStringDialog and call GetStringDialog.callback(string).
+        """
+        # TODO: Copied from above. Can these be made into one?
+
+        callback = self.callback
+
+        self.destroy()
+
+        callback(text)
 
         return
 

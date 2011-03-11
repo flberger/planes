@@ -108,7 +108,7 @@ class Plane:
         # rendering. If an application needs per-pixel alpha, it can always
         # substitute Plane.image with an RGBA Surface.
         #
-        self.image = pygame.Surface(rect.size)
+        self.image = pygame.Surface(rect.size, flags = pygame.HWSURFACE)
 
         # Transparent by default, so let's paint it black
         #
