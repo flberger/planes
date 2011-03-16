@@ -37,6 +37,7 @@
 import clickndrag
 import pygame
 import os.path
+import sys
 
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
@@ -49,8 +50,16 @@ pygame.font.init()
 # Taken from fabula.PygameUserInterface.
 #
 try:
-    BIG_FONT = pygame.font.Font(os.path.join(os.path.dirname(__file__), "Vera.ttf"), 30)
-    SMALL_FONT = pygame.font.Font(os.path.join(os.path.dirname(__file__), "Vera.ttf"), 12)
+    font_file = os.path.join(os.path.dirname(__file__), "Vera.ttf")
+
+    # Check for cx_Freeze
+    #
+    if "frozen" in sys.__dict__.keys() and sys.frozen:
+
+        font_file = os.path.join(sys.path[1], "Vera.ttf")
+
+    BIG_FONT = pygame.font.Font(font_file, 30)
+    SMALL_FONT = pygame.font.Font(font_file, 12)
 
 except:
     # TODO: log used font: pygame.font.get_default_font()
@@ -547,15 +556,47 @@ class TextBox(Label):
 
         if keydown_event.unicode.isprintable():
 
-            self.text = self.text + keydown_event.unicode
+            if self.text != "" and self.text[-1] == "|":
+
+                self.text = self.text[:-1] + keydown_event.unicode + "|"
+
+            else:
+                self.text = self.text + keydown_event.unicode
 
         elif keydown_event.key == pygame.K_BACKSPACE:
 
-            self.text = self.text[:-1]
+            if self.text != "" and self.text[-1] == "|":
+
+                self.text = self.text[:-2] + "|"
+
+            else:
+                self.text = self.text[:-1]
 
         elif keydown_event.key == pygame.K_RETURN and self.return_callback is not None:
 
+            # Deactivate to lose the cursor
+            #
+            self.deactivate()
+
             self.return_callback(self.text)
+
+        return
+
+    def activate(self):
+        """Call to show the user that the TextBox is ready for input.
+        """
+
+        if self.text == "" or self.text[-1] != "|":
+            self.text = self.text + "|"
+
+        return
+
+    def deactivate(self):
+        """Call to show the user that the TextBox no longer accepts input.
+        """
+
+        if self.text != "" and self.text[-1] == "|":
+            self.text = self.text[:-1]
 
         return
 
@@ -604,8 +645,9 @@ class GetStringDialog(Container):
 
     def __init__(self, prompt, callback, display):
         """Initialise.
-           callback should call render() and flip the display to remove the
-           GetStringDialog from the screen.
+           callback will be called callback(GetStringDialog.textbox.text)
+           after the GetStringDialog is destroyed. It should call render()
+           and flip the display to remove the GetStringDialog from the screen.
            display.key_sensitive() will be used to register the TextBox of this
            dialog.
         """
@@ -635,6 +677,10 @@ class GetStringDialog(Container):
     def ok(self, plane):
         """Button callback to destroy the GetStringDialog and call GetStringDialog.callback(string).
         """
+
+        # Deactivate to lose the cursor
+        #
+        self.textbox.deactivate()
 
         callback = self.callback
         string = self.textbox.text

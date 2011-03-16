@@ -476,11 +476,20 @@ class Display(Plane):
 
     def key_sensitive(self, plane):
         """Register the Plane given as sensitive to Pygame keyboard events.
-           Display will call plane.keydown(KEYDOWN_event) when a key is are
+           Display will call plane.keydown(KEYDOWN_event) when a key is
            pressed and the Plane has a parent.
+           plane.activate() will be called when the plane is registered.
+           plane.deactivate() will be called on the old plane.
         """
 
+        # TODO: there should be a class containing keydown(), activate(), deactivate()
+
+        if self.key_sensitive_plane:
+            self.key_sensitive_plane.deactivate()
+
         self.key_sensitive_plane = plane
+
+        self.key_sensitive_plane.activate()
 
         return
 
