@@ -75,8 +75,13 @@ class Plane:
        Plane.last_rect
           Caches rect at last rendering for efficiency.
 
-       Plane.clicked_callback
-          Callback function when this plane has been clicked.
+       Plane.left_click_callback
+          Callback function when this plane has been clicked with the left mouse
+          button.
+
+       Plane.right_click_callback
+          Callback function when this plane has been clicked with the right
+          mouse button.
 
        Plane.dropped_upon_callback
           Callback function when a plane has been dropped upon this plane.
@@ -87,7 +92,8 @@ class Plane:
                  rect,
                  draggable = False,
                  grab = False,
-                 clicked_callback = None,
+                 left_click_callback = None,
+                 right_click_callback = None,
                  dropped_upon_callback = None):
         """Initialize the Plane.
            name is the name of the plane which can also be used
@@ -147,7 +153,8 @@ class Plane:
 
         # Save callbacks
         #
-        self.clicked_callback = clicked_callback
+        self.left_click_callback = left_click_callback
+        self.right_click_callback = right_click_callback
         self.dropped_upon_callback = dropped_upon_callback
 
         return
@@ -344,14 +351,19 @@ class Plane:
 
         return
 
-    def clicked(self):
+    def clicked(self, button_name):
         """Called when there is a MOUSEDOWN event on this plane.
-           If Plane.clicked_callback is set, it is called with this Plane as
-           argument.
+           If Plane.left_click_callback or Plane.right_click_callback are set,
+           the appropriate is called with this Plane as argument.
         """
 
-        if self.clicked_callback is not None:
-            self.clicked_callback(self)
+        if button_name == "left" and self.left_click_callback is not None:
+
+            self.left_click_callback(self)
+
+        elif button_name == "right" and self.right_click_callback is not None:
+
+            self.right_click_callback(self)
 
         return
 
@@ -407,7 +419,7 @@ class Plane:
         if self.parent is not None:
             parent_name = self.parent.name
 
-        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab={} last_image_id={} last_rect={} clicked_callback={} dropped_upon_callback={}>".format(self.name,
+        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab={} last_image_id={} last_rect={} left_click_callback={} right_click_callback={} dropped_upon_callback={}>".format(self.name,
                                                       "{}@{}".format(self.image, id(self.image)),
                                                       "{}@{}".format(self.rendersurface, id(self.rendersurface)),
                                                       self.rect,
@@ -417,7 +429,8 @@ class Plane:
                                                       self.grab,
                                                       self.last_image_id,
                                                       self.last_rect,
-                                                      self.clicked_callback,
+                                                      self.left_click_callback,
+                                                      self.right_click_callback,
                                                       self.dropped_upon_callback))
 
         return
@@ -436,6 +449,9 @@ class Display(Plane):
 
        Display.key_sensitive_plane
            The Plane to be notified of Pygame keyboard events. Initially None.
+
+       Display.mouse_buttons
+           A dict mapping Pygame mouse button numbers to description strings.
     """
 
     def __init__(self, resolution_tuple):
@@ -472,6 +488,8 @@ class Display(Plane):
 
         self.key_sensitive_plane = None
 
+        self.mouse_buttons = {1: "left", 3: "right"}
+
         return
 
     def key_sensitive(self, plane):
@@ -500,17 +518,19 @@ class Display(Plane):
         for event in event_list:
 
             if (event.type == pygame.MOUSEBUTTONDOWN
-                and event.button == 1):
+                and event.button in self.mouse_buttons.keys()):
 
                 clicked_plane = self.get_plane_at(event.pos)[0]
 
                 if clicked_plane != self:
 
+                    button_name = self.mouse_buttons[event.button]
+
                     # Notify plane instance
                     #
-                    clicked_plane.clicked()
+                    clicked_plane.clicked(button_name)
 
-                    if clicked_plane.draggable:
+                    if button_name == "left" and clicked_plane.draggable:
 
                         # Use a copy for new coordinates etc.
                         #
@@ -527,6 +547,8 @@ class Display(Plane):
 
             elif (event.type == pygame.MOUSEBUTTONUP
                   and event.button == 1):
+
+                # Left button == 1, right button == 3
 
                 if self.dragged_plane is not None:
 

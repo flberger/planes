@@ -181,7 +181,8 @@ class Button(Label):
         """Initialise the Button.
            label is the Text to be written on the button.
            rect is an instance of pygame.Rect giving the dimensions.
-           callback is the function to be called when the Button is clicked.
+           callback is the function to be called when the Button is clicked with
+           the left mouse button.
         """
 
         # name is the alphanumeric-only-lower case-version of label
@@ -194,7 +195,7 @@ class Button(Label):
 
         # Overwrite Plane base class attribute
         #
-        self.clicked_callback = callback
+        self.left_click_callback = callback
 
         self.clicked_counter = 0
 
@@ -253,22 +254,24 @@ class Button(Label):
 
         return
 
-    def clicked(self):
-        """Called when there is a MOUSEDOWN event on this plane.
+    def clicked(self, button_name):
+        """Plane standard method, called when there is a MOUSEDOWN event on this plane.
            Changes the Button color for some frames and calls the base class implementation.
         """
 
-        self.clicked_counter = 4
+        if button_name == "left":
 
-        # Half-bright
-        #
-        self.current_color = list(map(lambda i: int(i * 0.5), self.current_color))
+            self.clicked_counter = 4
 
-        self.redraw()
+            # Half-bright
+            #
+            self.current_color = list(map(lambda i: int(i * 0.5), self.current_color))
 
-        # Call base class implementation which will call the callback
-        #
-        Label.clicked(self)
+            self.redraw()
+
+            # Call base class implementation which will call the callback
+            #
+            Label.clicked(self, button_name)
 
         return
 
@@ -415,26 +418,28 @@ class Option(Label):
     """A subclass of Label which handles mouseclicks, to be used in an OptionList.
     """
 
-    def clicked(self):
+    def clicked(self, button_name):
         """Highlight this option and register as parent.selected.
         """
 
-        for name in self.parent.subplanes_list:
+        if button_name == "left":
 
-            plane = self.parent.subplanes[name]
-            plane.current_color = plane.color
+            for name in self.parent.subplanes_list:
+
+                plane = self.parent.subplanes[name]
+                plane.current_color = plane.color
+
+                # Force redraw in render()
+                #
+                plane.last_rect = None
+
+            self.current_color = HIGHLIGHT_COLOR
 
             # Force redraw in render()
             #
-            plane.last_rect = None
+            self.last_rect = None
 
-        self.current_color = HIGHLIGHT_COLOR
-
-        # Force redraw in render()
-        #
-        self.last_rect = None
-
-        self.parent.selected = self
+            self.parent.selected = self
 
         return
 
