@@ -85,6 +85,13 @@ class Plane:
 
        Plane.dropped_upon_callback
           Callback function when a plane has been dropped upon this plane.
+
+       Plane.sync_master_plane
+          A Plane that this Plane's position will sync to. Initally None.
+
+       Plane.offset
+          A tuple (x, y) describing the offset to the sync master plane.
+          Initially None.
     """
 
     def __init__(self,
@@ -156,6 +163,11 @@ class Plane:
         self.left_click_callback = left_click_callback
         self.right_click_callback = right_click_callback
         self.dropped_upon_callback = dropped_upon_callback
+
+        # Master plane for synchronous movements
+        #
+        self.sync_master_plane = None
+        self.offset = None
 
         return
 
@@ -341,13 +353,20 @@ class Plane:
 
     def update(self):
         """Update hook.
-           The default implementation calls update() on all subplanes.
+           The default implementation calls update() on all subplanes. If
+           Plane.sync_master_plane is not None, the position of this Plane will
+           be synced to that of the master Plane, using Plane.offset.
            Compare pygame.sprite.Sprite.update.
         """
 
         for plane in self.subplanes.values():
 
             plane.update()
+
+        if self.sync_master_plane is not None:
+
+            self.rect.topleft = (self.sync_master_plane.rect.left + self.offset[0],
+                                 self.sync_master_plane.rect.top + self.offset[1])
 
         return
 
@@ -408,6 +427,28 @@ class Plane:
         self.image = self.rendersurface = None
         self.rect = self.draggable =  self.grab = None
 
+        self.unsync()
+
+        return
+
+    def sync(self, master_plane):
+        """Save the Plane given as master Plane for position synchronisation
+           in Plane.update().
+        """
+
+        self.sync_master_plane = master_plane
+
+        self.offset = (self.rect.left - master_plane.rect.left,
+                       self.rect.top - master_plane.rect.top)
+
+        return
+
+    def unsync(self):
+        """Remove the position synchronisation to the sync master Plane.
+        """
+
+        self.sync_master_plane = self.offset = None
+
         return
 
     def __repr__(self):
@@ -419,19 +460,23 @@ class Plane:
         if self.parent is not None:
             parent_name = self.parent.name
 
-        return("<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab={} last_image_id={} last_rect={} left_click_callback={} right_click_callback={} dropped_upon_callback={}>".format(self.name,
-                                                      "{}@{}".format(self.image, id(self.image)),
-                                                      "{}@{}".format(self.rendersurface, id(self.rendersurface)),
-                                                      self.rect,
-                                                      parent_name,
-                                                      self.subplanes_list,
-                                                      self.draggable,
-                                                      self.grab,
-                                                      self.last_image_id,
-                                                      self.last_rect,
-                                                      self.left_click_callback,
-                                                      self.right_click_callback,
-                                                      self.dropped_upon_callback))
+
+        repr_str = "<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab={} last_image_id={} last_rect={} left_click_callback={} right_click_callback={} dropped_upon_callback={} sync_master_plane={}>"
+
+        return(repr_str.format(self.name,
+                               "{}@{}".format(self.image, id(self.image)),
+                               "{}@{}".format(self.rendersurface, id(self.rendersurface)),
+                               self.rect,
+                               parent_name,
+                               self.subplanes_list,
+                               self.draggable,
+                               self.grab,
+                               self.last_image_id,
+                               self.last_rect,
+                               self.left_click_callback,
+                               self.right_click_callback,
+                               self.dropped_upon_callback,
+                               self.sync_master_plane))
 
         return
 

@@ -1,4 +1,4 @@
-"""Click'n'Drag Gprahical User Interface Module
+"""Click'n'Drag Graphical User Interface Module
 
    Copyright 2010 Florian Berger <fberger@florian-berger.de>
 
