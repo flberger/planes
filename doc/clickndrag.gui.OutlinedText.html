@@ -3,88 +3,92 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.OkBox&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.OutlinedText&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.OkBox(<a href="clickndrag.gui.Container.html">Container</a>):</h1>
+    <h1 class="class">Class c.g.OutlinedText(<a href="clickndrag.gui.Label.html">Label</a>):</h1>
     <p>
       <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.OkBox">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.OutlinedText">View In Hierarchy</a>
     </p>
     <div>
       
     </div>
-    <pre>A box which displays a message and an OK button.
-It is destroyed when OK is clicked.</pre>
+    <pre>A Label with outlined text and a transparent background.
+
+Additional attributes:
+
+OutlinedText.text_color
+   A tuple (R, G, B) holding the color of the text.</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id23">
+      <table class="children sortable" id="id10">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.OkBox.html#__init__">__init__</a></td>
-    <td><tt>Initialise.</tt></td>
+    <td><a href="clickndrag.gui.OutlinedText.html#__init__">__init__</a></td>
+    <td><tt>Initialise the OutlinedText.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.OkBox.html#ok">ok</a></td>
-    <td><tt>Button clicked callback which destroys the OkBox.</tt></td>
+    <td><a href="clickndrag.gui.OutlinedText.html#redraw">redraw</a></td>
+    <td><tt>Redraw the Label if necessary.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.gui.Container.html">Container</a>:
+          Inherited from <a href="clickndrag.gui.Label.html">Label</a>:
         </p>
-        <table class="children sortable" id="id24">
+        <table class="children sortable" id="id11">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#redraw">redraw</a></td>
-    <td><tt>Redraw Container.image from the dimensions in Containter.rect.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#sub">sub</a></td>
-    <td><tt>Resize the container, update the position of plane and add it as a subplane.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#remove">remove</a></td>
-    <td><tt>Remove the subplane, then reposition remaining subplanes and resize the container.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#remove_all">remove_all</a></td>
-    <td><tt>Remove all subplanes and shrink accordingly.</tt></td>
+    <td><a href="clickndrag.gui.Label.html#update">update</a></td>
+    <td><tt>Renew the text on the label, then call the base class method.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Container.html">Container</a>):
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Label.html">Label</a>):
         </p>
-        <table class="children sortable" id="id25">
+        <table class="children sortable" id="id12">
   
   
 <tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#sub">sub</a></td>
+    <td><tt>Remove the Plane given from its current parent and add it as a subplane of this Plane.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#remove">remove</a></td>
+    <td><tt>Remove subplane by name or Plane instance.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#remove_all">remove_all</a></td>
+    <td><tt>Remove all subplanes.</tt></td>
+  </tr><tr class="basemethod">
     
     
     <td>Method</td>
@@ -102,12 +106,6 @@ It is destroyed when OK is clicked.</pre>
     <td>Method</td>
     <td><a href="clickndrag.Plane.html#get_plane_at">get_plane_at</a></td>
     <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.Plane.html#update">update</a></td>
-    <td><tt>Update hook.</tt></td>
   </tr><tr class="basemethod">
     
     
@@ -155,7 +153,7 @@ It is destroyed when OK is clicked.</pre>
     
 
     <div class="function">
-  <a name="clickndrag.gui.OkBox.__init__">
+  <a name="clickndrag.gui.OutlinedText.__init__">
     
   </a>
   <a name="__init__">
@@ -164,30 +162,31 @@ It is destroyed when OK is clicked.</pre>
   <div class="functionHeader">
     
     def
-    __init__(self, message):
+    __init__(self, name, text, text_color=(255, 255, 255)):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#__init__">clickndrag.gui.Container.__init__</a></div>
-    <pre>Initialise.
-        </pre>
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Label.html#__init__">clickndrag.gui.Label.__init__</a></div>
+    <pre>Initialise the OutlinedText.
+text is the text to be written on the Label. If text is None, it is
+replaced by an empty string.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.OkBox.ok">
+  <a name="clickndrag.gui.OutlinedText.redraw">
     
   </a>
-  <a name="ok">
+  <a name="redraw">
     
   </a>
   <div class="functionHeader">
     
     def
-    ok(self, plane):
+    redraw(self):
     
   </div>
   <div class="functionBody">
-    
-    <pre>Button clicked callback which destroys the OkBox.
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Label.html#redraw">clickndrag.gui.Label.redraw</a></div>
+    <pre>Redraw the Label if necessary.
         </pre>
   </div>
 </div>
