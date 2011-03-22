@@ -91,7 +91,7 @@ class Label(clickndrag.Plane):
        Label.cached_text
            Cache to catch changes
 
-       Label.color
+       Label.background_color
            The original background color for this Label
 
        Label.current_color
@@ -101,7 +101,7 @@ class Label(clickndrag.Plane):
            A cache for color changes
     """
 
-    def __init__(self, name, text, rect, color = BACKGROUND_COLOR):
+    def __init__(self, name, text, rect, background_color = BACKGROUND_COLOR):
         """Initialise the Label.
            text is the text to be written on the Label. If text is None, it is
            replaced by an empty string.
@@ -111,7 +111,7 @@ class Label(clickndrag.Plane):
         #
         clickndrag.Plane.__init__(self, name, rect, draggable = False, grab = False)
 
-        self.color = self.cached_color = self.current_color = color
+        self.background_color = self.cached_color = self.current_color = background_color
 
         if text is not None:
             self.text = text
@@ -165,6 +165,84 @@ class Label(clickndrag.Plane):
 
         return
 
+class OutlinedText(Label):
+    """A Label with outlined text and a transparent background.
+
+       Additional attributes:
+
+       OutlinedText.text_color
+          A tuple (R, G, B) holding the color of the text.
+    """
+
+    def __init__(self, name, text, text_color = (255, 255, 255)):
+        """Initialise the OutlinedText.
+           text is the text to be written on the Label. If text is None, it is
+           replaced by an empty string.
+        """
+
+        # Save text color
+        #
+        self.text_color = text_color
+
+        # Call the base class.
+        # Use a dummy rect, the final rect will be set in redraw().
+        #
+        Label.__init__(self, name, text, pygame.rect.Rect((0, 0), (0, 0)))
+
+        return
+
+    def redraw(self):
+        """Redraw the Label if necessary.
+        """
+
+        if self.text != self.cached_text:
+
+            # Outlined text rendering inspired by Pete Shinners
+            # (http://www.pygame.org/pcr/hollow_outline/index.php)
+            # and Stackoverflow
+            # (http://stackoverflow.com/questions/1109498/whats-a-good-way-to-render-outlined-fonts).
+
+            # Black outline
+            #
+            font_surface = SMALL_FONT.render(self.text,
+                                             True,
+                                             (0, 0, 0))
+
+            target_surface = pygame.Surface(font_surface.get_rect().inflate(2, 2).size,
+                                            flags = pygame.SRCALPHA)
+
+            target_surface.blit(font_surface, (0, 0))
+            target_surface.blit(font_surface, (1, 0))
+            target_surface.blit(font_surface, (2, 0))
+
+            target_surface.blit(font_surface, (0, 1))
+            target_surface.blit(font_surface, (2, 1))
+
+            target_surface.blit(font_surface, (0, 2))
+            target_surface.blit(font_surface, (1, 2))
+            target_surface.blit(font_surface, (2, 2))
+
+            # Center. No antialias for better visibility.
+            #
+            font_surface = SMALL_FONT.render(self.text,
+                                             False,
+                                             self.text_color)
+
+            target_surface.blit(font_surface, (1, 1))
+
+            # Set new rect and image.
+            #
+            self.image = target_surface
+            self.rect = target_surface.get_rect()
+
+            # Force redraw in render()
+            #
+            self.last_rect = None
+
+            self.cached_text = self.text
+
+        return
+
 class Button(Label):
     """A clickndrag plane which displays a text and reacts on mouse clicks.
 
@@ -177,7 +255,7 @@ class Button(Label):
            Counted down when the button is clicked and displays a different color
     """
 
-    def __init__(self, label, rect, callback, color = BACKGROUND_COLOR):
+    def __init__(self, label, rect, callback, background_color = BACKGROUND_COLOR):
         """Initialise the Button.
            label is the Text to be written on the button.
            rect is an instance of pygame.Rect giving the dimensions.
@@ -191,7 +269,7 @@ class Button(Label):
 
         # Call base class init
         #
-        Label.__init__(self, name, label, rect, color)
+        Label.__init__(self, name, label, rect, background_color)
 
         # Overwrite Plane base class attribute
         #
@@ -248,7 +326,7 @@ class Button(Label):
 
                 # Just turned zero, restore original background
                 #
-                self.current_color = self.color
+                self.current_color = self.background_color
 
         Label.update(self)
 
@@ -285,11 +363,11 @@ class Container(clickndrag.Plane):
        Container.padding
            Space between subplanes and border, in pixels
 
-       Container.color
+       Container.background_color
            The original background color for this Container
     """
 
-    def __init__(self, name, padding = 0, color = BACKGROUND_COLOR):
+    def __init__(self, name, padding = 0, background_color = BACKGROUND_COLOR):
         """Initialise.
            Container.image is initialised to a 0x0 px Surface.
         """
@@ -299,7 +377,7 @@ class Container(clickndrag.Plane):
         clickndrag.Plane.__init__(self, name, pygame.Rect((0, 0), (0, 0)))
 
         self.padding = padding
-        self.color = color
+        self.background_color = background_color
 
         return
 
@@ -311,7 +389,7 @@ class Container(clickndrag.Plane):
         #
         self.image = pygame.Surface(self.rect.size)
 
-        self.image.fill(self.color)
+        self.image.fill(self.background_color)
 
         draw_border(self, (0, 0, 0))
 
@@ -427,7 +505,7 @@ class Option(Label):
             for name in self.parent.subplanes_list:
 
                 plane = self.parent.subplanes[name]
-                plane.current_color = plane.color
+                plane.current_color = plane.background_color
 
                 # Force redraw in render()
                 #
@@ -541,7 +619,7 @@ class TextBox(Label):
            Standard Label attribute, holding the text typed so far.
     """
 
-    def __init__(self, name, rect, return_callback = None, color = (250, 250, 250)):
+    def __init__(self, name, rect, return_callback = None, background_color = (250, 250, 250)):
         """Initialise the TextBox.
            If return_callback is given, return_callback(TextBox.text) will be
            called then [RETURN] is pressed.
@@ -549,7 +627,7 @@ class TextBox(Label):
 
         # Call base class
         #
-        Label.__init__(self, name, None, rect, color)
+        Label.__init__(self, name, None, rect, background_color)
 
         self.return_callback = return_callback
 
