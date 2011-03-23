@@ -1,6 +1,18 @@
 NEWS for Click'n'Drag
 =====================
 
+0.3.0
+-----
+
+Released on 23 March 2011.
+
+Improved cx_Freeze compatibility. TextBoxes now display a cursor. Planes now 
+have callbacks for left and right mouse button. The position of a Plane can now 
+be synced to another Plane. Added class OutlinedText which implements a label 
+with transparent background and outlined bold text. The Display class now 
+accepts a "fullscreen" argument. Documentation updates.
+
+
 0.2.0
 -----
 
