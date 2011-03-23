@@ -44,6 +44,6 @@ distutils.core.setup(name = "clickndrag",
                      requires = ["pygame (>=1.9.1)"],
                      provides = ["clickndrag"],
                      scripts = ["examples/clickndrag-interactive.py"],
-                     package_data = {"clickndrag" : ["Vera.ttf"]},
+                     package_data = {"clickndrag" : ["Vera.ttf", "VeraBd.ttf"]},
                      data_files = [("share/doc/clickndrag-{}".format(VERSION),
                                     glob.glob(os.path.join("doc", "*.*")) + ["NEWS"])])

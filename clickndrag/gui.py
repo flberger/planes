@@ -50,22 +50,25 @@ pygame.font.init()
 # Taken from fabula.PygameUserInterface.
 #
 try:
-    font_file = os.path.join(os.path.dirname(__file__), "Vera.ttf")
+    regular_font_file = os.path.join(os.path.dirname(__file__), "Vera.ttf")
+    bold_font_file = os.path.join(os.path.dirname(__file__), "VeraBd.ttf")
 
     # Check for cx_Freeze
     #
     if "frozen" in sys.__dict__.keys() and sys.frozen:
 
-        font_file = os.path.join(sys.path[1], "Vera.ttf")
+        regular_font_file = os.path.join(sys.path[1], "Vera.ttf")
+        bold_font_file = os.path.join(sys.path[1], "VeraBd.ttf")
 
-    BIG_FONT = pygame.font.Font(font_file, 30)
-    SMALL_FONT = pygame.font.Font(font_file, 12)
+    BIG_FONT = pygame.font.Font(regular_font_file, 30)
+    SMALL_FONT = pygame.font.Font(regular_font_file, 12)
+    BOLD_FONT = pygame.font.Font(bold_font_file, 12)
 
 except:
     # TODO: log used font: pygame.font.get_default_font()
     #print("Could not load {}".format(os.path.join(os.path.dirname(__file__), "Vera.ttf")))
     BIG_FONT = pygame.font.Font(None, 40)
-    SMALL_FONT = pygame.font.Font(None, 20)
+    SMALL_FONT = BOLD_FONT = pygame.font.Font(None, 20)
 
 def draw_border(plane, color):
     """Draw a border around plane.
@@ -204,9 +207,9 @@ class OutlinedText(Label):
 
             # Black outline
             #
-            font_surface = SMALL_FONT.render(self.text,
-                                             True,
-                                             (0, 0, 0))
+            font_surface = BOLD_FONT.render(self.text,
+                                            True,
+                                            (0, 0, 0))
 
             target_surface = pygame.Surface(font_surface.get_rect().inflate(2, 2).size,
                                             flags = pygame.SRCALPHA)
@@ -222,11 +225,11 @@ class OutlinedText(Label):
             target_surface.blit(font_surface, (1, 2))
             target_surface.blit(font_surface, (2, 2))
 
-            # Center. No antialias for better visibility.
+            # Center
             #
-            font_surface = SMALL_FONT.render(self.text,
-                                             False,
-                                             self.text_color)
+            font_surface = BOLD_FONT.render(self.text,
+                                            True,
+                                            self.text_color)
 
             target_surface.blit(font_surface, (1, 1))
 
