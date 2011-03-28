@@ -38,6 +38,7 @@ import clickndrag
 import pygame
 import os.path
 import sys
+import unicodedata
 
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
@@ -66,7 +67,7 @@ try:
 
 except:
     # TODO: log used font: pygame.font.get_default_font()
-    #print("Could not load {}".format(os.path.join(os.path.dirname(__file__), "Vera.ttf")))
+    #print("Could not load {0}".format(os.path.join(os.path.dirname(__file__), "Vera.ttf")))
     BIG_FONT = pygame.font.Font(None, 40)
     SMALL_FONT = BOLD_FONT = pygame.font.Font(None, 20)
 
@@ -640,7 +641,11 @@ class TextBox(Label):
         """If printable, add keydown_event.unicode to self.text.
         """
 
-        if keydown_event.unicode.isprintable():
+        # We can not use Python 3's str.isprintable() for Python 2 compatibility
+        # reasons. As a workaround, we check the Unicode category of the input.
+        # See http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
+        #
+        if len(keydown_event.unicode) and unicodedata.category(keydown_event.unicode)[0] in "LNPSZ":
 
             if self.text != "" and self.text[-1] == "|":
 
