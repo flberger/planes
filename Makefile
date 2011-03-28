@@ -1,5 +1,11 @@
 help:
-	@echo Targets: docs, clean, user_install, sdist
+	@echo Targets:
+	@echo '    docs'
+	@echo '    clean'
+	@echo '    pylint'
+	@echo '    errors'
+	@echo '    user_install'
+	@echo '    sdist'
 
 docs: clean
 	/home/florian/temp/python/pydoctor/bin/pydoctor --verbose \
@@ -10,6 +16,12 @@ docs: clean
 clean:
 	rm -fv *.pyc
 	rm -fv */*.pyc
+
+pylint:
+	pylint clickndrag ; pylint examples/clickndrag_interactive.py
+
+errors:
+	pylint --errors-only clickndrag ; pylint --errors-only examples/clickndrag_interactive.py
 
 ifdef PYTHON
 
@@ -28,3 +40,4 @@ sdist:
 	@echo Please supply Python executable as PYTHON=executable.
 
 endif
+

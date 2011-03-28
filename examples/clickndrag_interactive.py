@@ -3,7 +3,7 @@
 """Run an interactive Click'n'Drag-Session.
 
    Start this script with 'python -i' or import it as a module
-   
+
    Copyright 2010 Florian Berger <fberger@florian-berger.de>
 """
 
@@ -26,6 +26,7 @@
 
 import sys
 import readline
+import traceback
 
 # Add current and parent directory. One of them is supposed to contain the
 # clickndrag package.
@@ -53,7 +54,7 @@ yellow = (255, 255, 0)
 white = (255, 255, 255)
 
 def click(*args):
-    print("Click! args: {}".format(args))
+    print("Click! args: {0}".format(args))
 
 plane = clickndrag.Plane("plane",
                          pygame.Rect((200, 50), (100, 100)),
@@ -94,12 +95,14 @@ Plane.grab_dropped_planes - Flags for Plane configuration
 Plane.sub(Plane)          - Add plane as a subplane of this Plane.
 
 print(helptext)           - Print this help text
+
+Close the Pygame window and 'raise SystemExit' or press [Ctrl]+[D] to exit.
 ---------------------------------------------------------------------------
 """
 
-def mainloop(fps):
+def mainloop(framerate):
     """Runs a pygame / clickndrag main loop.
-       fps is the framerate.
+       framerate is the framerate.
        This must be run in the main thread, otherwise pygame.event will not
        receive any events under MS Windows.
     """
@@ -122,9 +125,9 @@ def mainloop(fps):
 
         pygame.display.flip()
 
-        # Slow down to fps given
+        # Slow down to framerate given
         #
-        clock.tick(fps)
+        clock.tick(framerate)
 
 def run_interactive_console(locals_dict):
 
@@ -144,4 +147,11 @@ if __name__ == "__main__":
 
     print("starting main loop in main thread")
 
-    mainloop(60)
+    try:
+        mainloop(60)
+
+    except:
+        print("Exception in mainloop():")
+        print(traceback.format_exc())
+        pygame.quit()
+        raise SystemExit

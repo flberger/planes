@@ -454,11 +454,11 @@ class Plane:
             parent_name = self.parent.name
 
 
-        repr_str = "<clickndrag.Plane name='{}' image={} rendersurface={} rect={} parent='{}' subplanes_list={} draggable={} grab={} last_image_id={} last_rect={} left_click_callback={} right_click_callback={} dropped_upon_callback={} sync_master_plane={}>"
+        repr_str = "<clickndrag.Plane name='{0}' image={1} rendersurface={2} rect={3} parent='{4}' subplanes_list={5} draggable={6} grab={7} last_image_id={8} last_rect={9} left_click_callback={10} right_click_callback={11} dropped_upon_callback={12} sync_master_plane={13}>"
 
         return(repr_str.format(self.name,
-                               "{}@{}".format(self.image, id(self.image)),
-                               "{}@{}".format(self.rendersurface, id(self.rendersurface)),
+                               "{0}@{1}".format(self.image, id(self.image)),
+                               "{0}@{1}".format(self.rendersurface, id(self.rendersurface)),
                                self.rect,
                                parent_name,
                                self.subplanes_list,
@@ -470,8 +470,6 @@ class Plane:
                                self.right_click_callback,
                                self.dropped_upon_callback,
                                self.sync_master_plane))
-
-        return
 
 class Display(Plane):
     """Click'n'Drag main screen class.
@@ -519,7 +517,7 @@ class Display(Plane):
             #
             import os
 
-            os.environ['SDL_VIDEODRIVER']='windib'
+            os.environ['SDL_VIDEODRIVER'] = 'windib'
 
             self.display = pygame.display.set_mode(resolution_tuple, flags)
 
@@ -567,7 +565,10 @@ class Display(Plane):
 
                 clicked_plane = self.get_plane_at(event.pos)[0]
 
-                if clicked_plane != self:
+                # Cant just compare to self in Python < 3.0.
+                # Use id instead.
+                #
+                if id(clicked_plane) != id(self):
 
                     button_name = self.mouse_buttons[event.button]
 
@@ -613,7 +614,7 @@ class Display(Plane):
                     self.render(force = True)
 
             elif (event.type == pygame.KEYDOWN
-                  and self.key_sensitive_plane
+                  and self.key_sensitive_plane is not None
                   and self.key_sensitive_plane.parent is not None):
 
                 # TODO: remove a destroyed Plane from key_sensitive_plane
