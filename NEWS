@@ -1,6 +1,15 @@
 NEWS for Click'n'Drag
 =====================
 
+0.4.0
+-----
+
+Released on 28 March 2011.
+
+Numerous changes to make clickndrag compatible with Python 2.x.
+Tested with Python 2.6.5 and Python 3.1.2, using Pygame 1.9.1.
+
+
 0.3.0
 -----
 
