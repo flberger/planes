@@ -530,10 +530,41 @@ class OptionList(Container):
 
        Options are subplanes of OptionList, named option0, option1, ..., optionN
 
+       Please note that it is not possible to confirm a selection here. Use a
+       wrapper like OptionSelector to accomplish that.
+
        Additional attributes:
 
        OptionList.selected
            The selected Option
+    """
+
+    def __init__(self, name, option_list, width = 200, lineheight = 30):
+        """Initialise the OptionList.
+           option_list is a list of strings to be displayed as options.
+        """
+
+        # Call base class init
+        #
+        Container.__init__(self, name)
+
+        # Add options
+        #
+        for text in option_list:
+
+            option = Option("option" + str(option_list.index(text)),
+                            text,
+                            pygame.Rect((0, 0), (width, lineheight)))
+
+            self.sub(option)
+
+        self.option0.current_color = HIGHLIGHT_COLOR
+        self.selected = self.option0
+
+        return
+
+class OptionSelector(Container):
+    """An OptionSelector wraps an OptionList and and OK button, calling a callback when a selection is confirmed.
     """
 
     def __init__(self, name, option_list, callback, width = 200, lineheight = 30):
@@ -545,7 +576,7 @@ class OptionList(Container):
 
         # Call base class init
         #
-        Container.__init__(self, name)
+        Container.__init__(self, name, padding = 5)
 
         # TODO: copied from Button.__init__. Maybe inherit from a third class 'Callback'?
         #
@@ -553,13 +584,12 @@ class OptionList(Container):
 
         # Add options and OK button
         #
-        for text in option_list:
+        ol = OptionList("option_list",
+                        option_list,
+                        width,
+                        lineheight)
 
-            option = Option("option" + str(option_list.index(text)),
-                           text,
-                           pygame.Rect((0, 0), (width, lineheight)))
-
-            self.sub(option)
+        self.sub(ol)
 
         button = Button("OK",
                         pygame.Rect((0, 0), (width, lineheight)),
@@ -567,17 +597,14 @@ class OptionList(Container):
 
         self.sub(button)
 
-        self.option0.current_color = HIGHLIGHT_COLOR
-        self.selected = self.option0
-
         return
 
     def selection_made(self, plane):
-        """Button callback called when the user confirmed an option from the OptionList.
-           Calls OptionList.callback(self.selected) and destroys the OptionList.
+        """Button callback called when the user confirmed an option from the list.
+           Calls OptionSelector.callback(self.option_list.selected) and destroys the OptionSelector.
         """
 
-        self.callback(self.selected)
+        self.callback(self.option_list.selected)
 
         self.destroy()
 
