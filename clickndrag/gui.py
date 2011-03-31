@@ -643,18 +643,28 @@ class OkBox(Container):
 
 class TextBox(Label):
     """A box where the user can type text.
+
        To actually receive key events, the TextBox must be registered with the
        Display using Display.key_sensitive(TextBox).
+
        Attributes:
+
        TextBox.text
            Standard Label attribute, holding the text typed so far.
+
+       TextBox.active
+           Boolean flag whether this TextBox is active, initally False.
     """
 
     def __init__(self, name, rect, return_callback = None, background_color = (250, 250, 250)):
         """Initialise the TextBox.
            If return_callback is given, return_callback(TextBox.text) will be
-           called then [RETURN] is pressed.
+           called when [RETURN] is pressed.
         """
+
+        # Label.__init__() calls redraw() which needs self.active.
+        #
+        self.active = False
 
         # Call base class
         #
@@ -674,21 +684,11 @@ class TextBox(Label):
         #
         if len(keydown_event.unicode) and unicodedata.category(keydown_event.unicode)[0] in "LNPSZ":
 
-            if self.text != "" and self.text[-1] == "|":
-
-                self.text = self.text[:-1] + keydown_event.unicode + "|"
-
-            else:
-                self.text = self.text + keydown_event.unicode
+            self.text = self.text + keydown_event.unicode
 
         elif keydown_event.key == pygame.K_BACKSPACE:
 
-            if self.text != "" and self.text[-1] == "|":
-
-                self.text = self.text[:-2] + "|"
-
-            else:
-                self.text = self.text[:-1]
+            self.text = self.text[:-1]
 
         elif keydown_event.key == pygame.K_RETURN and self.return_callback is not None:
 
@@ -702,34 +702,44 @@ class TextBox(Label):
 
     def activate(self):
         """Call to show the user that the TextBox is ready for input.
+           Sets TextBox.active to True.
         """
 
-        if self.text == "" or self.text[-1] != "|":
-            self.text = self.text + "|"
+        self.active = True
+
+        self.redraw(force = True)
 
         return
 
     def deactivate(self):
         """Call to show the user that the TextBox no longer accepts input.
+           Sets TextBox.active to False.
         """
 
-        if self.text != "" and self.text[-1] == "|":
-            self.text = self.text[:-1]
+        self.active = False
+
+        self.redraw(force = True)
 
         return
 
-    def redraw(self):
+    def redraw(self, force = False):
         """Redraw the TextBox if necessary.
+           If the TextBox is active, display a cursor behind the text.
         """
 
         if (self.text != self.cached_text
-            or self.current_color != self.cached_color):
+            or self.current_color != self.cached_color
+            or force):
 
             self.image.fill(self.current_color)
 
             # Give background for speedup.
+            # Clever use of a dict to avoid an 'if'! :-)
             #
-            fontsurf = SMALL_FONT.render(self.text, True, (0, 0, 0), self.current_color)
+            fontsurf = SMALL_FONT.render(self.text + {True: "|", False: ""}[self.active],
+                                         True,
+                                         (0, 0, 0),
+                                         self.current_color)
 
             # Text is left-aligned on rect, except when it is larger than the
             # Label, in which case it is right-aligned.

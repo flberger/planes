@@ -243,6 +243,9 @@ class Plane:
         """Access subplanes as attributes.
         """
 
+        # The Python interpreter has already checked instance and class
+        # attributes. If this fails, an appropriate KeyError will be raised.
+        #
         return(self.subplanes[name])
 
     def render(self):
