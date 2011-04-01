@@ -224,14 +224,14 @@ class Plane:
         return
 
     def remove_all(self):
-        """Remove all subplanes.
+        """Convenience method to call Plane.remove() for all subplanes.
         """
 
-        for name in self.subplanes_list:
-            self.subplanes[name].parent = None
+        # Make a copy since subplanes_list will be changed by remove()
+        #
+        for name in list(self.subplanes_list):
 
-        self.subplanes = {}
-        self.subplanes_list = []
+            self.remove(name)
 
         # We do not need to worry about rendering here: once all subplanes
         # are gone, render() will point the rendersurface to image and

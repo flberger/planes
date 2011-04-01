@@ -480,6 +480,17 @@ class Container(clickndrag.Plane):
         #
         self.rect.height = self.rect.height - height_removed
 
+        # Find widest subplane.
+        # Partly copied from Container.sub().
+        #
+        self.rect.width = 4
+
+        for plane in self.subplanes.values():
+
+            if plane.rect.width > self.rect.width - 2 * self.padding - 2:
+
+                self.rect.width = plane.rect.width + 2 * self.padding + 2
+
         self.redraw()
 
         return
