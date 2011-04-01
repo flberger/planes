@@ -234,10 +234,20 @@ class OutlinedText(Label):
 
             target_surface.blit(font_surface, (1, 1))
 
+            # Save current center
+            #
+            center = self.rect.center
+
             # Set new rect and image.
             #
             self.image = target_surface
             self.rect = target_surface.get_rect()
+
+            # Restore center, avoiding an uninitialised value
+            #
+            if center != (0, 0):
+
+                self.rect.center = center
 
             # Force redraw in render()
             #

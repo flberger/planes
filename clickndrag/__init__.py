@@ -375,8 +375,8 @@ class Plane:
 
         if self.sync_master_plane is not None:
 
-            self.rect.topleft = (self.sync_master_plane.rect.left + self.offset[0],
-                                 self.sync_master_plane.rect.top + self.offset[1])
+            self.rect.center = (self.sync_master_plane.rect.centerx + self.offset[0],
+                                self.sync_master_plane.rect.centery + self.offset[1])
 
         return
 
@@ -442,14 +442,15 @@ class Plane:
         return
 
     def sync(self, master_plane):
-        """Save the Plane given as master Plane for position synchronisation
-           in Plane.update().
+        """Save the Plane given as master Plane and the position offset to that Plane for position synchronisation in Plane.update().
         """
 
         self.sync_master_plane = master_plane
 
-        self.offset = (self.rect.left - master_plane.rect.left,
-                       self.rect.top - master_plane.rect.top)
+        # Using the offset between the centers of the Planes
+        #
+        self.offset = (self.rect.centerx - master_plane.rect.centerx,
+                       self.rect.centery - master_plane.rect.centery)
 
         return
 
