@@ -260,7 +260,7 @@ class Plane:
         # The Python interpreter has already checked instance and class
         # attributes. If this fails, an appropriate KeyError will be raised.
         #
-        return(self.subplanes[name])
+        return self.subplanes[name]
 
     def render(self):
         """Draw a composite surface of this plane and all subplanes, in order of their addition.
@@ -359,7 +359,7 @@ class Plane:
 
                 return_plane, return_coordinates = plane.get_plane_at(return_coordinates)
 
-        return((return_plane, return_coordinates))
+        return (return_plane, return_coordinates)
 
     def update(self):
         """Update hook.
@@ -474,7 +474,7 @@ class Plane:
 
         repr_str = "<clickndrag.Plane name='{0}' image={1} rendersurface={2} rect={3} parent='{4}' subplanes_list={5} draggable={6} grab={7} last_image_id={8} last_rect={9} left_click_callback={10} right_click_callback={11} dropped_upon_callback={12} sync_master_plane={13}>"
 
-        return(repr_str.format(self.name,
+        return repr_str.format(self.name,
                                "{0}@{1}".format(self.image, id(self.image)),
                                "{0}@{1}".format(self.rendersurface, id(self.rendersurface)),
                                self.rect,
@@ -487,7 +487,7 @@ class Plane:
                                self.left_click_callback,
                                self.right_click_callback,
                                self.dropped_upon_callback,
-                               self.sync_master_plane))
+                               self.sync_master_plane)
 
 class Display(Plane):
     """Click'n'Drag main screen class.
