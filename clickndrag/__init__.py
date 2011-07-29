@@ -23,6 +23,8 @@
 
 import pygame
 
+VERSION = "0.4.0"
+
 class Plane:
     """A Plane is a surface in a hierarchy of surfaces.
        Concept-wise it bears some similarities to pygame.sprite.Sprite.

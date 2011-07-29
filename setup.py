@@ -23,11 +23,10 @@
 import distutils.core
 import glob
 import os.path
-
-VERSION = "0.4.0"
+import clickndrag
 
 distutils.core.setup(name = "clickndrag",
-                     version = VERSION,
+                     version = clickndrag.VERSION,
                      author = "Florian Berger",
                      author_email = "fberger@florian-berger.de",
                      url = "http://florian-berger.de/software/clickndrag/",
@@ -38,5 +37,5 @@ distutils.core.setup(name = "clickndrag",
                      provides = ["clickndrag"],
                      scripts = ["examples/clickndrag_interactive.py"],
                      package_data = {"clickndrag" : ["Vera.ttf", "VeraBd.ttf"]},
-                     data_files = [("share/doc/clickndrag-{}".format(VERSION),
+                     data_files = [("share/doc/clickndrag-{0}".format(clickndrag.VERSION),
                                     glob.glob(os.path.join("doc", "*.*")) + ["NEWS"])])

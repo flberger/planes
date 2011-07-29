@@ -20,6 +20,7 @@ docs: clean
 clean:
 	rm -fv *.pyc
 	rm -fv */*.pyc
+	rm -fv */*/*.pyc
 
 pylint:
 	pylint clickndrag ; pylint examples/clickndrag_interactive.py
@@ -64,3 +65,7 @@ freshmeat:
 	@echo RETURN to submit to freshmeat.net using freshmeat-submit.txt, CTRL-C to cancel:
 	@read DUMMY
 	freshmeat-submit < freshmeat-submit.txt
+
+MANIFEST.in: docs
+	rm -fv MANIFEST.in
+	for i in `ls clickndrag/Vera* NEWS doc/*` ; do echo "include $$i" >> MANIFEST.in ; done
