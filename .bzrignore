@@ -7,3 +7,4 @@ dist
 build
 MANIFEST
 user_install-filelist.txt
+__pycache__

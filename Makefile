@@ -6,6 +6,10 @@ help:
 	@echo '    errors'
 	@echo '    user_install'
 	@echo '    sdist'
+	@echo '    commit.txt'
+	@echo '    commit'
+	@echo '    sign'
+	@echo '    freshmeat'
 
 docs: clean
 	/home/florian/temp/python/pydoctor/bin/pydoctor --verbose \
@@ -41,3 +45,22 @@ sdist:
 
 endif
 
+commit.txt:
+	# single line because bzr diff returns false when there are diffs
+	#
+	bzr diff > commit.txt ; nano commit.txt
+
+commit:
+	@echo RETURN to commit using commit.txt, CTRL-C to cancel:
+	@read DUMMY
+	bzr commit --file commit.txt && rm -v commit.txt
+
+sign:
+	rm -vf dist/*.asc
+	for i in dist/*.zip ; do gpg --sign --armor --detach $$i ; done
+	gpg --verify --multifile dist/*.asc
+
+freshmeat:
+	@echo RETURN to submit to freshmeat.net using freshmeat-submit.txt, CTRL-C to cancel:
+	@read DUMMY
+	freshmeat-submit < freshmeat-submit.txt

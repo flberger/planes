@@ -43,6 +43,10 @@ import unicodedata
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
 
+# Pixels per character, for width estimation of text renderings
+#
+PIX_PER_CHAR = 8
+
 # Initialise the font module. This can safely be called more than once.
 #
 pygame.font.init()
@@ -105,7 +109,7 @@ class Label(clickndrag.Plane):
            A cache for color changes
     """
 
-    def __init__(self, name, text, rect, background_color = BACKGROUND_COLOR):
+    def __init__(self, name, text, rect, background_color = None):
         """Initialise the Label.
            text is the text to be written on the Label. If text is None, it is
            replaced by an empty string.
@@ -115,7 +119,11 @@ class Label(clickndrag.Plane):
         #
         clickndrag.Plane.__init__(self, name, rect, draggable = False, grab = False)
 
-        self.background_color = self.cached_color = self.current_color = background_color
+        self.background_color = self.cached_color = self.current_color = BACKGROUND_COLOR
+
+        if background_color is not None:
+
+            self.background_color = self.cached_color = self.current_color = background_color
 
         if text is not None:
             self.text = text
@@ -269,7 +277,7 @@ class Button(Label):
            Counted down when the button is clicked and displays a different color
     """
 
-    def __init__(self, label, rect, callback, background_color = BACKGROUND_COLOR):
+    def __init__(self, label, rect, callback, background_color = None):
         """Initialise the Button.
            label is the Text to be written on the button.
            rect is an instance of pygame.Rect giving the dimensions.
@@ -280,6 +288,10 @@ class Button(Label):
         # name is the alphanumeric-only-lower case-version of label
         #
         name = ''.join(filter(str.isalnum, label)).lower()
+
+        if background_color is None:
+
+            background_color = BACKGROUND_COLOR
 
         # Call base class init
         #
@@ -381,7 +393,7 @@ class Container(clickndrag.Plane):
            The original background color for this Container
     """
 
-    def __init__(self, name, padding = 0, background_color = BACKGROUND_COLOR):
+    def __init__(self, name, padding = 0, background_color = None):
         """Initialise.
            Container.image is initialised to a 0x0 px Surface.
         """
@@ -391,7 +403,12 @@ class Container(clickndrag.Plane):
         clickndrag.Plane.__init__(self, name, pygame.Rect((0, 0), (0, 0)))
 
         self.padding = padding
-        self.background_color = background_color
+
+        self.background_color = BACKGROUND_COLOR
+
+        if background_color is not None:
+
+            self.background_color = background_color
 
         return
 
@@ -585,7 +602,7 @@ class OptionList(Container):
         return
 
 class OptionSelector(Container):
-    """An OptionSelector wraps an OptionList and and OK button, calling a callback when a selection is confirmed.
+    """An OptionSelector wraps an OptionList and an OK button, calling a callback when a selection is confirmed.
     """
 
     def __init__(self, name, option_list, callback, width = 200, lineheight = 30):
@@ -634,6 +651,7 @@ class OptionSelector(Container):
 class OkBox(Container):
     """A box which displays a message and an OK button.
        It is destroyed when OK is clicked.
+       The message will be wrapped at newline characters.
     """
 
     def __init__(self, message):
@@ -646,9 +664,15 @@ class OkBox(Container):
         #
         Container.__init__(self, str(id(self)), padding = 5)
 
-        self.sub(Label("message",
-                       message,
-                       pygame.Rect((0, 0), (len(message) * 7, 30))))
+        linecount = 0
+
+        for line in message.split("\n"):
+
+            self.sub(Label("message-line_{}".format(linecount),
+                           line,
+                           pygame.Rect((0, 0), (len(line) * PIX_PER_CHAR, 30))))
+
+            linecount = linecount + 1
 
         self.sub(Button("OK", pygame.Rect((0, 0), (50, 30)), self.ok))
 
