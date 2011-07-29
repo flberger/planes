@@ -1,6 +1,27 @@
 NEWS for Click'n'Drag
 =====================
 
+0.4.1
+-----
+
+Released on 29 July 2011.
+
+Removed OK button and callback from gui.OptionList to be able to embed it in 
+more complex dialogs. Added gui.OptionSelector as a drop-in replacement. 
+Simplified cursor rendering in gui.TextBox, which is done in 
+gui.TextBox.redraw() now, no longer messing with gui.TextBox.text. Changed 
+Plane.remove_all() to actually call Plane.remove() for all current subplanes. 
+gui.Container now also shrinks horizontally when a subplane is removed. Added 
+'insert_after' argument to Plane.sub(), making it possible to render related 
+subplanes without others inbetween. Plane.sync() uses the offset between Plane 
+centers instead of Plane toplefts now, avoiding alignment problems with dynamic 
+Planes as gui.OutlinedText. gui.OutlinedText now saves and restores the center 
+of OutlinedText.rect upon a text change. Fixed default background color setting 
+in various places. Added wrapping at newlines to gui.OkBox. Several fixes to be 
+compatible with Python 2.6 distutils. Added clickndrag.VERSION, which is now 
+read in setup.py. Documentation update.
+
+
 0.4.0
 -----
 
