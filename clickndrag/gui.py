@@ -297,9 +297,10 @@ class Button(Label):
         #
         Label.__init__(self, name, label, rect, background_color)
 
-        # Overwrite Plane base class attribute
+        # Overwrite Plane base class attributes
         #
         self.left_click_callback = callback
+        self.highlight = True
 
         self.clicked_counter = 0
 

@@ -64,6 +64,9 @@ class Plane:
            their parent Plane and make it a subplane of this one.
            Handled in Plane.dropped_upon()
 
+       Plane.highlight
+           If True, the Plane be highlighted when the mouse cursor moves over it.
+
        Plane.last_image_id
            Caches object id of the image at last rendering for efficiency.
 
@@ -100,6 +103,7 @@ class Plane:
                  rect,
                  draggable = False,
                  grab = False,
+                 highlight = False,
                  left_click_callback = None,
                  right_click_callback = None,
                  dropped_upon_callback = None):
@@ -142,6 +146,8 @@ class Plane:
 
         self.draggable = draggable
         self.grab = grab
+
+        self.highlight = highlight
 
         # Parent stores the parent plane.
         # Upon creation, there is none.
@@ -472,47 +478,65 @@ class Plane:
 
     def mouseover_callback(self):
         """Callback function when the mouse cursor moves over this plane.
+           The default implementation will highlight the Plane when
+           Plane.highlight is True.
         """
 
-        # Replace image, but cache original
-        #
-        self.image_cache = self.image.copy()
+        if self.highlight:
 
-        # Create an overlay for a more subtle effect.
-        #
-        overlay = self.image.copy()
-
-        overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
-        overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
-
-        try:
-            self.image.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_ADD)
-
-        except pygame.error:
-
-            # "Surfaces must not be locked during blit"
+            # Replace image, but cache original
             #
-            pass
+            self.image_cache = self.image.copy()
 
-        # Set to None to trigger a rendering
-        #
-        self.last_rect = None
+            # Create an overlay for a more subtle effect.
+            #
+            overlay = self.image.copy()
+
+            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
+            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
+
+            try:
+                self.image.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_ADD)
+
+            except pygame.error:
+
+                # "Surfaces must not be locked during blit"
+                #
+                pass
+
+            # Set to None to trigger a rendering
+            #
+            self.last_rect = None
 
         return
 
     def mouseout_callback(self):
         """Callback function when the mouse cursor has left this plane.
+           The default implementation will undo the highlight done in
+           Plane.mouseover_callback().
         """
 
-        # Restore original image
-        #
-        self.image = self.image_cache
+        # We're not checking Plane.highlight here because it might have been
+        # turned off in the meantime. We still have to restore Plane.image in
+        # that case.
 
-        self.image_cache = None
+        try:
 
-        # Set to None to trigger a rendering
-        #
-        self.last_rect = None
+            # Restore original image
+            #
+            self.image = self.image_cache
+
+            self.image_cache = None
+
+            # Set to None to trigger a rendering
+            #
+            self.last_rect = None
+
+        except KeyError:
+
+            # No image_cache
+            #
+            pass
 
         return
 
