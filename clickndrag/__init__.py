@@ -60,26 +60,39 @@ class Plane:
            If True, this Plane can be dragged and dropped.
 
        Plane.grab
-          If True, this Plane will remove dropped Planes from
-          their parent Plane and make it a subplane of this one.
-          Handled in Plane.dropped_upon()
+           If True, this Plane will remove dropped Planes from
+           their parent Plane and make it a subplane of this one.
+           Handled in Plane.dropped_upon()
+
+       Plane.highlight
+           If True, the Plane be highlighted when the mouse cursor moves over it.
 
        Plane.last_image_id
-          Caches object id of the image at last rendering for efficiency.
+           Caches object id of the image at last rendering for efficiency.
 
        Plane.last_rect
-          Caches rect at last rendering for efficiency.
+           Caches rect at last rendering for efficiency.
 
        Plane.left_click_callback
-          Callback function when this plane has been clicked with the left mouse
-          button.
+           Callback function when this plane has been clicked with the left
+           mouse button.
 
        Plane.right_click_callback
-          Callback function when this plane has been clicked with the right
-          mouse button.
+           Callback function when this plane has been clicked with the right
+           mouse button.
 
        Plane.dropped_upon_callback
-          Callback function when a plane has been dropped upon this plane.
+           Callback function when a plane has been dropped upon this plane.
+
+       Plane.mouseover_callback
+           Callback function when the mouse cursor moves over this plane.
+
+       Plane.mouseout_callback
+           Callback function when the mouse cursor has left this plane.
+
+       Plane.mouseover
+           Flag indicating whether the mouse cursor is over this Plane.
+           Initially False.
 
        Plane.sync_master_plane
           A Plane that this Plane's position will sync to. Initally None.
@@ -94,6 +107,7 @@ class Plane:
                  rect,
                  draggable = False,
                  grab = False,
+                 highlight = False,
                  left_click_callback = None,
                  right_click_callback = None,
                  dropped_upon_callback = None):
@@ -136,6 +150,9 @@ class Plane:
 
         self.draggable = draggable
         self.grab = grab
+
+        self.highlight = highlight
+        self.mouseover = False
 
         # Parent stores the parent plane.
         # Upon creation, there is none.
@@ -268,6 +285,8 @@ class Plane:
         """Draw a composite surface of this plane and all subplanes, in order of their addition.
            Returns True if anything has been rendered (i.e. if
            Plane.rendersurface has changed), False otherwise.
+           This method wil highlight subplanes that have the Plane.mousover flag
+           set.
         """
 
         # We only need to render if self.rendersurface does not point
@@ -328,11 +347,29 @@ class Plane:
                     self.rendersurface = self.image.copy()
 
                     # Subplanes are already rendered. Force-blit them in order.
+                    # Obey mouseover flag.
                     #
+                    surface = None
+
                     for name in self.subplanes_list:
 
+                        # First blit ordinary rendersurface
+                        #
                         self.rendersurface.blit(self.subplanes[name].rendersurface,
                                                 self.subplanes[name].rect)
+
+                        # Add a highlight on top if mouseover is set
+                        #
+                        if self.subplanes[name].mouseover:
+
+                            overlay = self.subplanes[name].rendersurface.copy()
+
+                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
+                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
+
+                            self.rendersurface.blit(overlay,
+                                                    self.subplanes[name].rect,
+                                                    special_flags = pygame.BLEND_RGBA_ADD)
 
                     self.last_image_id = id(self.image)
 
@@ -464,6 +501,37 @@ class Plane:
 
         return
 
+    def mouseover_callback(self):
+        """Callback function when the mouse cursor moves over this plane.
+           The default implementation sets Plan.mouseover to True when
+           Plane.highlight is set.
+        """
+
+        if self.highlight:
+
+            self.mouseover = True
+
+            # Set to None to trigger a rendering
+            #
+            self.last_rect = None
+
+        return
+
+    def mouseout_callback(self):
+        """Callback function when the mouse cursor has left this plane.
+           The default implementation sets Plan.mouseover to False.
+        """
+
+        # Not checking self.highlight here - it might have changed
+
+        self.mouseover = False
+
+        # Set to None to trigger a rendering
+        #
+        self.last_rect = None
+
+        return
+
     def __repr__(self):
         """Readable string representation.
         """
@@ -505,6 +573,9 @@ class Display(Plane):
 
        Display.key_sensitive_plane
            The Plane to be notified of Pygame keyboard events. Initially None.
+
+       Display.last_mouseover_plane
+           The last Plane a mouseover condition was found for. Initially None.
 
        Display.mouse_buttons
            A dict mapping Pygame mouse button numbers to description strings.
@@ -551,6 +622,8 @@ class Display(Plane):
 
         self.key_sensitive_plane = None
 
+        self.last_mouseover_plane = None
+
         self.mouse_buttons = {1: "left", 3: "right"}
 
         return
@@ -576,12 +649,22 @@ class Display(Plane):
 
     def process(self, event_list):
         """Process a pygame event list.
+           This is the main method of clickndrag and should be called once per
+           frame.
+           It will also check mouseover conditions, even if event_list is empty.
         """
+
+        # We will only process mouseovers when nothing else has happened.
+        # So we set up a flag here.
+        #
+        nothing_happened = True
 
         for event in event_list:
 
             if (event.type == pygame.MOUSEBUTTONDOWN
                 and event.button in self.mouse_buttons.keys()):
+
+                nothing_happened = False
 
                 clicked_plane = self.get_plane_at(event.pos)[0]
 
@@ -616,13 +699,17 @@ class Display(Plane):
 
                 # Left button == 1, right button == 3
 
+                nothing_happened = False
+
                 if self.dragged_plane is not None:
 
                     target_plane, coordinates = self.get_plane_at(event.pos)
 
                     # Don't drop to self
+                    # Cant compare Planes in Python < 3.0.
+                    # Use id instead.
                     #
-                    if target_plane != self.dragged_plane.source:
+                    if id(target_plane) != id(self.dragged_plane.source):
 
                         target_plane.dropped_upon(self.dragged_plane.source, coordinates)
 
@@ -637,13 +724,55 @@ class Display(Plane):
                   and self.key_sensitive_plane is not None
                   and self.key_sensitive_plane.parent is not None):
 
+                nothing_happened = False
+
                 # TODO: remove a destroyed Plane from key_sensitive_plane
 
                 # Notify the latest registered listener
                 #
                 self.key_sensitive_plane.keydown(event)
 
-            return
+        # All events have been processed now. If nothing happened, process
+        # mouseover.
+        #
+        if nothing_happened:
+
+            try:
+
+                mouseover_plane = self.get_plane_at(pygame.mouse.get_pos())[0]
+
+            except pygame.error:
+
+                # This most probably means that Pygame has been shut down in the
+                # meantime.
+                #
+                return
+
+            if id(mouseover_plane) == id(self.last_mouseover_plane):
+
+                # Still over it. No action.
+                #
+                pass
+
+            else:
+
+                if self.last_mouseover_plane is not None:
+
+                    self.last_mouseover_plane.mouseout_callback()
+
+                if id(mouseover_plane) == id(self):
+
+                    # Ignore the Display
+                    #
+                    self.last_mouseover_plane = None
+
+                else:
+
+                    mouseover_plane.mouseover_callback()
+
+                    self.last_mouseover_plane = mouseover_plane
+
+        return
 
     def render(self, force = False):
         """Call base class render(), then blit to the Pygame display if something has changed.
