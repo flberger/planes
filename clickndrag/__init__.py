@@ -90,6 +90,10 @@ class Plane:
        Plane.mouseout_callback
            Callback function when the mouse cursor has left this plane.
 
+       Plane.mouseover
+           Flag indicating whether the mouse cursor is over this Plane.
+           Initially False.
+
        Plane.sync_master_plane
           A Plane that this Plane's position will sync to. Initally None.
 
@@ -148,6 +152,7 @@ class Plane:
         self.grab = grab
 
         self.highlight = highlight
+        self.mouseover = False
 
         # Parent stores the parent plane.
         # Upon creation, there is none.
@@ -280,6 +285,8 @@ class Plane:
         """Draw a composite surface of this plane and all subplanes, in order of their addition.
            Returns True if anything has been rendered (i.e. if
            Plane.rendersurface has changed), False otherwise.
+           This method wil highlight subplanes that have the Plane.mousover flag
+           set.
         """
 
         # We only need to render if self.rendersurface does not point
@@ -340,11 +347,29 @@ class Plane:
                     self.rendersurface = self.image.copy()
 
                     # Subplanes are already rendered. Force-blit them in order.
+                    # Obey mouseover flag.
                     #
+                    surface = None
+
                     for name in self.subplanes_list:
 
+                        # First blit ordinary rendersurface
+                        #
                         self.rendersurface.blit(self.subplanes[name].rendersurface,
                                                 self.subplanes[name].rect)
+
+                        # Add a highlight on top if mouseover is set
+                        #
+                        if self.subplanes[name].mouseover:
+
+                            overlay = self.subplanes[name].rendersurface.copy()
+
+                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
+                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
+
+                            self.rendersurface.blit(overlay,
+                                                    self.subplanes[name].rect,
+                                                    special_flags = pygame.BLEND_RGBA_ADD)
 
                     self.last_image_id = id(self.image)
 
@@ -478,31 +503,13 @@ class Plane:
 
     def mouseover_callback(self):
         """Callback function when the mouse cursor moves over this plane.
-           The default implementation will highlight the Plane when
-           Plane.highlight is True.
+           The default implementation sets Plan.mouseover to True when
+           Plane.highlight is set.
         """
 
         if self.highlight:
 
-            # Replace image, but cache original
-            #
-            self.image_cache = self.image.copy()
-
-            # Create an overlay for a more subtle effect.
-            #
-            overlay = self.image.copy()
-
-            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
-            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
-
-            try:
-                self.image.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_ADD)
-
-            except pygame.error:
-
-                # "Surfaces must not be locked during blit"
-                #
-                pass
+            self.mouseover = True
 
             # Set to None to trigger a rendering
             #
@@ -512,31 +519,16 @@ class Plane:
 
     def mouseout_callback(self):
         """Callback function when the mouse cursor has left this plane.
-           The default implementation will undo the highlight done in
-           Plane.mouseover_callback().
+           The default implementation sets Plan.mouseover to False.
         """
 
-        # We're not checking Plane.highlight here because it might have been
-        # turned off in the meantime. We still have to restore Plane.image in
-        # that case.
+        # Not checking self.highlight here - it might have changed
 
-        try:
+        self.mouseover = False
 
-            # Restore original image
-            #
-            self.image = self.image_cache
-
-            self.image_cache = None
-
-            # Set to None to trigger a rendering
-            #
-            self.last_rect = None
-
-        except KeyError:
-
-            # No image_cache
-            #
-            pass
+        # Set to None to trigger a rendering
+        #
+        self.last_rect = None
 
         return
 
@@ -745,7 +737,16 @@ class Display(Plane):
         #
         if nothing_happened:
 
-            mouseover_plane = self.get_plane_at(pygame.mouse.get_pos())[0]
+            try:
+
+                mouseover_plane = self.get_plane_at(pygame.mouse.get_pos())[0]
+
+            except pygame.error:
+
+                # This most probably means that Pygame has been shut down in the
+                # meantime.
+                #
+                return
 
             if id(mouseover_plane) == id(self.last_mouseover_plane):
 

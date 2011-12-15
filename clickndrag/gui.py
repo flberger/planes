@@ -595,6 +595,8 @@ class OptionList(Container):
                             text,
                             pygame.Rect((0, 0), (width, lineheight)))
 
+            option.highlight = True
+
             self.sub(option)
 
         self.option0.current_color = HIGHLIGHT_COLOR
