@@ -3,6 +3,7 @@
 commit.txt
 *.ttf
 *.png
+*.jpg
 dist
 build
 MANIFEST

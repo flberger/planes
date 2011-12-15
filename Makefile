@@ -58,7 +58,7 @@ commit:
 
 sign:
 	rm -vf dist/*.asc
-	for i in dist/*.zip ; do gpg --sign --armor --detach $$i ; done
+	for i in dist/*.*z* ; do gpg --sign --armor --detach $$i ; done
 	gpg --verify --multifile dist/*.asc
 
 freshmeat:
