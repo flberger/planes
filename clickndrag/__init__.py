@@ -364,12 +364,28 @@ class Plane:
 
                             overlay = self.subplanes[name].rendersurface.copy()
 
-                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
-                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_RGBA_MULT)
+                            # Only premultiply Surfaces with the SRCALPHA flag,
+                            # will raise an exceptions otherwise.
+                            #
+                            if overlay.get_flags() & 0x00010000:
+
+                                # Premultiply alpha channel to RGB. Otherwise
+                                # invisible RGB values will be added by BLEND_ADD.
+                                # Technique suggested by René Dudfield
+                                # <renesd@gmail.com> on pygame-users@seul.org on
+                                # 19 Dec 2011
+                                #
+                                overlay = pygame.image.fromstring(pygame.image.tostring(overlay,
+                                                                                        "RGBA_PREMULT"),
+                                                                  overlay.get_size(),
+                                                                  "RGBA")
+
+                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
+                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
 
                             self.rendersurface.blit(overlay,
                                                     self.subplanes[name].rect,
-                                                    special_flags = pygame.BLEND_RGBA_ADD)
+                                                    special_flags = pygame.BLEND_ADD)
 
                     self.last_image_id = id(self.image)
 
