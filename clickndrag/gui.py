@@ -271,7 +271,8 @@ class Button(Label):
        Additional attributes:
 
        Button.callback
-           The callback function to be called upon clicking.
+           The callback function to be called with callback(Button) upon
+           clicking.
 
        Button.clicked_counter
            Counted down when the button is clicked and displays a different color
@@ -281,13 +282,16 @@ class Button(Label):
         """Initialise the Button.
            label is the Text to be written on the button.
            rect is an instance of pygame.Rect giving the dimensions.
-           callback is the function to be called when the Button is clicked with
-           the left mouse button.
+           callback is the function to be called with callback(Button) when the
+           Button is clicked with the left mouse button.
         """
 
         # name is the alphanumeric-only-lower case-version of label
         #
         name = ''.join(filter(str.isalnum, label)).lower()
+
+        if not name:
+            raise Exception("Invalid Button name '{0}': it must contain at least one alphanumeric character.".format(label))
 
         if background_color is None:
 
@@ -710,6 +714,8 @@ class TextBox(Label):
            called when [RETURN] is pressed.
         """
 
+        # TODO: why call callback with string, not Plane? This is inconsistent.
+
         # Label.__init__() calls redraw() which needs self.active.
         #
         self.active = False
@@ -952,5 +958,70 @@ class ScrollingPlane(clickndrag.Plane):
         # Half-bright color taken from Button.clicked()
         #
         self.scrollbar_container.scrollbar.image.fill(list(map(lambda i : int(i * 0.5), BACKGROUND_COLOR)))
+
+        return
+
+class PlusMinusBox(clickndrag.Plane):
+    """This class implements a TextBox with plus and minus buttons attached, to change a numerical value.
+       The value is accessible as PlusMinusBox.textbox.text
+    """
+
+    def __init__(self, name, charwidth, value = 0):
+        """Initialise.
+           charwidth is the width of the text field in characters.
+           value, if given, is the initial numerical value.
+        """
+
+        minusbutton = Button("minus",
+                             pygame.Rect((0, 0), (PIX_PER_CHAR, PIX_PER_CHAR * 2)),
+                             self.minus_callback)
+
+        minusbutton.text = "-"
+
+        textbox = TextBox("textbox",
+                          pygame.Rect((minusbutton.rect.width, 0),
+                                      (PIX_PER_CHAR * charwidth, PIX_PER_CHAR * 2)))
+
+        plusbutton = Button("plus",
+                            pygame.Rect((minusbutton.rect.width + textbox.rect.width, 0),
+                                        (PIX_PER_CHAR, PIX_PER_CHAR * 2)),
+                            self.plus_callback)
+
+        plusbutton.text = "+"
+
+        rect = pygame.Rect((0, 0),
+                           (minusbutton.rect.width + textbox.rect.width + plusbutton.rect.width,
+                            PIX_PER_CHAR * 2))
+
+        # Call base class.
+        # Leave optional arguments at their defaults.
+        #
+        clickndrag.Plane.__init__(self, name, rect)
+
+        textbox.text = str(value)
+
+        self.sub(minusbutton)
+        self.sub(textbox)
+        self.sub(plusbutton)
+
+        return
+
+    def minus_callback(self, Plane):
+        """Callback when minus is clicked.
+        """
+
+        self.textbox.text = str(int(self.textbox.text) - 1)
+
+        self.textbox.redraw()
+
+        return
+
+    def plus_callback(self, Plane):
+        """Callback when minus is clicked.
+        """
+
+        self.textbox.text = str(int(self.textbox.text) + 1)
+
+        self.textbox.redraw()
 
         return
