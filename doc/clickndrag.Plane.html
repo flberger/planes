@@ -17,7 +17,7 @@
       <a href="classIndex.html#clickndrag.Plane">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="clickndrag.Display.html">clickndrag.Display</a>, <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a>, <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a>, <a href="clickndrag.gui.ScrollingPlane.html">clickndrag.gui.ScrollingPlane</a></p>
+      <p>Known subclasses: <a href="clickndrag.Display.html">clickndrag.Display</a>, <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a>, <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a>, <a href="clickndrag.gui.PlusMinusBox.html">clickndrag.gui.PlusMinusBox</a>, <a href="clickndrag.gui.ScrollingPlane.html">clickndrag.gui.ScrollingPlane</a></p>
     </div>
     <pre>A Plane is a surface in a hierarchy of surfaces.
 Concept-wise it bears some similarities to pygame.sprite.Sprite.
@@ -53,26 +53,39 @@ Plane.draggable
     If True, this Plane can be dragged and dropped.
 
 Plane.grab
-   If True, this Plane will remove dropped Planes from
-   their parent Plane and make it a subplane of this one.
-   Handled in Plane.dropped_upon()
+    If True, this Plane will remove dropped Planes from
+    their parent Plane and make it a subplane of this one.
+    Handled in Plane.dropped_upon()
+
+Plane.highlight
+    If True, the Plane be highlighted when the mouse cursor moves over it.
 
 Plane.last_image_id
-   Caches object id of the image at last rendering for efficiency.
+    Caches object id of the image at last rendering for efficiency.
 
 Plane.last_rect
-   Caches rect at last rendering for efficiency.
+    Caches rect at last rendering for efficiency.
 
 Plane.left_click_callback
-   Callback function when this plane has been clicked with the left mouse
-   button.
+    Callback function when this plane has been clicked with the left
+    mouse button.
 
 Plane.right_click_callback
-   Callback function when this plane has been clicked with the right
-   mouse button.
+    Callback function when this plane has been clicked with the right
+    mouse button.
 
 Plane.dropped_upon_callback
-   Callback function when a plane has been dropped upon this plane.
+    Callback function when a plane has been dropped upon this plane.
+
+Plane.mouseover_callback
+    Callback function when the mouse cursor moves over this plane.
+
+Plane.mouseout_callback
+    Callback function when the mouse cursor has left this plane.
+
+Plane.mouseover
+    Flag indicating whether the mouse cursor is over this Plane.
+    Initially False.
 
 Plane.sync_master_plane
    A Plane that this Plane's position will sync to. Initally None.
@@ -169,6 +182,18 @@ Plane.offset
     
     
     <td>Method</td>
+    <td><a href="clickndrag.Plane.html#mouseover_callback">mouseover_callback</a></td>
+    <td><tt>Callback function when the mouse cursor moves over this plane.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#mouseout_callback">mouseout_callback</a></td>
+    <td><tt>Callback function when the mouse cursor has left this plane.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
     <td><a href="clickndrag.Plane.html#__repr__">__repr__</a></td>
     <td><tt>Readable string representation.</tt></td>
   </tr>
@@ -191,11 +216,11 @@ Plane.offset
   <div class="functionHeader">
     
     def
-    __init__(self, name, rect, draggable=False, grab=False, left_click_callback=None, right_click_callback=None, dropped_upon_callback=None):
+    __init__(self, name, rect, draggable=False, grab=False, highlight=False, left_click_callback=None, right_click_callback=None, dropped_upon_callback=None):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a>, <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a>, <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a>, <a href="clickndrag.gui.ScrollingPlane.html">clickndrag.gui.ScrollingPlane</a></div>
+    <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a>, <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a>, <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a>, <a href="clickndrag.gui.PlusMinusBox.html">clickndrag.gui.PlusMinusBox</a>, <a href="clickndrag.gui.ScrollingPlane.html">clickndrag.gui.ScrollingPlane</a></div>
     <pre>Initialize the Plane.
 name is the name of the plane which can also be used
 as an attribute.
@@ -303,7 +328,9 @@ replaced by the new plane.</pre>
     <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a></div>
     <pre>Draw a composite surface of this plane and all subplanes, in order of their addition.
 Returns True if anything has been rendered (i.e. if
-Plane.rendersurface has changed), False otherwise.</pre>
+Plane.rendersurface has changed), False otherwise.
+This method wil highlight subplanes that have the Plane.mousover flag
+set.</pre>
   </div>
 </div><div class="function">
   <a name="clickndrag.Plane.get_plane_at">
@@ -444,6 +471,43 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
         </pre>
   </div>
 </div><div class="function">
+  <a name="clickndrag.Plane.mouseover_callback">
+    
+  </a>
+  <a name="mouseover_callback">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    mouseover_callback(self):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Callback function when the mouse cursor moves over this plane.
+The default implementation sets Plan.mouseover to True when
+Plane.highlight is set.</pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.Plane.mouseout_callback">
+    
+  </a>
+  <a name="mouseout_callback">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    mouseout_callback(self):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Callback function when the mouse cursor has left this plane.
+The default implementation sets Plan.mouseover to False.</pre>
+  </div>
+</div><div class="function">
   <a name="clickndrag.Plane.__repr__">
     
   </a>
@@ -463,7 +527,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
   </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for clickndrag, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2011-07-29 19:50:50.
+      <a href="index.html">API Documentation</a> for clickndrag, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2012-02-27 13:12:09.
     </address>
   </body>
 </html>

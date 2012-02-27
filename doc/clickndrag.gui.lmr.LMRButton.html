@@ -3,80 +3,103 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.Display&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.lmr.LMRButton&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.Display(<a href="clickndrag.Plane.html">Plane</a>):</h1>
+    <h1 class="class">Class c.g.l.LMRButton(<a href="clickndrag.gui.Button.html">clickndrag.gui.Button</a>):</h1>
     <p>
-      <span id="part">Part of <a href="clickndrag.html">clickndrag</a></span>
+      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a>.<a href="clickndrag.gui.lmr.html">lmr</a></span>
       
-      <a href="classIndex.html#clickndrag.Display">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.lmr.LMRButton">View In Hierarchy</a>
     </p>
     <div>
       
     </div>
-    <pre>Click'n'Drag main screen class.
-A Display instance serves as the root Plane in clickndrag.
+    <pre>A clickndrag.gui.Button with LMR background.
 
 Additional attributes:
 
-Display.display
-    The Pygame display Surface
+LMRButton.background
+    A Pygame Surface, holding the rendered background for this button.
 
-Display.dragged_plane
-    The currently dragged plane
+Doctest:
 
-Display.key_sensitive_plane
-    The Plane to be notified of Pygame keyboard events. Initially None.
-
-Display.last_mouseover_plane
-    The last Plane a mouseover condition was found for. Initially None.
-
-Display.mouse_buttons
-    A dict mapping Pygame mouse button numbers to description strings.</pre>
+&gt;&gt;&gt; display = clickndrag.Display((300, 300))
+&gt;&gt;&gt; display.image.fill((128, 128, 128))
+&lt;rect(0, 0, 300, 300)&gt;
+&gt;&gt;&gt; style = LMRStyle(os.path.join(os.path.dirname(__file__), "button-l.png"),
+...                  os.path.join(os.path.dirname(__file__), "button-m.png"),
+...                  os.path.join(os.path.dirname(__file__), "button-r.png"))
+&gt;&gt;&gt; def exit(plane):
+...     pygame.quit()
+...     raise SystemExit
+&gt;&gt;&gt; button = LMRButton("LMRButton", exit, style)
+&gt;&gt;&gt; button.rect.center = display.rect.center
+&gt;&gt;&gt; display.sub(button)
+&gt;&gt;&gt; clock = pygame.time.Clock()
+&gt;&gt;&gt; while True:
+...     events = pygame.event.get()
+...     display.process(events)
+...     display.update()
+...     display.render()
+...     pygame.display.flip()
+...     clock.tick(30)
+Traceback (most recent call last):
+    ...
+SystemExit</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id5">
+      <table class="children sortable" id="id43">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Display.html#__init__">__init__</a></td>
-    <td><tt>Calling pygame.display.set_mode().</tt></td>
+    <td><a href="clickndrag.gui.lmr.LMRButton.html#__init__">__init__</a></td>
+    <td><tt>Initialise the Button.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Display.html#key_sensitive">key_sensitive</a></td>
-    <td><tt>Register the Plane given as sensitive to Pygame keyboard events.</tt></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.Display.html#process">process</a></td>
-    <td><tt>Process a pygame event list.</tt></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.Display.html#render">render</a></td>
-    <td><tt>Call base class render(), then blit to the Pygame display if something has changed.</tt></td>
+    <td><a href="clickndrag.gui.lmr.LMRButton.html#redraw">redraw</a></td>
+    <td><tt>Conditionally redraw the Button.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a>:
+          Inherited from <a href="clickndrag.gui.Button.html">Button</a>:
         </p>
-        <table class="children sortable" id="id6">
+        <table class="children sortable" id="id44">
+  
+  
+<tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.Button.html#update">update</a></td>
+    <td><tt>Change color if clicked, then call the base class method.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.Button.html#clicked">clicked</a></td>
+    <td><tt>Plane standard method, called when there is a MOUSEDOWN event on this plane.</tt></td>
+  </tr>
+  
+</table>
+      
+        <p>
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Button.html">Button</a>, <a href="clickndrag.gui.Label.html">Label</a>):
+        </p>
+        <table class="children sortable" id="id45">
   
   
 <tr class="basemethod">
@@ -107,20 +130,14 @@ Display.mouse_buttons
     
     
     <td>Method</td>
+    <td><a href="clickndrag.Plane.html#render">render</a></td>
+    <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
     <td><a href="clickndrag.Plane.html#get_plane_at">get_plane_at</a></td>
     <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.Plane.html#update">update</a></td>
-    <td><tt>Update hook.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.Plane.html#clicked">clicked</a></td>
-    <td><tt>Called when there is a MOUSEDOWN event on this plane.</tt></td>
   </tr><tr class="basemethod">
     
     
@@ -174,7 +191,7 @@ Display.mouse_buttons
     
 
     <div class="function">
-  <a name="clickndrag.Display.__init__">
+  <a name="clickndrag.gui.lmr.LMRButton.__init__">
     
   </a>
   <a name="__init__">
@@ -183,72 +200,31 @@ Display.mouse_buttons
   <div class="functionHeader">
     
     def
-    __init__(self, resolution_tuple, fullscreen=False):
+    __init__(self, label, callback, style):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#__init__">clickndrag.Plane.__init__</a></div>
-    <pre>Calling pygame.display.set_mode().
-If fullscreen is True, the display will use the full screen.</pre>
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Button.html#__init__">clickndrag.gui.Button.__init__</a></div>
+    <pre>Initialise the Button.
+        </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Display.key_sensitive">
+  <a name="clickndrag.gui.lmr.LMRButton.redraw">
     
   </a>
-  <a name="key_sensitive">
+  <a name="redraw">
     
   </a>
   <div class="functionHeader">
     
     def
-    key_sensitive(self, plane):
+    redraw(self):
     
   </div>
   <div class="functionBody">
-    
-    <pre>Register the Plane given as sensitive to Pygame keyboard events.
-Display will call plane.keydown(KEYDOWN_event) when a key is
-pressed and the Plane has a parent.
-plane.activate() will be called when the plane is registered.
-plane.deactivate() will be called on the old plane.</pre>
-  </div>
-</div><div class="function">
-  <a name="clickndrag.Display.process">
-    
-  </a>
-  <a name="process">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    process(self, event_list):
-    
-  </div>
-  <div class="functionBody">
-    
-    <pre>Process a pygame event list.
-This is the main method of clickndrag and should be called once per
-frame.
-It will also check mouseover conditions, even if event_list is empty.</pre>
-  </div>
-</div><div class="function">
-  <a name="clickndrag.Display.render">
-    
-  </a>
-  <a name="render">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    render(self, force=False):
-    
-  </div>
-  <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#render">clickndrag.Plane.render</a></div>
-    <pre>Call base class render(), then blit to the Pygame display if something has changed.
-If force is True, blit to Pygame display regardless.</pre>
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Button.html#redraw">clickndrag.gui.Button.redraw</a></div>
+    <pre>Conditionally redraw the Button.
+        </pre>
   </div>
 </div>
     <address>

@@ -3,89 +3,78 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.OkBox&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.PlusMinusBox&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.OkBox(<a href="clickndrag.gui.Container.html">Container</a>):</h1>
+    <h1 class="class">Class c.g.PlusMinusBox(<a href="clickndrag.Plane.html">clickndrag.Plane</a>):</h1>
     <p>
       <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.OkBox">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.PlusMinusBox">View In Hierarchy</a>
     </p>
     <div>
       
     </div>
-    <pre>A box which displays a message and an OK button.
-It is destroyed when OK is clicked.
-The message will be wrapped at newline characters.</pre>
+    <pre>This class implements a TextBox with plus and minus buttons attached, to change a numerical value.
+The value is accessible as PlusMinusBox.textbox.text</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id28">
+      <table class="children sortable" id="id39">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.OkBox.html#__init__">__init__</a></td>
+    <td><a href="clickndrag.gui.PlusMinusBox.html#__init__">__init__</a></td>
     <td><tt>Initialise.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.OkBox.html#ok">ok</a></td>
-    <td><tt>Button clicked callback which destroys the OkBox.</tt></td>
+    <td><a href="clickndrag.gui.PlusMinusBox.html#minus_callback">minus_callback</a></td>
+    <td><tt>Callback when minus is clicked.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.PlusMinusBox.html#plus_callback">plus_callback</a></td>
+    <td><tt>Callback when minus is clicked.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.gui.Container.html">Container</a>:
+          Inherited from <a href="clickndrag.Plane.html">Plane</a>:
         </p>
-        <table class="children sortable" id="id29">
+        <table class="children sortable" id="id40">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#redraw">redraw</a></td>
-    <td><tt>Redraw Container.image from the dimensions in Containter.rect.</tt></td>
+    <td><a href="clickndrag.Plane.html#sub">sub</a></td>
+    <td><tt>Remove the Plane given from its current parent and add it as a subplane of this Plane.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#sub">sub</a></td>
-    <td><tt>Resize the container, update the position of plane and add it as a subplane.</tt></td>
+    <td><a href="clickndrag.Plane.html#remove">remove</a></td>
+    <td><tt>Remove subplane by name or Plane instance.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#remove">remove</a></td>
-    <td><tt>Remove the subplane, then reposition remaining subplanes and resize the container.</tt></td>
+    <td><a href="clickndrag.Plane.html#remove_all">remove_all</a></td>
+    <td><tt>Convenience method to call Plane.remove() for all subplanes.</tt></td>
   </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#remove_all">remove_all</a></td>
-    <td><tt>Remove all subplanes and shrink accordingly.</tt></td>
-  </tr>
-  
-</table>
-      
-        <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Container.html">Container</a>):
-        </p>
-        <table class="children sortable" id="id30">
-  
-  
-<tr class="basemethod">
     
     
     <td>Method</td>
@@ -168,7 +157,7 @@ The message will be wrapped at newline characters.</pre>
     
 
     <div class="function">
-  <a name="clickndrag.gui.OkBox.__init__">
+  <a name="clickndrag.gui.PlusMinusBox.__init__">
     
   </a>
   <a name="__init__">
@@ -177,30 +166,49 @@ The message will be wrapped at newline characters.</pre>
   <div class="functionHeader">
     
     def
-    __init__(self, message):
+    __init__(self, name, charwidth, value=0):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#__init__">clickndrag.gui.Container.__init__</a></div>
+    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#__init__">clickndrag.Plane.__init__</a></div>
     <pre>Initialise.
-        </pre>
+charwidth is the width of the text field in characters.
+value, if given, is the initial numerical value.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.OkBox.ok">
+  <a name="clickndrag.gui.PlusMinusBox.minus_callback">
     
   </a>
-  <a name="ok">
+  <a name="minus_callback">
     
   </a>
   <div class="functionHeader">
     
     def
-    ok(self, plane):
+    minus_callback(self, Plane):
     
   </div>
   <div class="functionBody">
     
-    <pre>Button clicked callback which destroys the OkBox.
+    <pre>Callback when minus is clicked.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.PlusMinusBox.plus_callback">
+    
+  </a>
+  <a name="plus_callback">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    plus_callback(self, Plane):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Callback when minus is clicked.
         </pre>
   </div>
 </div>
