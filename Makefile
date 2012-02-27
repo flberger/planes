@@ -18,9 +18,9 @@ docs: clean
                                                     --html-output doc/
 
 clean:
-	rm -fv *.pyc
-	rm -fv */*.pyc
-	rm -fv */*/*.pyc
+	rm -vf `find . -iname '*.log'`
+	rm -rvf `find . -type d -iname '__pycache__'`
+	rm -vf `find . -iname '*.pyc'`
 
 pylint:
 	pylint clickndrag ; pylint examples/clickndrag_interactive.py
