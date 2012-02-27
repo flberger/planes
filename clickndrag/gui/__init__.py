@@ -125,8 +125,17 @@ class Label(clickndrag.Plane):
 
             self.background_color = self.cached_color = self.current_color = background_color
 
+            # If there is an alpha channel, replace by a SRCALPHA Surface
+            #
+            if len(self.background_color) == 4:
+
+                self.image = pygame.Surface(self.rect.size,
+                                            flags = pygame.SRCALPHA)
+
         if text is not None:
+
             self.text = text
+
         else:
             self.text = ""
 
@@ -156,9 +165,10 @@ class Label(clickndrag.Plane):
             self.image.fill(self.current_color)
 
             # Text is centered on rect.
-            # Give background for speedup.
             #
-            fontsurf = SMALL_FONT.render(self.text, True, (0, 0, 0), self.current_color)
+            fontsurf = SMALL_FONT.render(self.text,
+                                         True,
+                                         (0, 0, 0))
 
             centered_rect = fontsurf.get_rect()
 
@@ -687,7 +697,7 @@ class OkBox(Container):
 
         for line in message.split("\n"):
 
-            self.sub(Label("message-line_{}".format(linecount),
+            self.sub(Label("message-line_{0}".format(linecount),
                            line,
                            pygame.Rect((0, 0), (len(line) * PIX_PER_CHAR, 30))))
 

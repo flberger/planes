@@ -17,11 +17,11 @@
    >>> button.rect.center = (150, 250)
    >>> display.sub(button)
    >>> option_style = LMRStyle(os.path.join(os.path.dirname(__file__), "gradient_normal-l.png"),
-   ...                                      os.path.join(os.path.dirname(__file__), "gradient_normal-m.png"),
-   ...                                      os.path.join(os.path.dirname(__file__), "gradient_normal-r.png"))
+   ...                         os.path.join(os.path.dirname(__file__), "gradient_normal-m.png"),
+   ...                         os.path.join(os.path.dirname(__file__), "gradient_normal-r.png"))
    >>> highlight_style = LMRStyle(os.path.join(os.path.dirname(__file__), "gradient_highlight-l.png"),
-   ...                                         os.path.join(os.path.dirname(__file__), "gradient_highlight-m.png"),
-   ...                                         os.path.join(os.path.dirname(__file__), "gradient_highlight-r.png"))
+   ...                            os.path.join(os.path.dirname(__file__), "gradient_highlight-m.png"),
+   ...                            os.path.join(os.path.dirname(__file__), "gradient_highlight-r.png"))
    >>> option_list = LMROptionList("option_list",
    ...                             ["Option 1", "Option 2", "Option 3"],
    ...                             250,
@@ -149,7 +149,7 @@ class LMRWidget:
 
         # Clear area for right edge
         #
-        self.background.fill((0, 0, 0, 0, ),
+        self.background.fill((128, 128, 128, 0),
                              rect = pygame.Rect((left_width + mid_width, 0),
                                                 style.right_img.get_size()))
 
@@ -157,7 +157,7 @@ class LMRWidget:
 
         return
 
-class LMRButton(clickndrag.gui.Button, LMRWidget):
+class LMRButton(LMRWidget, clickndrag.gui.Button):
     """A clickndrag.gui.Button with LMR background.
     """
 
@@ -220,7 +220,7 @@ class LMRButton(clickndrag.gui.Button, LMRWidget):
 
         return
 
-class LMROption(clickndrag.gui.Option, LMRWidget):
+class LMROption(LMRWidget, clickndrag.gui.Option):
     """A clickndrag.gui.Option with LMR background.
 
        Additional attributes:
@@ -313,7 +313,7 @@ class LMROption(clickndrag.gui.Option, LMRWidget):
         return
 
 class LMROptionList(clickndrag.gui.OptionList):
-    """A list of options to select from.
+    """A clickndrag.gui.OptionList with LMROption elements.
 
        Options are LMROption subplanes of OptionList, named option0, option1,
        ..., optionN
@@ -357,7 +357,7 @@ class LMROptionList(clickndrag.gui.OptionList):
         #
         clickndrag.gui.Container.__init__(self,
                                           name,
-                                          background_color = (0, 0, 0, 0))
+                                          background_color = (128, 128, 128, 0))
 
         # Add options
         #
