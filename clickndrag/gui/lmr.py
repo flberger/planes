@@ -20,10 +20,6 @@
 
 # work started on 27. Feb 2012
 
-# TODO: Option
-# TODO: OptionList
-# TODO: OptionSelector
-
 import clickndrag.gui
 import pygame
 import os.path
@@ -57,43 +53,23 @@ class LMRStyle:
 
         return
 
-class LMRButton(clickndrag.gui.Button):
-    """A clickndrag.gui.Button with LMR background.
+class LMRWidget:
+    """Base class for widgets with an LMR background.
 
        Additional attributes:
 
-       LMRButton.background
+       LMRWidget.background
            A Pygame Surface, holding the rendered background for this button.
-
-       Doctest:
-
-       >>> display = clickndrag.Display((300, 300))
-       >>> display.image.fill((128, 128, 128))
-       <rect(0, 0, 300, 300)>
-       >>> style = LMRStyle(os.path.join(os.path.dirname(__file__), "button-l.png"),
-       ...                  os.path.join(os.path.dirname(__file__), "button-m.png"),
-       ...                  os.path.join(os.path.dirname(__file__), "button-r.png"))
-       >>> def exit(plane):
-       ...     pygame.quit()
-       ...     raise SystemExit
-       >>> button = LMRButton("LMRButton", exit, style)
-       >>> button.rect.center = display.rect.center
-       >>> display.sub(button)
-       >>> clock = pygame.time.Clock()
-       >>> while True:
-       ...     events = pygame.event.get()
-       ...     display.process(events)
-       ...     display.update()
-       ...     display.render()
-       ...     pygame.display.flip()
-       ...     clock.tick(30)
-       Traceback (most recent call last):
-           ...
-       SystemExit
     """
 
-    def __init__(self, label, callback, style):
-        """Initialise the Button.
+    def __init__(self, width, style):
+        """Initialise LMRWidget.background from width and style given.
+
+           width is the total widget width in pixels.
+
+           style is an instance of LMRStyle.
+
+           The height of the LMRWidget is taken from style.left_img.height.
         """
 
         if not isinstance(style, LMRStyle):
@@ -110,9 +86,7 @@ class LMRButton(clickndrag.gui.Button):
         #
         left_width = style.left_img.get_width()
 
-        mid_width = len(label) * clickndrag.gui.PIX_PER_CHAR
-
-        width = left_width + mid_width + style.right_img.get_width()
+        mid_width = width - left_width - style.right_img.get_width()
 
         # Create background image
         # Default to SRCALPHA.
@@ -142,12 +116,59 @@ class LMRButton(clickndrag.gui.Button):
 
         self.background.blit(style.right_img, (left_width + mid_width, 0))
 
+        return
+
+class LMRButton(clickndrag.gui.Button, LMRWidget):
+    """A clickndrag.gui.Button with LMR background.
+
+       Doctest:
+
+       >>> display = clickndrag.Display((300, 300))
+       >>> display.image.fill((128, 128, 128))
+       <rect(0, 0, 300, 300)>
+       >>> style = LMRStyle(os.path.join(os.path.dirname(__file__), "button-l.png"),
+       ...                  os.path.join(os.path.dirname(__file__), "button-m.png"),
+       ...                  os.path.join(os.path.dirname(__file__), "button-r.png"))
+       >>> def exit(plane):
+       ...     pygame.quit()
+       ...     raise SystemExit
+       >>> button = LMRButton("LMRButton", 100, exit, style)
+       >>> button.rect.center = display.rect.center
+       >>> display.sub(button)
+       >>> clock = pygame.time.Clock()
+       >>> while True:
+       ...     events = pygame.event.get()
+       ...     display.process(events)
+       ...     display.update()
+       ...     display.render()
+       ...     pygame.display.flip()
+       ...     clock.tick(30)
+       Traceback (most recent call last):
+           ...
+       SystemExit
+    """
+
+    def __init__(self, label, width, callback, style):
+        """Initialise the Button.
+
+           label is the Text to be written on the button.
+
+           callback is the function to be called with callback(Button) when the
+           Button is clicked with the left mouse button.
+
+           style is an instance of LMRStyle.
+        """
+
+        # Initialise self.background
+        #
+        LMRWidget.__init__(self, width, style)
+
         # Now call base class.
         # This will also call redraw().
         #
         clickndrag.gui.Button.__init__(self,
                                        label,
-                                       pygame.Rect((0, 0), (width, height)),
+                                       self.background.get_rect(),
                                        callback)
 
         return
@@ -185,3 +206,34 @@ class LMRButton(clickndrag.gui.Button):
             self.cached_text = self.text
 
         return
+
+class LMROption(clickndrag.gui.Option):
+    """A clickndrag.gui.Option with LMR background.
+    """
+
+    def __init__(self, name, text, width, style):
+        """Initialise the Label.
+
+           text is the text to be written on the Label. If text is None, it is
+           replaced by an empty string.
+
+           width is the total widget width in pixels.
+
+           style is an instance of LMRStyle.
+        """
+
+        # Initialise self.background
+        #
+        LMRWidget.__init__(self, width, style)
+
+        # Call base class. This calls through to clickndrag.gui.Label.
+        #
+        clickndrag.gui.Option.__init__(self, name, text, rect)
+
+        return
+
+class LMROptionList(clickndrag.gui.OptionList):
+    pass
+
+class LMROptionSelector(clickndrag.gui.OptionSelector):
+    pass
