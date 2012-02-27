@@ -3,94 +3,90 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.Label&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.tmb.TMBContainer&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.Label(<a href="clickndrag.Plane.html">clickndrag.Plane</a>):</h1>
+    <h1 class="class">Class c.g.t.TMBContainer(<a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a>):</h1>
     <p>
-      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
+      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a>.<a href="clickndrag.gui.tmb.html">tmb</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.Label">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.tmb.TMBContainer">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="clickndrag.gui.Button.html">clickndrag.gui.Button</a>, <a href="clickndrag.gui.Option.html">clickndrag.gui.Option</a>, <a href="clickndrag.gui.OutlinedText.html">clickndrag.gui.OutlinedText</a>, <a href="clickndrag.gui.TextBox.html">clickndrag.gui.TextBox</a></p>
+      <p>Known subclasses: <a href="clickndrag.gui.tmb.TMBOkBox.html">clickndrag.gui.tmb.TMBOkBox</a></p>
     </div>
-    <pre>A clickndrag.Plane which displays a text.
+    <pre>A clickndrag.gui.Container with fixed width and TMB background.
 
 Additional attributes:
 
-Label.text
-    The text to be written on the Label
+TMBContainer.style
+    An instance of TMBStyle.
 
-Label.cached_text
-    Cache to catch changes
-
-Label.background_color
-    The original background color for this Label
-
-Label.current_color
-    The current background color
-
-Label.cached_color
-    A cache for color changes</pre>
+TMBContainer.background
+    A Pygame Surface, holding the rendered background.
+    Initially None, repainted in TMBContainer.sub().</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id10">
+      <table class="children sortable" id="id55">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Label.html#__init__">__init__</a></td>
-    <td><tt>Initialise the Label.</tt></td>
+    <td><a href="clickndrag.gui.tmb.TMBContainer.html#__init__">__init__</a></td>
+    <td><tt>Initialise.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Label.html#update">update</a></td>
-    <td><tt>Renew the text on the label, then call the base class method.</tt></td>
+    <td><a href="clickndrag.gui.tmb.TMBContainer.html#sub">sub</a></td>
+    <td><tt>Resize the container, update the position of plane and add it as a subplane.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Label.html#redraw">redraw</a></td>
-    <td><tt>Redraw the Label if necessary.</tt></td>
+    <td><a href="clickndrag.gui.tmb.TMBContainer.html#redraw">redraw</a></td>
+    <td><tt>Redraw TMBContainer.image using TMBContainer.background.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.tmb.TMBContainer.html#remove">remove</a></td>
+    <td><tt>Remove the subplane, then reposition remaining subplanes and resize the container.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a>:
+          Inherited from <a href="clickndrag.gui.Container.html">Container</a>:
         </p>
-        <table class="children sortable" id="id11">
+        <table class="children sortable" id="id56">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#sub">sub</a></td>
-    <td><tt>Remove the Plane given from its current parent and add it as a subplane of this Plane.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.Plane.html#remove">remove</a></td>
-    <td><tt>Remove subplane by name or Plane instance.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.Plane.html#remove_all">remove_all</a></td>
-    <td><tt>Convenience method to call Plane.remove() for all subplanes.</tt></td>
-  </tr><tr class="basemethod">
+    <td><a href="clickndrag.gui.Container.html#remove_all">remove_all</a></td>
+    <td><tt>Remove all subplanes and shrink accordingly.</tt></td>
+  </tr>
+  
+</table>
+      
+        <p>
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Container.html">Container</a>):
+        </p>
+        <table class="children sortable" id="id57">
+  
+  
+<tr class="basemethod">
     
     
     <td>Method</td>
@@ -108,6 +104,12 @@ Label.cached_color
     <td>Method</td>
     <td><a href="clickndrag.Plane.html#get_plane_at">get_plane_at</a></td>
     <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.Plane.html#update">update</a></td>
+    <td><tt>Update hook.</tt></td>
   </tr><tr class="basemethod">
     
     
@@ -167,7 +169,7 @@ Label.cached_color
     
 
     <div class="function">
-  <a name="clickndrag.gui.Label.__init__">
+  <a name="clickndrag.gui.tmb.TMBContainer.__init__">
     
   </a>
   <a name="__init__">
@@ -176,35 +178,35 @@ Label.cached_color
   <div class="functionHeader">
     
     def
-    __init__(self, name, text, rect, background_color=None):
+    __init__(self, name, style, padding=0):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#__init__">clickndrag.Plane.__init__</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.Button.html">clickndrag.gui.Button</a>, <a href="clickndrag.gui.lmr.LMROption.html">clickndrag.gui.lmr.LMROption</a>, <a href="clickndrag.gui.OutlinedText.html">clickndrag.gui.OutlinedText</a>, <a href="clickndrag.gui.TextBox.html">clickndrag.gui.TextBox</a></div>
-    <pre>Initialise the Label.
-text is the text to be written on the Label. If text is None, it is
-replaced by an empty string.</pre>
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#__init__">clickndrag.gui.Container.__init__</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.tmb.TMBOkBox.html">clickndrag.gui.tmb.TMBOkBox</a></div>
+    <pre>Initialise.
+
+style is an instance of TMBStyle.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.Label.update">
+  <a name="clickndrag.gui.tmb.TMBContainer.sub">
     
   </a>
-  <a name="update">
+  <a name="sub">
     
   </a>
   <div class="functionHeader">
     
     def
-    update(self):
+    sub(self, plane):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#update">clickndrag.Plane.update</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.Button.html">clickndrag.gui.Button</a></div>
-    <pre>Renew the text on the label, then call the base class method.
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#sub">clickndrag.gui.Container.sub</a></div>
+    <pre>Resize the container, update the position of plane and add it as a subplane.
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.Label.redraw">
+  <a name="clickndrag.gui.tmb.TMBContainer.redraw">
     
   </a>
   <a name="redraw">
@@ -217,8 +219,26 @@ replaced by an empty string.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.Button.html">clickndrag.gui.Button</a>, <a href="clickndrag.gui.lmr.LMROption.html">clickndrag.gui.lmr.LMROption</a>, <a href="clickndrag.gui.OutlinedText.html">clickndrag.gui.OutlinedText</a>, <a href="clickndrag.gui.TextBox.html">clickndrag.gui.TextBox</a></div>
-    <pre>Redraw the Label if necessary.
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#redraw">clickndrag.gui.Container.redraw</a></div>
+    <pre>Redraw TMBContainer.image using TMBContainer.background.
+This also creates a new TMBContainer.rendersurface.</pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.tmb.TMBContainer.remove">
+    
+  </a>
+  <a name="remove">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    remove(self, plane_identifier):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#remove">clickndrag.gui.Container.remove</a></div>
+    <pre>Remove the subplane, then reposition remaining subplanes and resize the container.
         </pre>
   </div>
 </div>
