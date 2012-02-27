@@ -371,7 +371,7 @@ class Plane:
 
                                 # Premultiply alpha channel to RGB. Otherwise
                                 # invisible RGB values will be added by BLEND_ADD.
-                                # Technique suggested by René Dudfield
+                                # Technique suggested by Rene Dudfield
                                 # <renesd@gmail.com> on pygame-users@seul.org on
                                 # 19 Dec 2011
                                 #
