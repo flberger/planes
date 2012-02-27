@@ -421,17 +421,29 @@ class Container(clickndrag.Plane):
         """Redraw Container.image from the dimensions in Containter.rect.
            This also creates a new Container.rendersurface.
         """
-        # Create Surface with background color and black border
+
+        # Create Surface with background color
         #
-        self.image = pygame.Surface(self.rect.size)
+        if len(self.background_color) == 4:
+
+            self.image = pygame.Surface(self.rect.size,
+                                        flags = pygame.SRCALPHA)
+
+        else:
+
+            self.image = pygame.Surface(self.rect.size)
 
         self.image.fill(self.background_color)
 
-        draw_border(self, (0, 0, 0))
+        # Only draw a border if there is no alpha channel.
+        #
+        if len(self.background_color) == 3:
+
+            draw_border(self, (0, 0, 0))
 
         # Create a new rendersurface
         #
-        self.rendersurface = pygame.Surface(self.rect.size)
+        self.rendersurface = self.image.copy()
 
         return
 

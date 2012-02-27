@@ -353,8 +353,11 @@ class LMROptionList(clickndrag.gui.OptionList):
         self.highlighted_background = LMRWidget(width, highlight_style).background
 
         # This is still a Container.
+        # Create a transparent background. This will also disable the border.
         #
-        clickndrag.gui.Container.__init__(self, name)
+        clickndrag.gui.Container.__init__(self,
+                                          name,
+                                          background_color = (0, 0, 0, 0))
 
         # Add options
         #
@@ -375,21 +378,5 @@ class LMROptionList(clickndrag.gui.OptionList):
         # Force redraw in render()
         #
         self.last_rect = None
-
-        return
-
-    def redraw(self):
-        """Container.redraw() method, but creating a transparent Surface.
-        """
-
-        # Create transparent Surface
-        #
-        self.image = pygame.Surface(self.rect.size, flags = pygame.SRCALPHA)
-
-        self.image.fill((0, 0, 0, 0))
-
-        # Create a new rendersurface
-        #
-        self.rendersurface = self.image.copy()
 
         return
