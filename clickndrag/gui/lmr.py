@@ -1,6 +1,45 @@
 """lmr - Left-Mid-Right Background Styles for clickndrag.gui widgets.
 
    Copyright 2012 Florian Berger <fberger@florian-berger.de>
+
+   Module doctests:
+
+   >>> display = clickndrag.Display((300, 300))
+   >>> display.image.fill((128, 128, 128))
+   <rect(0, 0, 300, 300)>
+   >>> button_style = LMRStyle(os.path.join(os.path.dirname(__file__), "button-l.png"),
+   ...                                      os.path.join(os.path.dirname(__file__), "button-m.png"),
+   ...                                      os.path.join(os.path.dirname(__file__), "button-r.png"))
+   >>> def exit(plane):
+   ...     pygame.quit()
+   ...     raise SystemExit
+   >>> button = LMRButton("LMRButton", 100, exit, button_style)
+   >>> button.rect.center = (150, 250)
+   >>> display.sub(button)
+   >>> option_style = LMRStyle(os.path.join(os.path.dirname(__file__), "gradient_normal-l.png"),
+   ...                                      os.path.join(os.path.dirname(__file__), "gradient_normal-m.png"),
+   ...                                      os.path.join(os.path.dirname(__file__), "gradient_normal-r.png"))
+   >>> highlight_style = LMRStyle(os.path.join(os.path.dirname(__file__), "gradient_highlight-l.png"),
+   ...                                         os.path.join(os.path.dirname(__file__), "gradient_highlight-m.png"),
+   ...                                         os.path.join(os.path.dirname(__file__), "gradient_highlight-r.png"))
+   >>> option_list = LMROptionList("option_list",
+   ...                             ["Option 1", "Option 2", "Option 3"],
+   ...                             250,
+   ...                             option_style,
+   ...                             highlight_style)
+   >>> option_list.rect.center = (150, 100)
+   >>> display.sub(option_list)
+   >>> clock = pygame.time.Clock()
+   >>> while True:
+   ...     events = pygame.event.get()
+   ...     display.process(events)
+   ...     display.update()
+   ...     display.render()
+   ...     pygame.display.flip()
+   ...     clock.tick(30)
+   Traceback (most recent call last):
+       ...
+   SystemExit
 """
 
 # This file is part of clickndrag.
@@ -54,12 +93,12 @@ class LMRStyle:
         return
 
 class LMRWidget:
-    """Base class for widgets with an LMR background.
+    """Base class for fixed-height, flexible-width widgets with an LMR background.
 
        Additional attributes:
 
        LMRWidget.background
-           A Pygame Surface, holding the rendered background for this button.
+           A Pygame Surface, holding the rendered background for this widget.
     """
 
     def __init__(self, width, style):
@@ -120,32 +159,6 @@ class LMRWidget:
 
 class LMRButton(clickndrag.gui.Button, LMRWidget):
     """A clickndrag.gui.Button with LMR background.
-
-       Doctest:
-
-       >>> display = clickndrag.Display((300, 300))
-       >>> display.image.fill((128, 128, 128))
-       <rect(0, 0, 300, 300)>
-       >>> style = LMRStyle(os.path.join(os.path.dirname(__file__), "button-l.png"),
-       ...                  os.path.join(os.path.dirname(__file__), "button-m.png"),
-       ...                  os.path.join(os.path.dirname(__file__), "button-r.png"))
-       >>> def exit(plane):
-       ...     pygame.quit()
-       ...     raise SystemExit
-       >>> button = LMRButton("LMRButton", 100, exit, style)
-       >>> button.rect.center = display.rect.center
-       >>> display.sub(button)
-       >>> clock = pygame.time.Clock()
-       >>> while True:
-       ...     events = pygame.event.get()
-       ...     display.process(events)
-       ...     display.update()
-       ...     display.render()
-       ...     pygame.display.flip()
-       ...     clock.tick(30)
-       Traceback (most recent call last):
-           ...
-       SystemExit
     """
 
     def __init__(self, label, width, callback, style):
@@ -207,8 +220,13 @@ class LMRButton(clickndrag.gui.Button, LMRWidget):
 
         return
 
-class LMROption(clickndrag.gui.Option):
+class LMROption(clickndrag.gui.Option, LMRWidget):
     """A clickndrag.gui.Option with LMR background.
+
+       Additional attributes:
+
+       LMROption.original_background
+           The original background Surface.
     """
 
     def __init__(self, name, text, width, style):
@@ -226,14 +244,152 @@ class LMROption(clickndrag.gui.Option):
         #
         LMRWidget.__init__(self, width, style)
 
+        self.original_background = self.background
+
         # Call base class. This calls through to clickndrag.gui.Label.
         #
-        clickndrag.gui.Option.__init__(self, name, text, rect)
+        clickndrag.gui.Option.__init__(self, name, text, self.background.get_rect())
+
+        return
+
+    def redraw(self):
+        """Unconditionally redraw the LMROption.
+        """
+
+        # Copied from LMRButton.redraw().
+        # TODO: This is terribly inefficient. Refactor with flag check, like Label.
+
+        # Copy, don't blit, taking care for transparency
+        #
+        self.image = self.background.copy()
+
+        # Text is centered on rect.
+        #
+        fontsurf = clickndrag.gui.SMALL_FONT.render(self.text,
+                                                    True,
+                                                    (0, 0, 0))
+
+        centered_rect = fontsurf.get_rect()
+
+        # Get a neutral center of self.rect
+        #
+        centered_rect.center = pygame.Rect((0, 0), self.rect.size).center
+
+        self.image.blit(fontsurf, centered_rect)
+
+        # Force redraw in render()
+        #
+        self.last_rect = None
+
+        return
+
+    def clicked(self, button_name):
+        """Highlight this option with a different LMR background and register as parent.selected.
+
+           The Surface used for the highlight is
+           LMROption.parent.highlighted_background. This only works if this
+           LMROption is a subsurface of an LMROptionList.
+        """
+
+        if button_name == "left":
+
+            for name in self.parent.subplanes_list:
+
+                plane = self.parent.subplanes[name]
+                plane.background = plane.original_background
+
+                # Force redraw in render()
+                #
+                plane.last_rect = None
+
+            self.background = self.parent.highlighted_background
+
+            # Force redraw in render()
+            #
+            self.last_rect = None
+
+            self.parent.selected = self
 
         return
 
 class LMROptionList(clickndrag.gui.OptionList):
-    pass
+    """A list of options to select from.
 
-class LMROptionSelector(clickndrag.gui.OptionSelector):
-    pass
+       Options are LMROption subplanes of OptionList, named option0, option1,
+       ..., optionN
+
+       Please note that it is not possible to confirm a selection here. Use a
+       wrapper like OptionSelector to accomplish that.
+
+       Additional attributes:
+
+       LMROptionList.highlighted_background
+           A Pygame Surface, holding the background for the highlighted
+           LMROption subplane.
+
+       LMROptionList.selected
+           The selected Option
+    """
+
+    def __init__(self, name, option_list, width, option_style, highlight_style):
+        """Initialise the OptionList.
+
+           option_list is a list of strings to be displayed as options.
+
+           width is the total widget width in pixels.
+
+           option_style is an instance of LMRStyle to be used for the LMROption
+           subplanes.
+
+           highlight_style is an instance of LMRStyle to be used for the
+           highlighted LMROption subplane.
+        """
+
+        # This is a complete rewrite. We do not call the base class __init__()
+        # on purpose.
+
+        # Create a dummy LMRWidget
+        #
+        self.highlighted_background = LMRWidget(width, highlight_style).background
+
+        # This is still a Container.
+        #
+        clickndrag.gui.Container.__init__(self, name)
+
+        # Add options
+        #
+        for text in option_list:
+
+            option = LMROption("option" + str(option_list.index(text)),
+                               text,
+                               width,
+                               option_style)
+
+            option.highlight = True
+
+            self.sub(option)
+
+        self.option0.background = self.highlighted_background
+        self.selected = self.option0
+
+        # Force redraw in render()
+        #
+        self.last_rect = None
+
+        return
+
+    def redraw(self):
+        """Container.redraw() method, but creating a transparent Surface.
+        """
+
+        # Create transparent Surface
+        #
+        self.image = pygame.Surface(self.rect.size, flags = pygame.SRCALPHA)
+
+        self.image.fill((0, 0, 0, 0))
+
+        # Create a new rendersurface
+        #
+        self.rendersurface = self.image.copy()
+
+        return
