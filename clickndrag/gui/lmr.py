@@ -20,6 +20,10 @@
 
 # work started on 27. Feb 2012
 
+# TODO: Option
+# TODO: OptionList
+# TODO: OptionSelector
+
 import clickndrag.gui
 import pygame
 import os.path
