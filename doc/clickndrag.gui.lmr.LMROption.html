@@ -3,73 +3,77 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.Option&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.lmr.LMROption&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.Option(<a href="clickndrag.gui.Label.html">Label</a>):</h1>
+    <h1 class="class">Class c.g.l.LMROption(<a href="clickndrag.gui.Option.html">clickndrag.gui.Option</a>, <a href="clickndrag.gui.lmr.LMRWidget.html">LMRWidget</a>):</h1>
     <p>
-      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
+      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a>.<a href="clickndrag.gui.lmr.html">lmr</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.Option">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.lmr.LMROption">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="clickndrag.gui.lmr.LMROption.html">clickndrag.gui.lmr.LMROption</a></p>
+      
     </div>
-    <pre>A subclass of Label which handles mouseclicks, to be used in an OptionList.
-    </pre>
+    <pre>A clickndrag.gui.Option with LMR background.
+
+Additional attributes:
+
+LMROption.original_background
+    The original background Surface.</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id19">
+      <table class="children sortable" id="id47">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Option.html#clicked">clicked</a></td>
-    <td><tt>Highlight this option and register as parent.selected.</tt></td>
+    <td><a href="clickndrag.gui.lmr.LMROption.html#__init__">__init__</a></td>
+    <td><tt>Initialise the Label.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.lmr.LMROption.html#redraw">redraw</a></td>
+    <td><tt>Unconditionally redraw the LMROption.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.lmr.LMROption.html#clicked">clicked</a></td>
+    <td><tt>Highlight this option with a different LMR background and register as parent.selected.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.gui.Label.html">Label</a>:
+          Inherited from <a href="clickndrag.gui.Label.html">Label</a> (via <a href="clickndrag.gui.Option.html">Option</a>):
         </p>
-        <table class="children sortable" id="id20">
+        <table class="children sortable" id="id48">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Label.html#__init__">__init__</a></td>
-    <td><tt>Initialise the Label.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
     <td><a href="clickndrag.gui.Label.html#update">update</a></td>
     <td><tt>Renew the text on the label, then call the base class method.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.gui.Label.html#redraw">redraw</a></td>
-    <td><tt>Redraw the Label if necessary.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Label.html">Label</a>):
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Option.html">Option</a>, <a href="clickndrag.gui.Label.html">Label</a>):
         </p>
-        <table class="children sortable" id="id21">
+        <table class="children sortable" id="id49">
   
   
 <tr class="basemethod">
@@ -161,7 +165,49 @@
     
 
     <div class="function">
-  <a name="clickndrag.gui.Option.clicked">
+  <a name="clickndrag.gui.lmr.LMROption.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    __init__(self, name, text, width, style):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Label.html#__init__">clickndrag.gui.Label.__init__</a></div>
+    <pre>Initialise the Label.
+
+text is the text to be written on the Label. If text is None, it is
+replaced by an empty string.
+
+width is the total widget width in pixels.
+
+style is an instance of LMRStyle.</pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.lmr.LMROption.redraw">
+    
+  </a>
+  <a name="redraw">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    redraw(self):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Label.html#redraw">clickndrag.gui.Label.redraw</a></div>
+    <pre>Unconditionally redraw the LMROption.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="clickndrag.gui.lmr.LMROption.clicked">
     
   </a>
   <a name="clicked">
@@ -174,9 +220,12 @@
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#clicked">clickndrag.Plane.clicked</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.lmr.LMROption.html">clickndrag.gui.lmr.LMROption</a></div>
-    <pre>Highlight this option and register as parent.selected.
-        </pre>
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Option.html#clicked">clickndrag.gui.Option.clicked</a></div>
+    <pre>Highlight this option with a different LMR background and register as parent.selected.
+
+The Surface used for the highlight is
+LMROption.parent.highlighted_background. This only works if this
+LMROption is a subsurface of an LMROptionList.</pre>
   </div>
 </div>
     <address>

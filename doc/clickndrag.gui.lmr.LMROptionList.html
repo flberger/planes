@@ -3,52 +3,59 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.OkBox&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.lmr.LMROptionList&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.OkBox(<a href="clickndrag.gui.Container.html">Container</a>):</h1>
+    <h1 class="class">Class c.g.l.LMROptionList(<a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a>):</h1>
     <p>
-      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
+      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a>.<a href="clickndrag.gui.lmr.html">lmr</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.OkBox">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.lmr.LMROptionList">View In Hierarchy</a>
     </p>
     <div>
       
     </div>
-    <pre>A box which displays a message and an OK button.
-It is destroyed when OK is clicked.
-The message will be wrapped at newline characters.</pre>
+    <pre>A list of options to select from.
+
+Options are LMROption subplanes of OptionList, named option0, option1,
+..., optionN
+
+Please note that it is not possible to confirm a selection here. Use a
+wrapper like OptionSelector to accomplish that.
+
+Additional attributes:
+
+LMROptionList.highlighted_background
+    A Pygame Surface, holding the background for the highlighted
+    LMROption subplane.
+
+LMROptionList.selected
+    The selected Option</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id28">
+      <table class="children sortable" id="id50">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.OkBox.html#__init__">__init__</a></td>
-    <td><tt>Initialise.</tt></td>
-  </tr><tr class="method">
-    
-    
-    <td>Method</td>
-    <td><a href="clickndrag.gui.OkBox.html#ok">ok</a></td>
-    <td><tt>Button clicked callback which destroys the OkBox.</tt></td>
+    <td><a href="clickndrag.gui.lmr.LMROptionList.html#__init__">__init__</a></td>
+    <td><tt>Initialise the OptionList.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.gui.Container.html">Container</a>:
+          Inherited from <a href="clickndrag.gui.Container.html">Container</a> (via <a href="clickndrag.gui.OptionList.html">OptionList</a>):
         </p>
-        <table class="children sortable" id="id29">
+        <table class="children sortable" id="id51">
   
   
 <tr class="basemethod">
@@ -80,9 +87,9 @@ The message will be wrapped at newline characters.</pre>
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.Container.html">Container</a>):
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.OptionList.html">OptionList</a>, <a href="clickndrag.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id30">
+        <table class="children sortable" id="id52">
   
   
 <tr class="basemethod">
@@ -168,7 +175,7 @@ The message will be wrapped at newline characters.</pre>
     
 
     <div class="function">
-  <a name="clickndrag.gui.OkBox.__init__">
+  <a name="clickndrag.gui.lmr.LMROptionList.__init__">
     
   </a>
   <a name="__init__">
@@ -177,31 +184,22 @@ The message will be wrapped at newline characters.</pre>
   <div class="functionHeader">
     
     def
-    __init__(self, message):
+    __init__(self, name, option_list, width, option_style, highlight_style):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.gui.Container.html#__init__">clickndrag.gui.Container.__init__</a></div>
-    <pre>Initialise.
-        </pre>
-  </div>
-</div><div class="function">
-  <a name="clickndrag.gui.OkBox.ok">
-    
-  </a>
-  <a name="ok">
-    
-  </a>
-  <div class="functionHeader">
-    
-    def
-    ok(self, plane):
-    
-  </div>
-  <div class="functionBody">
-    
-    <pre>Button clicked callback which destroys the OkBox.
-        </pre>
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.OptionList.html#__init__">clickndrag.gui.OptionList.__init__</a></div>
+    <pre>Initialise the OptionList.
+
+option_list is a list of strings to be displayed as options.
+
+width is the total widget width in pixels.
+
+option_style is an instance of LMRStyle to be used for the LMROption
+subplanes.
+
+highlight_style is an instance of LMRStyle to be used for the
+highlighted LMROption subplane.</pre>
   </div>
 </div>
     <address>
