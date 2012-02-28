@@ -7,9 +7,9 @@
    >>> display = clickndrag.Display((300, 300))
    >>> display.image.fill((128, 128, 128))
    <rect(0, 0, 300, 300)>
-   >>> button_style = LMRStyle(os.path.join(os.path.dirname(__file__), "button-l.png"),
-   ...                                      os.path.join(os.path.dirname(__file__), "button-m.png"),
-   ...                                      os.path.join(os.path.dirname(__file__), "button-r.png"))
+   >>> button_style = LMRStyle(os.path.join(os.path.dirname(__file__), "button-orange-32px-l.png"),
+   ...                         os.path.join(os.path.dirname(__file__), "button-orange-32px-m.png"),
+   ...                         os.path.join(os.path.dirname(__file__), "button-orange-32px-r.png"))
    >>> def exit(plane):
    ...     pygame.quit()
    ...     raise SystemExit

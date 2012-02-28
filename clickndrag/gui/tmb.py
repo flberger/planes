@@ -7,10 +7,13 @@
    >>> display = clickndrag.Display((500, 300))
    >>> display.image.fill((128, 128, 128))
    <rect(0, 0, 500, 300)>
-   >>> container_style = TMBStyle(os.path.join(os.path.dirname(__file__), "box-t.png"),
-   ...                            os.path.join(os.path.dirname(__file__), "box-m.png"),
-   ...                            os.path.join(os.path.dirname(__file__), "box-b.png"))
-   >>> ok_box = TMBOkBox("Welcome to a TMBOkBox!", container_style)
+   >>> container_style = TMBStyle(os.path.join(os.path.dirname(__file__), "container-256px-t.png"),
+   ...                            os.path.join(os.path.dirname(__file__), "container-256px-m.png"),
+   ...                            os.path.join(os.path.dirname(__file__), "container-256px-b.png"))
+   >>> button_style = clickndrag.gui.lmr.LMRStyle(os.path.join(os.path.dirname(__file__), "button-white-32px-l.png"),
+   ...                                            os.path.join(os.path.dirname(__file__), "button-white-32px-m.png"),
+   ...                                            os.path.join(os.path.dirname(__file__), "button-white-32px-r.png"))
+   >>> ok_box = TMBOkBox("Welcome to a TMBOkBox!", container_style, button_style)
    >>> ok_box.rect.center = display.rect.center
    >>> display.sub(ok_box)
    >>> clock = pygame.time.Clock()
@@ -122,6 +125,7 @@ class TMBContainer(clickndrag.gui.Container):
 
     def sub(self, plane):
         """Resize the container, update the position of plane and add it as a subplane.
+           This will also repaint TMBContainer.background.
         """
 
         # Adapted from gui.Container method
@@ -249,7 +253,7 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
        The message will be wrapped at newline characters.
     """
 
-    def __init__(self, message, style):
+    def __init__(self, message, style, button_style = None):
         """Initialise.
 
            style is an instance of TMBStyle.
@@ -275,6 +279,16 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
 
             linecount = linecount + 1
 
-        self.sub(clickndrag.gui.Button("OK", pygame.Rect((0, 0), (50, 30)), self.ok))
+        if button_style is not None:
+
+            self.sub(clickndrag.gui.lmr.LMRButton("OK",
+                                                  50,
+                                                  self.ok,
+                                                  button_style))
+
+        else:
+            self.sub(clickndrag.gui.Button("OK",
+                                           pygame.Rect((0, 0), (50, 30)),
+                                           self.ok))
 
         return
