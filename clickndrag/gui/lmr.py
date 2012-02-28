@@ -1,4 +1,4 @@
-"""lmr - Left-Mid-Right Background Styles for clickndrag.gui widgets.
+"""lmr - clickndrag.gui widgets with left-mid-right backgrounds.
 
    Copyright 2012 Florian Berger <fberger@florian-berger.de>
 
@@ -7,21 +7,18 @@
    >>> display = clickndrag.Display((300, 300))
    >>> display.image.fill((128, 128, 128))
    <rect(0, 0, 300, 300)>
-   >>> button_style = LMRStyle(os.path.join(os.path.dirname(__file__), "button-orange-32px-l.png"),
-   ...                         os.path.join(os.path.dirname(__file__), "button-orange-32px-m.png"),
-   ...                         os.path.join(os.path.dirname(__file__), "button-orange-32px-r.png"))
    >>> def exit(plane):
    ...     pygame.quit()
    ...     raise SystemExit
-   >>> button = LMRButton("LMRButton", 100, exit, button_style)
+   >>> button = LMRButton("LMRButton", 100, exit, ORANGE_STYLE)
    >>> button.rect.center = (150, 250)
    >>> display.sub(button)
-   >>> option_style = LMRStyle(os.path.join(os.path.dirname(__file__), "gradient_normal-l.png"),
-   ...                         os.path.join(os.path.dirname(__file__), "gradient_normal-m.png"),
-   ...                         os.path.join(os.path.dirname(__file__), "gradient_normal-r.png"))
-   >>> highlight_style = LMRStyle(os.path.join(os.path.dirname(__file__), "gradient_highlight-l.png"),
-   ...                            os.path.join(os.path.dirname(__file__), "gradient_highlight-m.png"),
-   ...                            os.path.join(os.path.dirname(__file__), "gradient_highlight-r.png"))
+   >>> option_style = LMRStyle(os.path.join(os.path.dirname(__file__), "resources", "gradient_normal-l.png"),
+   ...                         os.path.join(os.path.dirname(__file__), "resources", "gradient_normal-m.png"),
+   ...                         os.path.join(os.path.dirname(__file__), "resources", "gradient_normal-r.png"))
+   >>> highlight_style = LMRStyle(os.path.join(os.path.dirname(__file__), "resources", "gradient_highlight-l.png"),
+   ...                            os.path.join(os.path.dirname(__file__), "resources", "gradient_highlight-m.png"),
+   ...                            os.path.join(os.path.dirname(__file__), "resources", "gradient_highlight-r.png"))
    >>> option_list = LMROptionList("option_list",
    ...                             ["Option 1", "Option 2", "Option 3"],
    ...                             250,
@@ -84,13 +81,26 @@ class LMRStyle:
            left_img, mid_img and right_img are the respective image file names.
         """
 
-        self.left_img = pygame.image.load(left_img).convert_alpha()
+        # TODO: convert_alpha() should be called as soon as a display is available.
 
-        self.mid_img = pygame.image.load(mid_img).convert_alpha()
+        self.left_img = pygame.image.load(left_img)
 
-        self.right_img = pygame.image.load(right_img).convert_alpha()
+        self.mid_img = pygame.image.load(mid_img)
+
+        self.right_img = pygame.image.load(right_img)
 
         return
+
+# Create some default styles
+#
+ORANGE_STYLE = LMRStyle(os.path.join(os.path.dirname(__file__), "resources", "button-orange-32px-l.png"),
+                        os.path.join(os.path.dirname(__file__), "resources", "button-orange-32px-m.png"),
+                        os.path.join(os.path.dirname(__file__), "resources", "button-orange-32px-r.png"))
+
+WHITE_STYLE = LMRStyle(os.path.join(os.path.dirname(__file__), "resources", "button-white-32px-l.png"),
+                       os.path.join(os.path.dirname(__file__), "resources", "button-white-32px-m.png"),
+                       os.path.join(os.path.dirname(__file__), "resources", "button-white-32px-r.png"))
+
 
 class LMRWidget:
     """Base class for fixed-height, flexible-width widgets with an LMR background.

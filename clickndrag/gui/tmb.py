@@ -1,4 +1,4 @@
-"""tmb - Top-Mid-Bottom Background Styles for clickndrag.gui widgets.
+"""tmb - clickndrag.gui widgets with top-mid-bottom backgrounds.
 
    Copyright 2012 Florian Berger <fberger@florian-berger.de>
 
@@ -7,13 +7,7 @@
    >>> display = clickndrag.Display((500, 300))
    >>> display.image.fill((128, 128, 128))
    <rect(0, 0, 500, 300)>
-   >>> container_style = TMBStyle(os.path.join(os.path.dirname(__file__), "container-256px-t.png"),
-   ...                            os.path.join(os.path.dirname(__file__), "container-256px-m.png"),
-   ...                            os.path.join(os.path.dirname(__file__), "container-256px-b.png"))
-   >>> button_style = clickndrag.gui.lmr.LMRStyle(os.path.join(os.path.dirname(__file__), "button-white-32px-l.png"),
-   ...                                            os.path.join(os.path.dirname(__file__), "button-white-32px-m.png"),
-   ...                                            os.path.join(os.path.dirname(__file__), "button-white-32px-r.png"))
-   >>> ok_box = TMBOkBox("Welcome to a TMBOkBox!", container_style, button_style)
+   >>> ok_box = TMBOkBox("Welcome to a TMBOkBox!", C_256_STYLE)
    >>> ok_box.rect.center = display.rect.center
    >>> display.sub(ok_box)
    >>> clock = pygame.time.Clock()
@@ -76,13 +70,26 @@ class TMBStyle:
            top_img, mid_img and bottom_img are the respective image file names.
         """
 
-        self.top_img = pygame.image.load(top_img).convert_alpha()
+        # TODO: convert_alpha() should be called as soon as a display is available.
 
-        self.mid_img = pygame.image.load(mid_img).convert_alpha()
+        self.top_img = pygame.image.load(top_img)
 
-        self.bottom_img = pygame.image.load(bottom_img).convert_alpha()
+        self.mid_img = pygame.image.load(mid_img)
+
+        self.bottom_img = pygame.image.load(bottom_img)
 
         return
+
+# Create some default styles
+#
+C_256_STYLE = TMBStyle(os.path.join(os.path.dirname(__file__), "resources", "container-256px-t.png"),
+                       os.path.join(os.path.dirname(__file__), "resources", "container-256px-m.png"),
+                       os.path.join(os.path.dirname(__file__), "resources", "container-256px-b.png"))
+
+C_128_STYLE = TMBStyle(os.path.join(os.path.dirname(__file__), "resources", "container-128px-t.png"),
+                       os.path.join(os.path.dirname(__file__), "resources", "container-128px-m.png"),
+                       os.path.join(os.path.dirname(__file__), "resources", "container-128px-b.png"))
+
 
 class TMBContainer(clickndrag.gui.Container):
     """A clickndrag.gui.Container with fixed width and TMB background.
@@ -253,7 +260,7 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
        The message will be wrapped at newline characters.
     """
 
-    def __init__(self, message, style, button_style = None):
+    def __init__(self, message, style, button_style = clickndrag.gui.lmr.WHITE_STYLE):
         """Initialise.
 
            style is an instance of TMBStyle.
@@ -279,16 +286,6 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
 
             linecount = linecount + 1
 
-        if button_style is not None:
-
-            self.sub(clickndrag.gui.lmr.LMRButton("OK",
-                                                  50,
-                                                  self.ok,
-                                                  button_style))
-
-        else:
-            self.sub(clickndrag.gui.Button("OK",
-                                           pygame.Rect((0, 0), (50, 30)),
-                                           self.ok))
+        self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok, button_style))
 
         return
