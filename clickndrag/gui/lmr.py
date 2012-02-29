@@ -239,6 +239,10 @@ class LMRButton(LMRWidget, clickndrag.gui.Button):
             #
             centered_rect.center = pygame.Rect((0, 0), self.rect.size).center
 
+            # Anticipate a drop shadow: move the text up a bit
+            #
+            centered_rect.move_ip(0, -2)
+
             self.image.blit(fontsurf, centered_rect)
 
             # Force redraw in render()

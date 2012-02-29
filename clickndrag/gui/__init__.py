@@ -55,8 +55,8 @@ pygame.font.init()
 # Taken from fabula.PygameUserInterface.
 #
 try:
-    regular_font_file = os.path.join(os.path.dirname(__file__), "Vera.ttf")
-    bold_font_file = os.path.join(os.path.dirname(__file__), "VeraBd.ttf")
+    regular_font_file = os.path.join(os.path.dirname(__file__), "resources", "Vera.ttf")
+    bold_font_file = os.path.join(os.path.dirname(__file__), "resources", "VeraBd.ttf")
 
     # Check for cx_Freeze
     #

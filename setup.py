@@ -25,6 +25,8 @@ import glob
 import os.path
 import clickndrag
 
+# TODO: add resources directory
+
 distutils.core.setup(name = "clickndrag",
                      version = clickndrag.VERSION,
                      author = "Florian Berger",
