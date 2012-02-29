@@ -10,21 +10,22 @@
    >>> def exit(plane):
    ...     pygame.quit()
    ...     raise SystemExit
-   >>> button = LMRButton("LMRButton", 100, exit, ORANGE_STYLE)
-   >>> button.rect.center = (150, 250)
-   >>> display.sub(button)
-   >>> option_style = LMRStyle(os.path.join(os.path.dirname(__file__), "resources", "gradient_normal-l.png"),
-   ...                         os.path.join(os.path.dirname(__file__), "resources", "gradient_normal-m.png"),
-   ...                         os.path.join(os.path.dirname(__file__), "resources", "gradient_normal-r.png"))
-   >>> highlight_style = LMRStyle(os.path.join(os.path.dirname(__file__), "resources", "gradient_highlight-l.png"),
-   ...                            os.path.join(os.path.dirname(__file__), "resources", "gradient_highlight-m.png"),
-   ...                            os.path.join(os.path.dirname(__file__), "resources", "gradient_highlight-r.png"))
+   >>> button_1 = LMRButton("Default", 100, exit)
+   >>> button_1.rect.center = (150, 30)
+   >>> display.sub(button_1)
+   >>> button_2 = LMRButton("BLACK", 100, exit, BLACK_BUTTON_STYLE)
+   >>> button_2.rect.center = (150, 70)
+   >>> display.sub(button_2)
+   >>> button_3 = LMRButton("WHITE", 100, exit, WHITE_BUTTON_STYLE)
+   >>> button_3.rect.center = (150, 110)
+   >>> display.sub(button_3)
+   >>> button_4 = LMRButton("ORANGE", 100, exit, ORANGE_BUTTON_STYLE)
+   >>> button_4.rect.center = (150, 150)
+   >>> display.sub(button_4)
    >>> option_list = LMROptionList("option_list",
    ...                             ["Option 1", "Option 2", "Option 3"],
-   ...                             250,
-   ...                             option_style,
-   ...                             highlight_style)
-   >>> option_list.rect.center = (150, 100)
+   ...                             250)
+   >>> option_list.rect.center = (150, 230)
    >>> display.sub(option_list)
    >>> clock = pygame.time.Clock()
    >>> while True:
@@ -93,14 +94,31 @@ class LMRStyle:
 
 # Create some default styles
 #
-ORANGE_STYLE = LMRStyle(os.path.join(os.path.dirname(__file__), "resources", "button-orange-32px-l.png"),
-                        os.path.join(os.path.dirname(__file__), "resources", "button-orange-32px-m.png"),
-                        os.path.join(os.path.dirname(__file__), "resources", "button-orange-32px-r.png"))
+_resource_path = os.path.join(os.path.dirname(__file__), "resources")
 
-WHITE_STYLE = LMRStyle(os.path.join(os.path.dirname(__file__), "resources", "button-white-32px-l.png"),
-                       os.path.join(os.path.dirname(__file__), "resources", "button-white-32px-m.png"),
-                       os.path.join(os.path.dirname(__file__), "resources", "button-white-32px-r.png"))
+ORANGE_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-orange-32px-l.png"),
+                               os.path.join(_resource_path, "button-orange-32px-m.png"),
+                               os.path.join(_resource_path, "button-orange-32px-r.png"))
 
+WHITE_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-white-32px-l.png"),
+                              os.path.join(_resource_path, "button-white-32px-m.png"),
+                              os.path.join(_resource_path, "button-white-32px-r.png"))
+
+GREY_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-grey-32px-l.png"),
+                             os.path.join(_resource_path, "button-grey-32px-m.png"),
+                             os.path.join(_resource_path, "button-grey-32px-r.png"))
+
+BLACK_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-black-32px-l.png"),
+                              os.path.join(_resource_path, "button-black-32px-m.png"),
+                              os.path.join(_resource_path, "button-black-32px-r.png"))
+
+GREY_OPTION_STYLE = LMRStyle(os.path.join(_resource_path, "option-grey-32px-l.png"),
+                             os.path.join(_resource_path, "option-grey-32px-m.png"),
+                             os.path.join(_resource_path, "option-grey-32px-r.png"))
+
+ORANGE_OPTION_STYLE = LMRStyle(os.path.join(_resource_path, "option-orange-32px-l.png"),
+                               os.path.join(_resource_path, "option-orange-32px-m.png"),
+                               os.path.join(_resource_path, "option-orange-32px-r.png"))
 
 class LMRWidget:
     """Base class for fixed-height, flexible-width widgets with an LMR background.
@@ -171,7 +189,7 @@ class LMRButton(LMRWidget, clickndrag.gui.Button):
     """A clickndrag.gui.Button with LMR background.
     """
 
-    def __init__(self, label, width, callback, style):
+    def __init__(self, label, width, callback, style = GREY_BUTTON_STYLE):
         """Initialise the Button.
 
            label is the Text to be written on the button.
@@ -179,7 +197,8 @@ class LMRButton(LMRWidget, clickndrag.gui.Button):
            callback is the function to be called with callback(Button) when the
            Button is clicked with the left mouse button.
 
-           style is an instance of LMRStyle.
+           style is an instance of LMRStyle. If omitted, GREY_BUTTON_STYLE will be
+           used.
         """
 
         # Initialise self.background
@@ -341,18 +360,20 @@ class LMROptionList(clickndrag.gui.OptionList):
            The selected Option
     """
 
-    def __init__(self, name, option_list, width, option_style, highlight_style):
+    def __init__(self, name, option_list, width, option_style = GREY_OPTION_STYLE, highlight_style = ORANGE_OPTION_STYLE):
         """Initialise the OptionList.
 
            option_list is a list of strings to be displayed as options.
 
            width is the total widget width in pixels.
 
-           option_style is an instance of LMRStyle to be used for the LMROption
-           subplanes.
+           option_style is an optional instance of LMRStyle to be used for the
+           LMROption subplanes. If it is omitted, GREY_OPTION_STYLE will be
+           used.
 
-           highlight_style is an instance of LMRStyle to be used for the
-           highlighted LMROption subplane.
+           highlight_style is an optional instance of LMRStyle to be used for
+           the highlighted LMROption subplane. If it is omitted,
+           ORANGE_OPTION_STYLE will be used.
         """
 
         # This is a complete rewrite. We do not call the base class __init__()

@@ -260,10 +260,12 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
        The message will be wrapped at newline characters.
     """
 
-    def __init__(self, message, style, button_style = clickndrag.gui.lmr.WHITE_STYLE):
+    def __init__(self, message, style, button_style = None):
         """Initialise.
 
            style is an instance of TMBStyle.
+
+           button_style is an optional instance of lmr.LMRStyle.
         """
 
         # Base class __init__()
@@ -286,6 +288,14 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
 
             linecount = linecount + 1
 
-        self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok, button_style))
+        if button_style is not None:
+
+            self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok, button_style))
+
+        else:
+
+            # Use default style
+            #
+            self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok))
 
         return
