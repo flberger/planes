@@ -635,7 +635,7 @@ class OptionSelector(Container):
     """
 
     def __init__(self, name, option_list, callback, width = 200, lineheight = 30):
-        """Initialise the OptionList.
+        """Initialise the OptionSelector.
            option_list is a list of strings to be displayed as options.
            callback is a function to be called with the selected Option instance
            as argument once the selection is made.

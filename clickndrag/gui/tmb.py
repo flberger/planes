@@ -4,16 +4,21 @@
 
    Module doctests:
 
-   >>> display = clickndrag.Display((500, 300))
+   >>> display = clickndrag.Display((500, 350))
    >>> display.image.fill((128, 128, 128))
-   <rect(0, 0, 500, 300)>
-   >>> ok_box = TMBOkBox("Welcome to a TMBOkBox!", C_256_STYLE)
-   >>> ok_box.rect.center = display.rect.center
+   <rect(0, 0, 500, 350)>
+   >>> ok_box = TMBOkBox("Welcome to a TMBOkBox!")
+   >>> ok_box.rect.center = (250, 80)
    >>> display.sub(ok_box)
+   >>> def callback(plane):
+   ...     raise SystemExit
+   >>> option_selector = TMBOptionSelector("o_s",
+   ...                                     ["Option 1", "Option 2", "Option 3"],
+   ...                                     callback)
+   >>> option_selector.rect.center = (250, 240)
+   >>> display.sub(option_selector)
    >>> clock = pygame.time.Clock()
    >>> while True:
-   ...     if not len(display.subplanes_list):
-   ...         raise SystemExit
    ...     events = pygame.event.get()
    ...     display.process(events)
    ...     display.update()
@@ -260,10 +265,11 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
        The message will be wrapped at newline characters.
     """
 
-    def __init__(self, message, style, button_style = None):
+    def __init__(self, message, style = C_256_STYLE, button_style = None):
         """Initialise.
 
-           style is an instance of TMBStyle.
+           style is an optional instance of TMBStyle. If no style is given, it
+           defaults to C_256_STYLE.
 
            button_style is an optional instance of lmr.LMRStyle.
         """
@@ -297,5 +303,46 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
             # Use default style
             #
             self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok))
+
+        return
+
+class TMBOptionSelector(TMBContainer, clickndrag.gui.OptionSelector):
+    """A TMBOptionSelector wraps an lmr.LMROptionList and an OK button over a TMB background, calling a callback when a selection is confirmed.
+    """
+
+    def __init__(self, name, option_list, callback, style = C_256_STYLE):
+        """Initialise the TMBOptionSelector.
+
+           option_list is a list of strings to be displayed as options.
+
+           callback is a function to be called with the selected Option instance
+           as argument once the selection is made.
+
+           style is an optional instance of TMBStyle. If no style is given, it
+           defaults to C_256_STYLE.
+        """
+
+        # Call base class init
+        #
+        TMBContainer.__init__(self, name, style, padding = 5)
+
+        # TODO: copied from Button.__init__. Maybe inherit from a third class 'Callback'?
+        #
+        self.callback = callback
+
+        # Add options and OK button.
+        # Calculate width to leave some padding.
+        #
+        ol = clickndrag.gui.lmr.LMROptionList("option_list",
+                                              option_list,
+                                              self.rect.width - 40)
+
+        self.sub(ol)
+
+        button = clickndrag.gui.lmr.LMRButton("OK",
+                                              50,
+                                              self.selection_made)
+
+        self.sub(button)
 
         return
