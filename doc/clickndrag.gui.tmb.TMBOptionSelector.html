@@ -3,38 +3,37 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.tmb.TMBOkBox&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.tmb.TMBOptionSelector&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.t.TMBOkBox(<a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="clickndrag.gui.OkBox.html">clickndrag.gui.OkBox</a>):</h1>
+    <h1 class="class">Class c.g.t.TMBOptionSelector(<a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="clickndrag.gui.OptionSelector.html">clickndrag.gui.OptionSelector</a>):</h1>
     <p>
       <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a>.<a href="clickndrag.gui.tmb.html">tmb</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.tmb.TMBOkBox">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.tmb.TMBOptionSelector">View In Hierarchy</a>
     </p>
     <div>
       
     </div>
-    <pre>A box which displays a message and an OK button over a TMB background.
-It is destroyed when OK is clicked.
-The message will be wrapped at newline characters.</pre>
+    <pre>A TMBOptionSelector wraps an lmr.LMROptionList and an OK button over a TMB background, calling a callback when a selection is confirmed.
+    </pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id58">
+      <table class="children sortable" id="id65">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.tmb.TMBOkBox.html#__init__">__init__</a></td>
-    <td><tt>Initialise.</tt></td>
+    <td><a href="clickndrag.gui.tmb.TMBOptionSelector.html#__init__">__init__</a></td>
+    <td><tt>Initialise the TMBOptionSelector.</tt></td>
   </tr>
   
 </table>
@@ -42,7 +41,7 @@ The message will be wrapped at newline characters.</pre>
         <p>
           Inherited from <a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>:
         </p>
-        <table class="children sortable" id="id59">
+        <table class="children sortable" id="id66">
   
   
 <tr class="basemethod">
@@ -70,7 +69,7 @@ The message will be wrapped at newline characters.</pre>
         <p>
           Inherited from <a href="clickndrag.gui.Container.html">Container</a> (via <a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>):
         </p>
-        <table class="children sortable" id="id60">
+        <table class="children sortable" id="id67">
   
   
 <tr class="basemethod">
@@ -86,7 +85,7 @@ The message will be wrapped at newline characters.</pre>
         <p>
           Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="clickndrag.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id61">
+        <table class="children sortable" id="id68">
   
   
 <tr class="basemethod">
@@ -166,25 +165,25 @@ The message will be wrapped at newline characters.</pre>
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.gui.OkBox.html">OkBox</a>:
+          Inherited from <a href="clickndrag.gui.OptionSelector.html">OptionSelector</a>:
         </p>
-        <table class="children sortable" id="id62">
+        <table class="children sortable" id="id69">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.OkBox.html#ok">ok</a></td>
-    <td><tt>Button clicked callback which destroys the OkBox.</tt></td>
+    <td><a href="clickndrag.gui.OptionSelector.html#selection_made">selection_made</a></td>
+    <td><tt>Button callback called when the user confirmed an option from the list.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.gui.Container.html">Container</a> (via <a href="clickndrag.gui.OkBox.html">OkBox</a>):
+          Inherited from <a href="clickndrag.gui.Container.html">Container</a> (via <a href="clickndrag.gui.OptionSelector.html">OptionSelector</a>):
         </p>
-        <table class="children sortable" id="id63">
+        <table class="children sortable" id="id70">
   
   
 <tr class="basemethod">
@@ -216,9 +215,9 @@ The message will be wrapped at newline characters.</pre>
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.OkBox.html">OkBox</a>, <a href="clickndrag.gui.Container.html">Container</a>):
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.OptionSelector.html">OptionSelector</a>, <a href="clickndrag.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id64">
+        <table class="children sortable" id="id71">
   
   
 <tr class="basemethod">
@@ -304,7 +303,7 @@ The message will be wrapped at newline characters.</pre>
     
 
     <div class="function">
-  <a name="clickndrag.gui.tmb.TMBOkBox.__init__">
+  <a name="clickndrag.gui.tmb.TMBOptionSelector.__init__">
     
   </a>
   <a name="__init__">
@@ -313,17 +312,20 @@ The message will be wrapped at newline characters.</pre>
   <div class="functionHeader">
     
     def
-    __init__(self, message, style=C_256_STYLE, button_style=None):
+    __init__(self, name, option_list, callback, style=C_256_STYLE):
     
   </div>
   <div class="functionBody">
     <div class="interfaceinfo">overrides <a href="clickndrag.gui.tmb.TMBContainer.html#__init__">clickndrag.gui.tmb.TMBContainer.__init__</a></div>
-    <pre>Initialise.
+    <pre>Initialise the TMBOptionSelector.
+
+option_list is a list of strings to be displayed as options.
+
+callback is a function to be called with the selected Option instance
+as argument once the selection is made.
 
 style is an optional instance of TMBStyle. If no style is given, it
-defaults to C_256_STYLE.
-
-button_style is an optional instance of lmr.LMRStyle.</pre>
+defaults to C_256_STYLE.</pre>
   </div>
 </div>
     <address>
