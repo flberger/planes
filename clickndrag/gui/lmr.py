@@ -415,3 +415,56 @@ class LMROptionList(clickndrag.gui.OptionList):
         self.last_rect = None
 
         return
+
+class LMRPlusMinusBox(clickndrag.gui.PlusMinusBox):
+    """A clickndrag.gui.PlusMinusBox with LMRButtons.
+       The value is accessible as PlusMinusBox.textbox.text
+    """
+
+    def __init__(self, name, charwidth, value = 0):
+        """Initialise.
+
+           charwidth is the width of the text field in characters.
+
+           value, if given, is the initial numerical value.
+        """
+
+        # Copied from PlusMinusBox.__init__(), because we are lazy
+        #
+        minusbutton = LMRButton("minus", 32, self.minus_callback)
+
+        minusbutton.text = "-"
+
+        textbox = clickndrag.gui.TextBox("textbox",
+                                         pygame.Rect((minusbutton.rect.width, 0),
+                                                     (clickndrag.gui.PIX_PER_CHAR * charwidth,
+                                                      minusbutton.rect.height)))
+
+        plusbutton = LMRButton("plus", 32, self.plus_callback)
+
+        plusbutton.text = "+"
+
+        plusbutton.rect.left = minusbutton.rect.width + textbox.rect.width
+
+        rect = pygame.Rect((0, 0),
+                           (minusbutton.rect.width + textbox.rect.width + plusbutton.rect.width,
+                            minusbutton.rect.height))
+
+        # Call base class.
+        # Leave optional arguments at their defaults.
+        #
+        clickndrag.Plane.__init__(self, name, rect)
+
+        # Make transparent
+        #
+        self.image = pygame.Surface(self.rect.size, flags = pygame.SRCALPHA)
+
+        self.image.fill((128, 128, 128, 0))
+
+        textbox.text = str(value)
+
+        self.sub(minusbutton)
+        self.sub(textbox)
+        self.sub(plusbutton)
+
+        return
