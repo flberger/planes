@@ -34,6 +34,8 @@
 
 # work started on 28. Oct 2010
 
+# TODO: Make current Fabula Editor style the clickndrag.gui default style
+
 import clickndrag
 import pygame
 import os.path
@@ -107,9 +109,12 @@ class Label(clickndrag.Plane):
 
        Label.cached_color
            A cache for color changes
+
+       Label.text_color
+           The text color, initially (0, 0, 0).
     """
 
-    def __init__(self, name, text, rect, background_color = None):
+    def __init__(self, name, text, rect, background_color = None, text_color = (0, 0, 0)):
         """Initialise the Label.
            text is the text to be written on the Label. If text is None, it is
            replaced by an empty string.
@@ -118,6 +123,15 @@ class Label(clickndrag.Plane):
         # Call base class init
         #
         clickndrag.Plane.__init__(self, name, rect, draggable = False, grab = False)
+
+        if text is not None:
+
+            self.text = text
+
+        else:
+            self.text = ""
+
+        self.cached_text = None
 
         self.background_color = self.cached_color = self.current_color = BACKGROUND_COLOR
 
@@ -132,14 +146,7 @@ class Label(clickndrag.Plane):
                 self.image = pygame.Surface(self.rect.size,
                                             flags = pygame.SRCALPHA)
 
-        if text is not None:
-
-            self.text = text
-
-        else:
-            self.text = ""
-
-        self.cached_text = None
+        self.text_color = text_color
 
         self.redraw()
 
@@ -168,7 +175,7 @@ class Label(clickndrag.Plane):
             #
             fontsurf = SMALL_FONT.render(self.text,
                                          True,
-                                         (0, 0, 0))
+                                         self.text_color)
 
             centered_rect = fontsurf.get_rect()
 
@@ -202,14 +209,14 @@ class OutlinedText(Label):
            replaced by an empty string.
         """
 
-        # Save text color
-        #
-        self.text_color = text_color
-
         # Call the base class.
         # Use a dummy rect, the final rect will be set in redraw().
         #
-        Label.__init__(self, name, text, pygame.rect.Rect((0, 0), (0, 0)))
+        Label.__init__(self,
+                       name,
+                       text,
+                       pygame.rect.Rect((0, 0), (0, 0)),
+                       text_color = text_color)
 
         return
 
@@ -288,7 +295,7 @@ class Button(Label):
            Counted down when the button is clicked and displays a different color
     """
 
-    def __init__(self, label, rect, callback, background_color = None):
+    def __init__(self, label, rect, callback, background_color = None, text_color = (0, 0, 0)):
         """Initialise the Button.
            label is the Text to be written on the button.
            rect is an instance of pygame.Rect giving the dimensions.
@@ -309,7 +316,7 @@ class Button(Label):
 
         # Call base class init
         #
-        Label.__init__(self, name, label, rect, background_color)
+        Label.__init__(self, name, label, rect, background_color, text_color)
 
         # Overwrite Plane base class attributes
         #
@@ -338,14 +345,14 @@ class Button(Label):
         # width is 1px by default
         #
         pygame.draw.lines(self.image,
-                          (63, 63, 63),
+                          [int(color / 2) for color in self.background_color],
                           False,
                           [(1, self.rect.height - 1),
                            (self.rect.width - 1, self.rect.height - 1),
                            (self.rect.width - 1, 1)])
 
         pygame.draw.lines(self.image,
-                          (190, 190, 190),
+                          [int(color * 1.33) for color in self.background_color],
                           False,
                           [(0, self.rect.height - 2),
                            (0, 0),
@@ -634,7 +641,7 @@ class OptionSelector(Container):
     """An OptionSelector wraps an OptionList and an OK button, calling a callback when a selection is confirmed.
     """
 
-    def __init__(self, name, option_list, callback, width = 200, lineheight = 30):
+    def __init__(self, name, option_list, callback, width = 200, lineheight = 30, background_color = None):
         """Initialise the OptionSelector.
            option_list is a list of strings to be displayed as options.
            callback is a function to be called with the selected Option instance
@@ -643,7 +650,10 @@ class OptionSelector(Container):
 
         # Call base class init
         #
-        Container.__init__(self, name, padding = 5)
+        Container.__init__(self,
+                           name,
+                           padding = 5,
+                           background_color = background_color)
 
         # TODO: copied from Button.__init__. Maybe inherit from a third class 'Callback'?
         #

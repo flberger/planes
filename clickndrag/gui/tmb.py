@@ -70,6 +70,8 @@ class TMBStyle:
            A Pygame Surface, holding the bottom edge of the background image.
     """
 
+    # TODO: add text_color, like in LMRStyle
+
     def __init__(self, top_img, mid_img, bottom_img):
         """Initialise.
            top_img, mid_img and bottom_img are the respective image file names.

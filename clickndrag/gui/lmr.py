@@ -62,7 +62,7 @@ import pygame
 import os.path
 
 class LMRStyle:
-    """This class encapsulates the left, mid and right images to be used as widget background.
+    """This class encapsulates the left, mid and right images to be used as widget background, as well as the text color.
 
        Attributes:
 
@@ -75,9 +75,13 @@ class LMRStyle:
 
        LMRStyle.right_img
            A Pygame Surface, holding the right edge of the background image.
+
+       LMRStyle.text_color
+           An (R, G, B) color tuple, holding the color of text written on LMR
+           widgets.
     """
 
-    def __init__(self, left_img, mid_img, right_img):
+    def __init__(self, left_img, mid_img, right_img, text_color):
         """Initialise.
            left_img, mid_img and right_img are the respective image file names.
         """
@@ -90,6 +94,8 @@ class LMRStyle:
 
         self.right_img = pygame.image.load(right_img)
 
+        self.text_color = text_color
+
         return
 
 # Create some default styles
@@ -98,27 +104,33 @@ _resource_path = os.path.join(os.path.dirname(__file__), "resources")
 
 ORANGE_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-orange-32px-l.png"),
                                os.path.join(_resource_path, "button-orange-32px-m.png"),
-                               os.path.join(_resource_path, "button-orange-32px-r.png"))
+                               os.path.join(_resource_path, "button-orange-32px-r.png"),
+                               (0, 0, 0))
 
 WHITE_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-white-32px-l.png"),
                               os.path.join(_resource_path, "button-white-32px-m.png"),
-                              os.path.join(_resource_path, "button-white-32px-r.png"))
+                              os.path.join(_resource_path, "button-white-32px-r.png"),
+                              (0, 0, 0))
 
 GREY_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-grey-32px-l.png"),
                              os.path.join(_resource_path, "button-grey-32px-m.png"),
-                             os.path.join(_resource_path, "button-grey-32px-r.png"))
+                             os.path.join(_resource_path, "button-grey-32px-r.png"),
+                             (0, 0, 0))
 
 BLACK_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-black-32px-l.png"),
                               os.path.join(_resource_path, "button-black-32px-m.png"),
-                              os.path.join(_resource_path, "button-black-32px-r.png"))
+                              os.path.join(_resource_path, "button-black-32px-r.png"),
+                              (255, 255, 255))
 
 GREY_OPTION_STYLE = LMRStyle(os.path.join(_resource_path, "option-grey-32px-l.png"),
                              os.path.join(_resource_path, "option-grey-32px-m.png"),
-                             os.path.join(_resource_path, "option-grey-32px-r.png"))
+                             os.path.join(_resource_path, "option-grey-32px-r.png"),
+                             (0, 0, 0))
 
 ORANGE_OPTION_STYLE = LMRStyle(os.path.join(_resource_path, "option-orange-32px-l.png"),
                                os.path.join(_resource_path, "option-orange-32px-m.png"),
-                               os.path.join(_resource_path, "option-orange-32px-r.png"))
+                               os.path.join(_resource_path, "option-orange-32px-r.png"),
+                               (0, 0, 0))
 
 class LMRWidget:
     """Base class for fixed-height, flexible-width widgets with an LMR background.
@@ -127,6 +139,9 @@ class LMRWidget:
 
        LMRWidget.background
            A Pygame Surface, holding the rendered background for this widget.
+
+       LMRWidget.style
+           The LMRStyle instance for this widget.
     """
 
     def __init__(self, width, style):
@@ -144,6 +159,8 @@ class LMRWidget:
             msg = "'style' argument must be of class 'LMRStyle', not '{0}'"
 
             raise TypeError(msg.format(style.__class__.__name__))
+
+        self.style = style
 
         # Compute dimensions
         #
@@ -231,7 +248,7 @@ class LMRButton(LMRWidget, clickndrag.gui.Button):
             #
             fontsurf = clickndrag.gui.SMALL_FONT.render(self.text,
                                                         True,
-                                                        (0, 0, 0))
+                                                        self.style.text_color)
 
             centered_rect = fontsurf.get_rect()
 
@@ -241,7 +258,7 @@ class LMRButton(LMRWidget, clickndrag.gui.Button):
 
             # Anticipate a drop shadow: move the text up a bit
             #
-            centered_rect.move_ip(0, -2)
+            centered_rect.move_ip(0, -1)
 
             self.image.blit(fontsurf, centered_rect)
 
@@ -300,7 +317,7 @@ class LMROption(LMRWidget, clickndrag.gui.Option):
         #
         fontsurf = clickndrag.gui.SMALL_FONT.render(self.text,
                                                     True,
-                                                    (0, 0, 0))
+                                                    self.style.text_color)
 
         centered_rect = fontsurf.get_rect()
 
