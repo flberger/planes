@@ -45,6 +45,14 @@ import unicodedata
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
 
+RESOURCE_PATH = os.path.join(os.path.dirname(__file__), "resources")
+
+# Check for cx_Freeze
+#
+if "frozen" in sys.__dict__.keys() and sys.frozen:
+
+    RESOURCE_PATH = sys.path[1]
+
 # Pixels per character, for width estimation of text renderings
 #
 PIX_PER_CHAR = 8
@@ -57,15 +65,8 @@ pygame.font.init()
 # Taken from fabula.PygameUserInterface.
 #
 try:
-    regular_font_file = os.path.join(os.path.dirname(__file__), "resources", "Vera.ttf")
-    bold_font_file = os.path.join(os.path.dirname(__file__), "resources", "VeraBd.ttf")
-
-    # Check for cx_Freeze
-    #
-    if "frozen" in sys.__dict__.keys() and sys.frozen:
-
-        regular_font_file = os.path.join(sys.path[1], "Vera.ttf")
-        bold_font_file = os.path.join(sys.path[1], "VeraBd.ttf")
+    regular_font_file = os.path.join(RESOURCE_PATH, "Vera.ttf")
+    bold_font_file = os.path.join(RESOURCE_PATH, "VeraBd.ttf")
 
     BIG_FONT = pygame.font.Font(regular_font_file, 30)
     SMALL_FONT = pygame.font.Font(regular_font_file, 12)
@@ -1049,7 +1050,7 @@ class PlusMinusBox(clickndrag.Plane):
         return
 
     def plus_callback(self, Plane):
-        """Callback when minus is clicked.
+        """Callback when plus is clicked.
         """
 
         self.textbox.text = str(int(self.textbox.text) + 1)

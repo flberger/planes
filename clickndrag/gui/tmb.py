@@ -89,17 +89,26 @@ class TMBStyle:
 
 # Create some default styles
 #
-C_256_STYLE = TMBStyle(os.path.join(os.path.dirname(__file__), "resources", "container-256px-t.png"),
-                       os.path.join(os.path.dirname(__file__), "resources", "container-256px-m.png"),
-                       os.path.join(os.path.dirname(__file__), "resources", "container-256px-b.png"))
+C_256_STYLE = TMBStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-256px-t.png"),
+                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-256px-m.png"),
+                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-256px-b.png"))
 
-C_128_STYLE = TMBStyle(os.path.join(os.path.dirname(__file__), "resources", "container-128px-t.png"),
-                       os.path.join(os.path.dirname(__file__), "resources", "container-128px-m.png"),
-                       os.path.join(os.path.dirname(__file__), "resources", "container-128px-b.png"))
+C_128_STYLE = TMBStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-128px-t.png"),
+                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-128px-m.png"),
+                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-128px-b.png"))
 
-C_512_STYLE = TMBStyle(os.path.join(os.path.dirname(__file__), "resources", "container-512px-t.png"),
-                       os.path.join(os.path.dirname(__file__), "resources", "container-512px-m.png"),
-                       os.path.join(os.path.dirname(__file__), "resources", "container-512px-b.png"))
+C_512_STYLE = TMBStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-512px-t.png"),
+                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-512px-m.png"),
+                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                    "container-512px-b.png"))
 
 class TMBContainer(clickndrag.gui.Container):
     """A clickndrag.gui.Container with fixed width and TMB background.

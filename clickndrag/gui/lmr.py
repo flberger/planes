@@ -100,36 +100,52 @@ class LMRStyle:
 
 # Create some default styles
 #
-_resource_path = os.path.join(os.path.dirname(__file__), "resources")
-
-ORANGE_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-orange-32px-l.png"),
-                               os.path.join(_resource_path, "button-orange-32px-m.png"),
-                               os.path.join(_resource_path, "button-orange-32px-r.png"),
+ORANGE_BUTTON_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                            "button-orange-32px-l.png"),
+                               os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                            "button-orange-32px-m.png"),
+                               os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                            "button-orange-32px-r.png"),
                                (0, 0, 0))
 
-WHITE_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-white-32px-l.png"),
-                              os.path.join(_resource_path, "button-white-32px-m.png"),
-                              os.path.join(_resource_path, "button-white-32px-r.png"),
+WHITE_BUTTON_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                           "button-white-32px-l.png"),
+                              os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                           "button-white-32px-m.png"),
+                              os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                           "button-white-32px-r.png"),
                               (0, 0, 0))
 
-GREY_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-grey-32px-l.png"),
-                             os.path.join(_resource_path, "button-grey-32px-m.png"),
-                             os.path.join(_resource_path, "button-grey-32px-r.png"),
+GREY_BUTTON_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                          "button-grey-32px-l.png"),
+                             os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                          "button-grey-32px-m.png"),
+                             os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                          "button-grey-32px-r.png"),
                              (0, 0, 0))
 
-BLACK_BUTTON_STYLE = LMRStyle(os.path.join(_resource_path, "button-black-32px-l.png"),
-                              os.path.join(_resource_path, "button-black-32px-m.png"),
-                              os.path.join(_resource_path, "button-black-32px-r.png"),
+BLACK_BUTTON_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                           "button-black-32px-l.png"),
+                              os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                           "button-black-32px-m.png"),
+                              os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                           "button-black-32px-r.png"),
                               (255, 255, 255))
 
-GREY_OPTION_STYLE = LMRStyle(os.path.join(_resource_path, "option-grey-32px-l.png"),
-                             os.path.join(_resource_path, "option-grey-32px-m.png"),
-                             os.path.join(_resource_path, "option-grey-32px-r.png"),
+GREY_OPTION_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                          "option-grey-32px-l.png"),
+                             os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                          "option-grey-32px-m.png"),
+                             os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                          "option-grey-32px-r.png"),
                              (0, 0, 0))
 
-ORANGE_OPTION_STYLE = LMRStyle(os.path.join(_resource_path, "option-orange-32px-l.png"),
-                               os.path.join(_resource_path, "option-orange-32px-m.png"),
-                               os.path.join(_resource_path, "option-orange-32px-r.png"),
+ORANGE_OPTION_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                            "option-orange-32px-l.png"),
+                               os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                            "option-orange-32px-m.png"),
+                               os.path.join(clickndrag.gui.RESOURCE_PATH,
+                                            "option-orange-32px-r.png"),
                                (0, 0, 0))
 
 class LMRWidget:
