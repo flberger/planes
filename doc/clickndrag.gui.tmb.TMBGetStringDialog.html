@@ -3,37 +3,37 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.tmb.TMBOptionSelector&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.tmb.TMBGetStringDialog&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.t.TMBOptionSelector(<a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="clickndrag.gui.OptionSelector.html">clickndrag.gui.OptionSelector</a>):</h1>
+    <h1 class="class">Class c.g.t.TMBGetStringDialog(<a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="clickndrag.gui.GetStringDialog.html">clickndrag.gui.GetStringDialog</a>):</h1>
     <p>
       <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a>.<a href="clickndrag.gui.tmb.html">tmb</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.tmb.TMBOptionSelector">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.tmb.TMBGetStringDialog">View In Hierarchy</a>
     </p>
     <div>
       
     </div>
-    <pre>A TMBOptionSelector wraps an lmr.LMROptionList and an OK button over a TMB background, calling a callback when a selection is confirmed.
+    <pre>A combination of TMBContainer, Label, TextBox and Button that asks the user for a string.
     </pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id68">
+      <table class="children sortable" id="id75">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.tmb.TMBOptionSelector.html#__init__">__init__</a></td>
-    <td><tt>Initialise the TMBOptionSelector.</tt></td>
+    <td><a href="clickndrag.gui.tmb.TMBGetStringDialog.html#__init__">__init__</a></td>
+    <td><tt>Initialise.</tt></td>
   </tr>
   
 </table>
@@ -41,7 +41,7 @@
         <p>
           Inherited from <a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>:
         </p>
-        <table class="children sortable" id="id69">
+        <table class="children sortable" id="id76">
   
   
 <tr class="basemethod">
@@ -69,7 +69,7 @@
         <p>
           Inherited from <a href="clickndrag.gui.Container.html">Container</a> (via <a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>):
         </p>
-        <table class="children sortable" id="id70">
+        <table class="children sortable" id="id77">
   
   
 <tr class="basemethod">
@@ -85,7 +85,7 @@
         <p>
           Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="clickndrag.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id71">
+        <table class="children sortable" id="id78">
   
   
 <tr class="basemethod">
@@ -165,25 +165,31 @@
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.gui.OptionSelector.html">OptionSelector</a>:
+          Inherited from <a href="clickndrag.gui.GetStringDialog.html">GetStringDialog</a>:
         </p>
-        <table class="children sortable" id="id72">
+        <table class="children sortable" id="id79">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.OptionSelector.html#selection_made">selection_made</a></td>
-    <td><tt>Button callback called when the user confirmed an option from the list.</tt></td>
+    <td><a href="clickndrag.gui.GetStringDialog.html#ok">ok</a></td>
+    <td><tt>Button callback to destroy the GetStringDialog and call GetStringDialog.callback(string).</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.GetStringDialog.html#return_key">return_key</a></td>
+    <td><tt>Return key callback to destroy the GetStringDialog and call GetStringDialog.callback(string).</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.gui.Container.html">Container</a> (via <a href="clickndrag.gui.OptionSelector.html">OptionSelector</a>):
+          Inherited from <a href="clickndrag.gui.Container.html">Container</a> (via <a href="clickndrag.gui.GetStringDialog.html">GetStringDialog</a>):
         </p>
-        <table class="children sortable" id="id73">
+        <table class="children sortable" id="id80">
   
   
 <tr class="basemethod">
@@ -215,9 +221,9 @@
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.OptionSelector.html">OptionSelector</a>, <a href="clickndrag.gui.Container.html">Container</a>):
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.GetStringDialog.html">GetStringDialog</a>, <a href="clickndrag.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id74">
+        <table class="children sortable" id="id81">
   
   
 <tr class="basemethod">
@@ -303,7 +309,7 @@
     
 
     <div class="function">
-  <a name="clickndrag.gui.tmb.TMBOptionSelector.__init__">
+  <a name="clickndrag.gui.tmb.TMBGetStringDialog.__init__">
     
   </a>
   <a name="__init__">
@@ -312,20 +318,24 @@
   <div class="functionHeader">
     
     def
-    __init__(self, name, option_list, callback, style=C_256_STYLE):
+    __init__(self, prompt, callback, display, style=C_256_STYLE, button_style=None):
     
   </div>
   <div class="functionBody">
     <div class="interfaceinfo">overrides <a href="clickndrag.gui.tmb.TMBContainer.html#__init__">clickndrag.gui.tmb.TMBContainer.__init__</a></div>
-    <pre>Initialise the TMBOptionSelector.
+    <pre>Initialise.
 
-option_list is a list of strings to be displayed as options.
+callback will be called callback(GetStringDialog.textbox.text)
+after the GetStringDialog is destroyed. It should call render()
+and flip the display to remove the GetStringDialog from the screen.
 
-callback is a function to be called with the selected Option instance
-as argument once the selection is made.
+display.key_sensitive() will be used to register the TextBox of this
+dialog.
 
 style is an optional instance of TMBStyle. If no style is given, it
-defaults to C_256_STYLE.</pre>
+defaults to C_256_STYLE.
+
+button_style is an optional instance of lmr.LMRStyle.</pre>
   </div>
 </div>
     <address>

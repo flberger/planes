@@ -3,55 +3,67 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.ScrollingPlane&rdquo;</title>
+    <title>API docs for &ldquo;clickndrag.gui.lmr.LMRPlusMinusBox&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.ScrollingPlane(<a href="clickndrag.Plane.html">clickndrag.Plane</a>):</h1>
+    <h1 class="class">Class c.g.l.LMRPlusMinusBox(<a href="clickndrag.gui.PlusMinusBox.html">clickndrag.gui.PlusMinusBox</a>):</h1>
     <p>
-      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
+      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a>.<a href="clickndrag.gui.lmr.html">lmr</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.ScrollingPlane">View In Hierarchy</a>
+      <a href="classIndex.html#clickndrag.gui.lmr.LMRPlusMinusBox">View In Hierarchy</a>
     </p>
     <div>
       
     </div>
-    <pre>This class implements a fixed-dimension plane with a scroll bar to scroll its content plane.
-Subplane structure:
-
-ScrollingPlane
-|
-+---content
-|   |
-|   +---content_plane from __init__()
-|
-+---scrollbar_container
-    |
-    +---scrollbar</pre>
+    <pre>A clickndrag.gui.PlusMinusBox with LMRButtons.
+The value is accessible as PlusMinusBox.textbox.text</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id37">
+      <table class="children sortable" id="id53">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.ScrollingPlane.html#__init__">__init__</a></td>
-    <td><tt>Initalise.</tt></td>
+    <td><a href="clickndrag.gui.lmr.LMRPlusMinusBox.html#__init__">__init__</a></td>
+    <td><tt>Initialise.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a>:
+          Inherited from <a href="clickndrag.gui.PlusMinusBox.html">PlusMinusBox</a>:
         </p>
-        <table class="children sortable" id="id38">
+        <table class="children sortable" id="id54">
+  
+  
+<tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.PlusMinusBox.html#minus_callback">minus_callback</a></td>
+    <td><tt>Callback when minus is clicked.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="clickndrag.gui.PlusMinusBox.html#plus_callback">plus_callback</a></td>
+    <td><tt>Callback when minus is clicked.</tt></td>
+  </tr>
+  
+</table>
+      
+        <p>
+          Inherited from <a href="clickndrag.Plane.html">Plane</a> (via <a href="clickndrag.gui.PlusMinusBox.html">PlusMinusBox</a>):
+        </p>
+        <table class="children sortable" id="id55">
   
   
 <tr class="basemethod">
@@ -155,7 +167,7 @@ ScrollingPlane
     
 
     <div class="function">
-  <a name="clickndrag.gui.ScrollingPlane.__init__">
+  <a name="clickndrag.gui.lmr.LMRPlusMinusBox.__init__">
     
   </a>
   <a name="__init__">
@@ -164,13 +176,16 @@ ScrollingPlane
   <div class="functionHeader">
     
     def
-    __init__(self, name, rect, content_plane, draggable=False, grab=False, clicked_callback=None, dropped_upon_callback=None):
+    __init__(self, name, charwidth, value=0):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#__init__">clickndrag.Plane.__init__</a></div>
-    <pre>Initalise.
-rect states the dimensions without the scroll bar.</pre>
+    <div class="interfaceinfo">overrides <a href="clickndrag.gui.PlusMinusBox.html#__init__">clickndrag.gui.PlusMinusBox.__init__</a></div>
+    <pre>Initialise.
+
+charwidth is the width of the text field in characters.
+
+value, if given, is the initial numerical value.</pre>
   </div>
 </div>
     <address>
