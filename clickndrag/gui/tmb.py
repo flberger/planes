@@ -265,7 +265,7 @@ class TMBContainer(clickndrag.gui.Container):
         return
 
 class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
-    """A box which displays a message and an OK button over a TMB background.
+    """A box which displays a message and an LMR OK button over a TMB background.
        It is destroyed when OK is clicked.
        The message will be wrapped at newline characters.
     """
@@ -280,7 +280,7 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
         """
 
         # Base class __init__()
-        # We need a unique random name an just use this instance's id.
+        # We need a unique random name and just use this instance's id.
         # TODO: prefix with some letters to make it usable via attribute calls
         #
         TMBContainer.__init__(self, str(id(self)), style, padding = 5)
@@ -349,5 +349,62 @@ class TMBOptionSelector(TMBContainer, clickndrag.gui.OptionSelector):
                                               self.selection_made)
 
         self.sub(button)
+
+        return
+
+class TMBGetStringDialog(TMBContainer, clickndrag.gui.GetStringDialog):
+    """A combination of TMBContainer, Label, TextBox and Button that asks the user for a string.
+    """
+
+    def __init__(self, prompt, callback, display, style = C_256_STYLE, button_style = None):
+        """Initialise.
+
+           callback will be called callback(GetStringDialog.textbox.text)
+           after the GetStringDialog is destroyed. It should call render()
+           and flip the display to remove the GetStringDialog from the screen.
+
+           display.key_sensitive() will be used to register the TextBox of this
+           dialog.
+
+           style is an optional instance of TMBStyle. If no style is given, it
+           defaults to C_256_STYLE.
+
+           button_style is an optional instance of lmr.LMRStyle.
+        """
+
+        # Base class __init__()
+        #
+        TMBContainer.__init__(self, "get_string_dialog", style, padding = 5)
+
+        # Adapted from clickndrag.gui.GetStringDialog
+        #
+        self.callback = callback
+
+        # Transparent label
+        #
+        self.sub(clickndrag.gui.Label("prompt",
+                                      prompt,
+                                      pygame.Rect((0, 0), (200, 30)),
+                                      background_color = (128, 128, 128, 0)))
+
+        textbox = clickndrag.gui.TextBox("textbox",
+                                         pygame.Rect((0, 0), (200, 30)),
+                                         return_callback = self.return_key)
+
+        self.sub(textbox)
+
+        display.key_sensitive(textbox)
+
+        # Copied from TMBOkBox
+        #
+        if button_style is not None:
+
+            self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok, button_style))
+
+        else:
+
+            # Use default style
+            #
+            self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok))
 
         return
