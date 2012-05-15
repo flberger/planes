@@ -21,6 +21,8 @@
 # Planned in mind at the Mosel valley in late July 2010
 # Actual work started on 01. Oct 2010
 
+# TODO: Surface.get_flags has all sorts of interesting information to optimise performance.
+
 import pygame
 
 VERSION = "0.4.1"
@@ -424,7 +426,10 @@ class Plane:
            Compare pygame.sprite.Sprite.update.
         """
 
-        for plane in self.subplanes.values():
+        # Subplanes may be destroyed in update(). So, create a list copy in case
+        # self.subplanes changes during iteration.
+        #
+        for plane in list(self.subplanes.values()):
 
             plane.update()
 

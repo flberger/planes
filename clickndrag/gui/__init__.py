@@ -704,15 +704,13 @@ class OkBox(Container):
         #
         Container.__init__(self, str(id(self)), padding = 5)
 
-        linecount = 0
+        lines = message.split("\n")
 
-        for line in message.split("\n"):
+        for line_no in range(len(lines)):
 
-            self.sub(Label("message-line_{0}".format(linecount),
-                           line,
-                           pygame.Rect((0, 0), (len(line) * PIX_PER_CHAR, 30))))
-
-            linecount = linecount + 1
+            self.sub(Label("message_line_{0}".format(line_no),
+                           lines[line_no],
+                           pygame.Rect((0, 0), (len(lines[line_no]) * PIX_PER_CHAR, 30))))
 
         self.sub(Button("OK", pygame.Rect((0, 0), (50, 30)), self.ok))
 
@@ -1058,3 +1056,91 @@ class PlusMinusBox(clickndrag.Plane):
         self.textbox.redraw()
 
         return
+
+class FadingContainer(Container):
+    """A Container that, once visible, will fade out and destroy itself.
+
+       Additional attributes:
+
+       FadingContainer.display_duration
+           The number of calls to update() that the FadingContainer will be
+           displayed. Will be decremented in FadingContainer.update().
+
+       FadingContainer.alpha_steps
+           A list of decreasing alpha values to be applied to the
+           Surface of the FadingContainer, computed from fade_duration
+           in FadingContainer.__init__().
+    """
+
+    # TODO: Couldn't this be an abstract add-in for all kinds of GUI elements? So just inheriting from e.g. FadingElement would add this behaviour? Or a decorator like @Fading?
+
+    def __init__(self,
+                 name,
+                 display_duration,
+                 fade_duration,
+                 padding = 0,
+                 background_color = None):
+        """Initialise.
+
+           display_duration is the number of calls to update() that the
+           FadingContainer will be displayed.
+
+           fade_duration is the number of calls to update() that the
+           FadingContainer will take to fade out.
+        """
+
+        # Call base class
+        #
+        Container.__init__(self, name, padding, background_color)
+
+        self.display_duration = display_duration
+
+        self.alpha_steps = list(range(255, 0, -int(255 / fade_duration)))
+
+        return
+
+    def update(self):
+        """Call Plane.update(), then decrement FadingContainer.display_duration and destroy when len(self.alpha_steps) has reached zero.
+        """
+
+        # Call base class
+        #
+        clickndrag.Plane.update(self)
+
+        if self.display_duration > 0:
+
+            self.display_duration -= 1
+
+        else:
+
+            if not len(self.alpha_steps):
+
+                self.destroy()
+
+        return
+
+    def render(self):
+        """Call Plane.render(), the pop the first value from self.alpha_steps and apply it as alpha.
+        """
+
+        # Call base class
+        #
+        clickndrag.Plane.render(self)
+
+        if self.display_duration <= 0:
+
+            # Only fade if the fade is actually visible, i.e. no per-pixel alpha.
+            # TODO: Implement fading for Surfaces with per-pixel alpha. Replace transparent pixels with transparent color, convert the Surface to a no-SRCALPHA Surface.
+            #
+            if self.rendersurface.get_flags() & pygame.SRCALPHA:
+
+                # Will be caught by update()
+                #
+                self.alpha_steps = []
+
+            else:
+                self.rendersurface.set_alpha(self.alpha_steps.pop(0))
+
+        # Always return True to force a redraw
+        #
+        return True

@@ -296,17 +296,16 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
 
         # Adapted from clickndrag.gui.OkBox
         #
-        linecount = 0
+        lines = message.split("\n")
 
-        for line in message.split("\n"):
+        for line_no in range(len(lines)):
 
-            self.sub(clickndrag.gui.Label("message-line_{0}".format(linecount),
-                                          line,
+            self.sub(clickndrag.gui.Label("message_line_{0}".format(line_no),
+                                          lines[line_no],
                                           pygame.Rect((0, 0),
-                                                      (len(line) * clickndrag.gui.PIX_PER_CHAR, 30)),
+                                                      (len(lines[line_no]) * clickndrag.gui.PIX_PER_CHAR, 30)),
                                           background_color = (128, 128, 128, 0)))
 
-            linecount = linecount + 1
 
         if button_style is not None:
 
@@ -415,5 +414,29 @@ class TMBGetStringDialog(TMBContainer, clickndrag.gui.GetStringDialog):
             # Use default style
             #
             self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok))
+
+        return
+
+class TMBFadingContainer(TMBContainer, clickndrag.gui.FadingContainer):
+    """A clickndrag.gui.FadingContainer with fixed width and TMB background.
+    """
+
+    def __init__(self,
+                 name,
+                 display_duration,
+                 fade_duration,
+                 style = C_256_STYLE, padding = 0):
+        """Initialise.
+        """
+
+        # Call TMBContainer base class
+        #
+        TMBContainer.__init__(self, name, style, padding)
+
+        # Copied from clickndrag.gui.FadingContainer.__init__()
+        #
+        self.display_duration = display_duration
+
+        self.alpha_steps = list(range(255, 0, -int(255 / fade_duration)))
 
         return
