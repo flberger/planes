@@ -3,44 +3,59 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;planes.gui.OkBox&rdquo;</title>
+    <title>API docs for &ldquo;planes.gui.FadingContainer&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class p.g.OkBox(<a href="planes.gui.Container.html">Container</a>):</h1>
+    <h1 class="class">Class p.g.FadingContainer(<a href="planes.gui.Container.html">Container</a>):</h1>
     <p>
       <span id="part">Part of <a href="planes.html">planes</a>.<a href="planes.gui.html">gui</a></span>
       
-      <a href="classIndex.html#planes.gui.OkBox">View In Hierarchy</a>
+      <a href="classIndex.html#planes.gui.FadingContainer">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="planes.gui.tmb.TMBOkBox.html">planes.gui.tmb.TMBOkBox</a></p>
+      <p>Known subclasses: <a href="planes.gui.tmb.TMBFadingContainer.html">planes.gui.tmb.TMBFadingContainer</a></p>
     </div>
-    <pre>A box which displays a message and an OK button.
-It is destroyed when OK is clicked.
-The message will be wrapped at newline characters.</pre>
+    <pre>A Container that, once visible, will fade out and destroy itself.
+
+Additional attributes:
+
+FadingContainer.display_duration
+    The number of calls to update() that the FadingContainer will be
+    displayed. Will be decremented in FadingContainer.update().
+
+FadingContainer.alpha_steps
+    A list of decreasing alpha values to be applied to the
+    Surface of the FadingContainer, computed from fade_duration
+    in FadingContainer.__init__().</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id24">
+      <table class="children sortable" id="id37">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.OkBox.html#__init__">__init__</a></td>
+    <td><a href="planes.gui.FadingContainer.html#__init__">__init__</a></td>
     <td><tt>Initialise.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.OkBox.html#ok">ok</a></td>
-    <td><tt>Button clicked callback which destroys the OkBox.</tt></td>
+    <td><a href="planes.gui.FadingContainer.html#update">update</a></td>
+    <td><tt>Call Plane.update(), then decrement FadingContainer.display_duration and destroy when len(self.alpha_steps) has reached zero.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.gui.FadingContainer.html#render">render</a></td>
+    <td><tt>Call Plane.render(), the pop the first value from self.alpha_steps and apply it as alpha.</tt></td>
   </tr>
   
 </table>
@@ -48,7 +63,7 @@ The message will be wrapped at newline characters.</pre>
         <p>
           Inherited from <a href="planes.gui.Container.html">Container</a>:
         </p>
-        <table class="children sortable" id="id25">
+        <table class="children sortable" id="id38">
   
   
 <tr class="basemethod">
@@ -82,7 +97,7 @@ The message will be wrapped at newline characters.</pre>
         <p>
           Inherited from <a href="planes.Plane.html">Plane</a> (via <a href="planes.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id26">
+        <table class="children sortable" id="id39">
   
   
 <tr class="basemethod">
@@ -95,20 +110,8 @@ The message will be wrapped at newline characters.</pre>
     
     
     <td>Method</td>
-    <td><a href="planes.Plane.html#render">render</a></td>
-    <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
     <td><a href="planes.Plane.html#get_plane_at">get_plane_at</a></td>
     <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="planes.Plane.html#update">update</a></td>
-    <td><tt>Update hook.</tt></td>
   </tr><tr class="basemethod">
     
     
@@ -168,7 +171,7 @@ The message will be wrapped at newline characters.</pre>
     
 
     <div class="function">
-  <a name="planes.gui.OkBox.__init__">
+  <a name="planes.gui.FadingContainer.__init__">
     
   </a>
   <a name="__init__">
@@ -177,30 +180,53 @@ The message will be wrapped at newline characters.</pre>
   <div class="functionHeader">
     
     def
-    __init__(self, message):
+    __init__(self, name, display_duration, fade_duration, padding=0, background_color=None):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="planes.gui.Container.html#__init__">planes.gui.Container.__init__</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBOkBox.html">planes.gui.tmb.TMBOkBox</a></div>
+    <div class="interfaceinfo">overrides <a href="planes.gui.Container.html#__init__">planes.gui.Container.__init__</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBFadingContainer.html">planes.gui.tmb.TMBFadingContainer</a></div>
     <pre>Initialise.
-        </pre>
+
+display_duration is the number of calls to update() that the
+FadingContainer will be displayed.
+
+fade_duration is the number of calls to update() that the
+FadingContainer will take to fade out.</pre>
   </div>
 </div><div class="function">
-  <a name="planes.gui.OkBox.ok">
+  <a name="planes.gui.FadingContainer.update">
     
   </a>
-  <a name="ok">
+  <a name="update">
     
   </a>
   <div class="functionHeader">
     
     def
-    ok(self, plane):
+    update(self):
     
   </div>
   <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#update">planes.Plane.update</a></div>
+    <pre>Call Plane.update(), then decrement FadingContainer.display_duration and destroy when len(self.alpha_steps) has reached zero.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="planes.gui.FadingContainer.render">
     
-    <pre>Button clicked callback which destroys the OkBox.
+  </a>
+  <a name="render">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    render(self):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#render">planes.Plane.render</a></div>
+    <pre>Call Plane.render(), the pop the first value from self.alpha_steps and apply it as alpha.
         </pre>
   </div>
 </div>

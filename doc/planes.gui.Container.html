@@ -3,21 +3,21 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.gui.Container&rdquo;</title>
+    <title>API docs for &ldquo;planes.gui.Container&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.g.Container(<a href="clickndrag.Plane.html">clickndrag.Plane</a>):</h1>
+    <h1 class="class">Class p.g.Container(<a href="planes.Plane.html">planes.Plane</a>):</h1>
     <p>
-      <span id="part">Part of <a href="clickndrag.html">clickndrag</a>.<a href="clickndrag.gui.html">gui</a></span>
+      <span id="part">Part of <a href="planes.html">planes</a>.<a href="planes.gui.html">gui</a></span>
       
-      <a href="classIndex.html#clickndrag.gui.Container">View In Hierarchy</a>
+      <a href="classIndex.html#planes.gui.Container">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="clickndrag.gui.GetStringDialog.html">clickndrag.gui.GetStringDialog</a>, <a href="clickndrag.gui.OkBox.html">clickndrag.gui.OkBox</a>, <a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a>, <a href="clickndrag.gui.OptionSelector.html">clickndrag.gui.OptionSelector</a>, <a href="clickndrag.gui.tmb.TMBContainer.html">clickndrag.gui.tmb.TMBContainer</a></p>
+      <p>Known subclasses: <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>, <a href="planes.gui.GetStringDialog.html">planes.gui.GetStringDialog</a>, <a href="planes.gui.OkBox.html">planes.gui.OkBox</a>, <a href="planes.gui.OptionList.html">planes.gui.OptionList</a>, <a href="planes.gui.OptionSelector.html">planes.gui.OptionSelector</a>, <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></p>
     </div>
     <pre>A Container for Planes.
 If a subplane is added via sub(), the container places it below any existing
@@ -34,120 +34,120 @@ Container.background_color
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id17">
+      <table class="children sortable" id="id13">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#__init__">__init__</a></td>
+    <td><a href="planes.gui.Container.html#__init__">__init__</a></td>
     <td><tt>Initialise.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#redraw">redraw</a></td>
+    <td><a href="planes.gui.Container.html#redraw">redraw</a></td>
     <td><tt>Redraw Container.image from the dimensions in Containter.rect.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#sub">sub</a></td>
+    <td><a href="planes.gui.Container.html#sub">sub</a></td>
     <td><tt>Resize the container, update the position of plane and add it as a subplane.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#remove">remove</a></td>
+    <td><a href="planes.gui.Container.html#remove">remove</a></td>
     <td><tt>Remove the subplane, then reposition remaining subplanes and resize the container.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.gui.Container.html#remove_all">remove_all</a></td>
+    <td><a href="planes.gui.Container.html#remove_all">remove_all</a></td>
     <td><tt>Remove all subplanes and shrink accordingly.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="clickndrag.Plane.html">Plane</a>:
+          Inherited from <a href="planes.Plane.html">Plane</a>:
         </p>
-        <table class="children sortable" id="id18">
+        <table class="children sortable" id="id14">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#__getattr__">__getattr__</a></td>
+    <td><a href="planes.Plane.html#__getattr__">__getattr__</a></td>
     <td><tt>Access subplanes as attributes.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#render">render</a></td>
+    <td><a href="planes.Plane.html#render">render</a></td>
     <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#get_plane_at">get_plane_at</a></td>
+    <td><a href="planes.Plane.html#get_plane_at">get_plane_at</a></td>
     <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#update">update</a></td>
+    <td><a href="planes.Plane.html#update">update</a></td>
     <td><tt>Update hook.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#clicked">clicked</a></td>
+    <td><a href="planes.Plane.html#clicked">clicked</a></td>
     <td><tt>Called when there is a MOUSEDOWN event on this plane.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#dropped_upon">dropped_upon</a></td>
+    <td><a href="planes.Plane.html#dropped_upon">dropped_upon</a></td>
     <td><tt>If a plane is dropped on top of this one, call dropped_upon_callback() and conditionally grab it.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#destroy">destroy</a></td>
+    <td><a href="planes.Plane.html#destroy">destroy</a></td>
     <td><tt>Remove this Plane from the parent plane, remove all subplanes and delete all pygame Surfaces.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#sync">sync</a></td>
+    <td><a href="planes.Plane.html#sync">sync</a></td>
     <td><tt>Save the Plane given as master Plane and the position offset to that Plane for position synchronisation in Plane.update().</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#unsync">unsync</a></td>
+    <td><a href="planes.Plane.html#unsync">unsync</a></td>
     <td><tt>Remove the position synchronisation to the sync master Plane.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#mouseover_callback">mouseover_callback</a></td>
+    <td><a href="planes.Plane.html#mouseover_callback">mouseover_callback</a></td>
     <td><tt>Callback function when the mouse cursor moves over this plane.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#mouseout_callback">mouseout_callback</a></td>
+    <td><a href="planes.Plane.html#mouseout_callback">mouseout_callback</a></td>
     <td><tt>Callback function when the mouse cursor has left this plane.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#__repr__">__repr__</a></td>
+    <td><a href="planes.Plane.html#__repr__">__repr__</a></td>
     <td><tt>Readable string representation.</tt></td>
   </tr>
   
@@ -160,7 +160,7 @@ Container.background_color
     
 
     <div class="function">
-  <a name="clickndrag.gui.Container.__init__">
+  <a name="planes.gui.Container.__init__">
     
   </a>
   <a name="__init__">
@@ -173,12 +173,12 @@ Container.background_color
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#__init__">clickndrag.Plane.__init__</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.GetStringDialog.html">clickndrag.gui.GetStringDialog</a>, <a href="clickndrag.gui.OkBox.html">clickndrag.gui.OkBox</a>, <a href="clickndrag.gui.OptionList.html">clickndrag.gui.OptionList</a>, <a href="clickndrag.gui.OptionSelector.html">clickndrag.gui.OptionSelector</a>, <a href="clickndrag.gui.tmb.TMBContainer.html">clickndrag.gui.tmb.TMBContainer</a></div>
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#__init__">planes.Plane.__init__</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>, <a href="planes.gui.GetStringDialog.html">planes.gui.GetStringDialog</a>, <a href="planes.gui.OkBox.html">planes.gui.OkBox</a>, <a href="planes.gui.OptionList.html">planes.gui.OptionList</a>, <a href="planes.gui.OptionSelector.html">planes.gui.OptionSelector</a>, <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></div>
     <pre>Initialise.
 Container.image is initialised to a 0x0 px Surface.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.Container.redraw">
+  <a name="planes.gui.Container.redraw">
     
   </a>
   <a name="redraw">
@@ -191,12 +191,12 @@ Container.image is initialised to a 0x0 px Surface.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.tmb.TMBContainer.html">clickndrag.gui.tmb.TMBContainer</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></div>
     <pre>Redraw Container.image from the dimensions in Containter.rect.
 This also creates a new Container.rendersurface.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.Container.sub">
+  <a name="planes.gui.Container.sub">
     
   </a>
   <a name="sub">
@@ -209,12 +209,12 @@ This also creates a new Container.rendersurface.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#sub">clickndrag.Plane.sub</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.tmb.TMBContainer.html">clickndrag.gui.tmb.TMBContainer</a></div>
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#sub">planes.Plane.sub</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></div>
     <pre>Resize the container, update the position of plane and add it as a subplane.
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.Container.remove">
+  <a name="planes.gui.Container.remove">
     
   </a>
   <a name="remove">
@@ -227,12 +227,12 @@ This also creates a new Container.rendersurface.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#remove">clickndrag.Plane.remove</a></div><div class="interfaceinfo">overridden in <a href="clickndrag.gui.tmb.TMBContainer.html">clickndrag.gui.tmb.TMBContainer</a></div>
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#remove">planes.Plane.remove</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></div>
     <pre>Remove the subplane, then reposition remaining subplanes and resize the container.
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.gui.Container.remove_all">
+  <a name="planes.gui.Container.remove_all">
     
   </a>
   <a name="remove_all">
@@ -245,13 +245,13 @@ This also creates a new Container.rendersurface.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="clickndrag.Plane.html#remove_all">clickndrag.Plane.remove_all</a></div>
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#remove_all">planes.Plane.remove_all</a></div>
     <pre>Remove all subplanes and shrink accordingly.
         </pre>
   </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for clickndrag, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2012-04-07 10:07:51.
+      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2012-06-21 17:18:34.
     </address>
   </body>
 </html>

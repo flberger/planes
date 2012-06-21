@@ -3,37 +3,36 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;planes.gui.tmb.TMBOkBox&rdquo;</title>
+    <title>API docs for &ldquo;planes.gui.tmb.TMBFadingContainer&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class p.g.t.TMBOkBox(<a href="planes.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="planes.gui.OkBox.html">planes.gui.OkBox</a>):</h1>
+    <h1 class="class">Class p.g.t.TMBFadingContainer(<a href="planes.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>):</h1>
     <p>
       <span id="part">Part of <a href="planes.html">planes</a>.<a href="planes.gui.html">gui</a>.<a href="planes.gui.tmb.html">tmb</a></span>
       
-      <a href="classIndex.html#planes.gui.tmb.TMBOkBox">View In Hierarchy</a>
+      <a href="classIndex.html#planes.gui.tmb.TMBFadingContainer">View In Hierarchy</a>
     </p>
     <div>
       
     </div>
-    <pre>A box which displays a message and an LMR OK button over a TMB background.
-It is destroyed when OK is clicked.
-The message will be wrapped at newline characters.</pre>
+    <pre>A planes.gui.FadingContainer with fixed width and TMB background.
+    </pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id60">
+      <table class="children sortable" id="id81">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.tmb.TMBOkBox.html#__init__">__init__</a></td>
+    <td><a href="planes.gui.tmb.TMBFadingContainer.html#__init__">__init__</a></td>
     <td><tt>Initialise.</tt></td>
   </tr>
   
@@ -42,7 +41,7 @@ The message will be wrapped at newline characters.</pre>
         <p>
           Inherited from <a href="planes.gui.tmb.TMBContainer.html">TMBContainer</a>:
         </p>
-        <table class="children sortable" id="id61">
+        <table class="children sortable" id="id82">
   
   
 <tr class="basemethod">
@@ -70,7 +69,7 @@ The message will be wrapped at newline characters.</pre>
         <p>
           Inherited from <a href="planes.gui.Container.html">Container</a> (via <a href="planes.gui.tmb.TMBContainer.html">TMBContainer</a>):
         </p>
-        <table class="children sortable" id="id62">
+        <table class="children sortable" id="id83">
   
   
 <tr class="basemethod">
@@ -86,7 +85,7 @@ The message will be wrapped at newline characters.</pre>
         <p>
           Inherited from <a href="planes.Plane.html">Plane</a> (via <a href="planes.gui.tmb.TMBContainer.html">TMBContainer</a>, <a href="planes.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id63">
+        <table class="children sortable" id="id84">
   
   
 <tr class="basemethod">
@@ -166,25 +165,31 @@ The message will be wrapped at newline characters.</pre>
 </table>
       
         <p>
-          Inherited from <a href="planes.gui.OkBox.html">OkBox</a>:
+          Inherited from <a href="planes.gui.FadingContainer.html">FadingContainer</a>:
         </p>
-        <table class="children sortable" id="id64">
+        <table class="children sortable" id="id85">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.OkBox.html#ok">ok</a></td>
-    <td><tt>Button clicked callback which destroys the OkBox.</tt></td>
+    <td><a href="planes.gui.FadingContainer.html#update">update</a></td>
+    <td><tt>Call Plane.update(), then decrement FadingContainer.display_duration and destroy when len(self.alpha_steps) has reached zero.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.gui.FadingContainer.html#render">render</a></td>
+    <td><tt>Call Plane.render(), the pop the first value from self.alpha_steps and apply it as alpha.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="planes.gui.Container.html">Container</a> (via <a href="planes.gui.OkBox.html">OkBox</a>):
+          Inherited from <a href="planes.gui.Container.html">Container</a> (via <a href="planes.gui.FadingContainer.html">FadingContainer</a>):
         </p>
-        <table class="children sortable" id="id65">
+        <table class="children sortable" id="id86">
   
   
 <tr class="basemethod">
@@ -216,9 +221,9 @@ The message will be wrapped at newline characters.</pre>
 </table>
       
         <p>
-          Inherited from <a href="planes.Plane.html">Plane</a> (via <a href="planes.gui.OkBox.html">OkBox</a>, <a href="planes.gui.Container.html">Container</a>):
+          Inherited from <a href="planes.Plane.html">Plane</a> (via <a href="planes.gui.FadingContainer.html">FadingContainer</a>, <a href="planes.gui.Container.html">Container</a>):
         </p>
-        <table class="children sortable" id="id66">
+        <table class="children sortable" id="id87">
   
   
 <tr class="basemethod">
@@ -231,20 +236,8 @@ The message will be wrapped at newline characters.</pre>
     
     
     <td>Method</td>
-    <td><a href="planes.Plane.html#render">render</a></td>
-    <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
     <td><a href="planes.Plane.html#get_plane_at">get_plane_at</a></td>
     <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="planes.Plane.html#update">update</a></td>
-    <td><tt>Update hook.</tt></td>
   </tr><tr class="basemethod">
     
     
@@ -304,7 +297,7 @@ The message will be wrapped at newline characters.</pre>
     
 
     <div class="function">
-  <a name="planes.gui.tmb.TMBOkBox.__init__">
+  <a name="planes.gui.tmb.TMBFadingContainer.__init__">
     
   </a>
   <a name="__init__">
@@ -313,17 +306,13 @@ The message will be wrapped at newline characters.</pre>
   <div class="functionHeader">
     
     def
-    __init__(self, message, style=C_256_STYLE, button_style=None):
+    __init__(self, name, display_duration, fade_duration, style=C_256_STYLE, padding=0):
     
   </div>
   <div class="functionBody">
     <div class="interfaceinfo">overrides <a href="planes.gui.tmb.TMBContainer.html#__init__">planes.gui.tmb.TMBContainer.__init__</a></div>
     <pre>Initialise.
-
-style is an optional instance of TMBStyle. If no style is given, it
-defaults to C_256_STYLE.
-
-button_style is an optional instance of lmr.LMRStyle.</pre>
+        </pre>
   </div>
 </div>
     <address>

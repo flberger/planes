@@ -3,21 +3,21 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;clickndrag.Plane&rdquo;</title>
+    <title>API docs for &ldquo;planes.Plane&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class c.Plane:</h1>
+    <h1 class="class">Class p.Plane:</h1>
     <p>
-      <span id="part">Part of <a href="clickndrag.html">clickndrag</a></span>
+      <span id="part">Part of <a href="planes.html">planes</a></span>
       
-      <a href="classIndex.html#clickndrag.Plane">View In Hierarchy</a>
+      <a href="classIndex.html#planes.Plane">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="clickndrag.Display.html">clickndrag.Display</a>, <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a>, <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a>, <a href="clickndrag.gui.PlusMinusBox.html">clickndrag.gui.PlusMinusBox</a>, <a href="clickndrag.gui.ScrollingPlane.html">clickndrag.gui.ScrollingPlane</a></p>
+      <p>Known subclasses: <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.Container.html">planes.gui.Container</a>, <a href="planes.gui.Label.html">planes.gui.Label</a>, <a href="planes.gui.PlusMinusBox.html">planes.gui.PlusMinusBox</a>, <a href="planes.gui.ScrollingPlane.html">planes.gui.ScrollingPlane</a></p>
     </div>
     <pre>A Plane is a surface in a hierarchy of surfaces.
 Concept-wise it bears some similarities to pygame.sprite.Sprite.
@@ -97,104 +97,104 @@ Plane.offset
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id4">
+      <table class="children sortable" id="id89">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#__init__">__init__</a></td>
+    <td><a href="planes.Plane.html#__init__">__init__</a></td>
     <td><tt>Initialize the Plane.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#sub">sub</a></td>
+    <td><a href="planes.Plane.html#sub">sub</a></td>
     <td><tt>Remove the Plane given from its current parent and add it as a subplane of this Plane.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#remove">remove</a></td>
+    <td><a href="planes.Plane.html#remove">remove</a></td>
     <td><tt>Remove subplane by name or Plane instance.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#remove_all">remove_all</a></td>
+    <td><a href="planes.Plane.html#remove_all">remove_all</a></td>
     <td><tt>Convenience method to call Plane.remove() for all subplanes.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#__getattr__">__getattr__</a></td>
+    <td><a href="planes.Plane.html#__getattr__">__getattr__</a></td>
     <td><tt>Access subplanes as attributes.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#render">render</a></td>
+    <td><a href="planes.Plane.html#render">render</a></td>
     <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#get_plane_at">get_plane_at</a></td>
+    <td><a href="planes.Plane.html#get_plane_at">get_plane_at</a></td>
     <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#update">update</a></td>
+    <td><a href="planes.Plane.html#update">update</a></td>
     <td><tt>Update hook.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#clicked">clicked</a></td>
+    <td><a href="planes.Plane.html#clicked">clicked</a></td>
     <td><tt>Called when there is a MOUSEDOWN event on this plane.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#dropped_upon">dropped_upon</a></td>
+    <td><a href="planes.Plane.html#dropped_upon">dropped_upon</a></td>
     <td><tt>If a plane is dropped on top of this one, call dropped_upon_callback() and conditionally grab it.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#destroy">destroy</a></td>
+    <td><a href="planes.Plane.html#destroy">destroy</a></td>
     <td><tt>Remove this Plane from the parent plane, remove all subplanes and delete all pygame Surfaces.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#sync">sync</a></td>
+    <td><a href="planes.Plane.html#sync">sync</a></td>
     <td><tt>Save the Plane given as master Plane and the position offset to that Plane for position synchronisation in Plane.update().</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#unsync">unsync</a></td>
+    <td><a href="planes.Plane.html#unsync">unsync</a></td>
     <td><tt>Remove the position synchronisation to the sync master Plane.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#mouseover_callback">mouseover_callback</a></td>
+    <td><a href="planes.Plane.html#mouseover_callback">mouseover_callback</a></td>
     <td><tt>Callback function when the mouse cursor moves over this plane.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#mouseout_callback">mouseout_callback</a></td>
+    <td><a href="planes.Plane.html#mouseout_callback">mouseout_callback</a></td>
     <td><tt>Callback function when the mouse cursor has left this plane.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="clickndrag.Plane.html#__repr__">__repr__</a></td>
+    <td><a href="planes.Plane.html#__repr__">__repr__</a></td>
     <td><tt>Readable string representation.</tt></td>
   </tr>
   
@@ -207,7 +207,7 @@ Plane.offset
     
 
     <div class="function">
-  <a name="clickndrag.Plane.__init__">
+  <a name="planes.Plane.__init__">
     
   </a>
   <a name="__init__">
@@ -220,7 +220,7 @@ Plane.offset
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a>, <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a>, <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a>, <a href="clickndrag.gui.PlusMinusBox.html">clickndrag.gui.PlusMinusBox</a>, <a href="clickndrag.gui.ScrollingPlane.html">clickndrag.gui.ScrollingPlane</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.Container.html">planes.gui.Container</a>, <a href="planes.gui.Label.html">planes.gui.Label</a>, <a href="planes.gui.PlusMinusBox.html">planes.gui.PlusMinusBox</a>, <a href="planes.gui.ScrollingPlane.html">planes.gui.ScrollingPlane</a></div>
     <pre>Initialize the Plane.
 name is the name of the plane which can also be used
 as an attribute.
@@ -234,7 +234,7 @@ functions.
 Planes are filled with solid black color by default.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.sub">
+  <a name="planes.Plane.sub">
     
   </a>
   <a name="sub">
@@ -247,7 +247,7 @@ Planes are filled with solid black color by default.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.gui.Container.html">planes.gui.Container</a></div>
     <pre>Remove the Plane given from its current parent and add it as a subplane of this Plane.
 
 If insert_after is given, the new subplane will be inserted
@@ -258,7 +258,7 @@ If a subplane with the same name already exists, it is silently
 replaced by the new plane.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.remove">
+  <a name="planes.Plane.remove">
     
   </a>
   <a name="remove">
@@ -271,12 +271,12 @@ replaced by the new plane.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.gui.Container.html">planes.gui.Container</a></div>
     <pre>Remove subplane by name or Plane instance.
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.remove_all">
+  <a name="planes.Plane.remove_all">
     
   </a>
   <a name="remove_all">
@@ -289,12 +289,12 @@ replaced by the new plane.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.Container.html">clickndrag.gui.Container</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.gui.Container.html">planes.gui.Container</a></div>
     <pre>Convenience method to call Plane.remove() for all subplanes.
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.__getattr__">
+  <a name="planes.Plane.__getattr__">
     
   </a>
   <a name="__getattr__">
@@ -312,7 +312,7 @@ replaced by the new plane.</pre>
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.render">
+  <a name="planes.Plane.render">
     
   </a>
   <a name="render">
@@ -325,7 +325,7 @@ replaced by the new plane.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.Display.html">clickndrag.Display</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a></div>
     <pre>Draw a composite surface of this plane and all subplanes, in order of their addition.
 Returns True if anything has been rendered (i.e. if
 Plane.rendersurface has changed), False otherwise.
@@ -333,7 +333,7 @@ This method wil highlight subplanes that have the Plane.mousover flag
 set.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.get_plane_at">
+  <a name="planes.Plane.get_plane_at">
     
   </a>
   <a name="get_plane_at">
@@ -351,7 +351,7 @@ set.</pre>
 Subplanes are tested in reverse order of their addition (i.e. latest first).</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.update">
+  <a name="planes.Plane.update">
     
   </a>
   <a name="update">
@@ -364,7 +364,7 @@ Subplanes are tested in reverse order of their addition (i.e. latest first).</pr
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.Label.html">clickndrag.gui.Label</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>, <a href="planes.gui.Label.html">planes.gui.Label</a></div>
     <pre>Update hook.
 The default implementation calls update() on all subplanes. If
 Plane.sync_master_plane is not None, the position of this Plane will
@@ -372,7 +372,7 @@ be synced to that of the master Plane, using Plane.offset.
 Compare pygame.sprite.Sprite.update.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.clicked">
+  <a name="planes.Plane.clicked">
     
   </a>
   <a name="clicked">
@@ -385,13 +385,13 @@ Compare pygame.sprite.Sprite.update.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="clickndrag.gui.Button.html">clickndrag.gui.Button</a>, <a href="clickndrag.gui.Option.html">clickndrag.gui.Option</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.gui.Button.html">planes.gui.Button</a>, <a href="planes.gui.Option.html">planes.gui.Option</a></div>
     <pre>Called when there is a MOUSEDOWN event on this plane.
 If Plane.left_click_callback or Plane.right_click_callback are set,
 the appropriate is called with this Plane as argument.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.dropped_upon">
+  <a name="planes.Plane.dropped_upon">
     
   </a>
   <a name="dropped_upon">
@@ -417,7 +417,7 @@ If Plane.dropped_upon_callback is set, it is called with
 Plane.dropped_upon_callback(self, plane, coordinates)</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.destroy">
+  <a name="planes.Plane.destroy">
     
   </a>
   <a name="destroy">
@@ -435,7 +435,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.sync">
+  <a name="planes.Plane.sync">
     
   </a>
   <a name="sync">
@@ -453,7 +453,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.unsync">
+  <a name="planes.Plane.unsync">
     
   </a>
   <a name="unsync">
@@ -471,7 +471,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
         </pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.mouseover_callback">
+  <a name="planes.Plane.mouseover_callback">
     
   </a>
   <a name="mouseover_callback">
@@ -490,7 +490,7 @@ The default implementation sets Plan.mouseover to True when
 Plane.highlight is set.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.mouseout_callback">
+  <a name="planes.Plane.mouseout_callback">
     
   </a>
   <a name="mouseout_callback">
@@ -508,7 +508,7 @@ Plane.highlight is set.</pre>
 The default implementation sets Plan.mouseover to False.</pre>
   </div>
 </div><div class="function">
-  <a name="clickndrag.Plane.__repr__">
+  <a name="planes.Plane.__repr__">
     
   </a>
   <a name="__repr__">
@@ -527,7 +527,7 @@ The default implementation sets Plan.mouseover to False.</pre>
   </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for clickndrag, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2012-04-07 10:07:51.
+      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2012-06-21 17:18:34.
     </address>
   </body>
 </html>
