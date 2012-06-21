@@ -35,6 +35,7 @@
 # work started on 28. Oct 2010
 
 # TODO: Make current Fabula Editor style the clickndrag.gui default style
+# TODO: Include some freely available game fonts
 
 import clickndrag
 import pygame
@@ -223,6 +224,7 @@ class OutlinedText(Label):
 
     def redraw(self):
         """Redraw the Label if necessary.
+           The new Label will have the same rect center as the old Label.
         """
 
         if self.text != self.cached_text:
