@@ -1,46 +1,46 @@
 #!/usr/bin/python3
 
-"""Square clicking using Click'n'Drag
+"""Square clicking using planes
 
    Copyright 2010 Florian Berger <fberger@florian-berger.de>
 
    Based on a pure PyGame implementation
 """
 
-# This file is part of clickndrag.
+# This file is part of planes.
 #
-# clickndrag is free software: you can redistribute it and/or modify
+# planes is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# clickndrag is distributed in the hope that it will be useful,
+# planes is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with clickndrag.  If not, see <http://www.gnu.org/licenses/>.
+# along with planes.  If not, see <http://www.gnu.org/licenses/>.
 
 # work started on 03. Oct 2010
 
 import sys
 
 # Add current and parent directory. One of them is supposed to contain the
-# clickndrag package.
+# planes package.
 #
 sys.path.append("../")
 sys.path.append("./")
 
 import pygame
-import clickndrag
+import planes
 from collections import deque
 
-class ColorChangeSquare(clickndrag.Plane):
+class ColorChangeSquare(planes.Plane):
 
 	def __init__(self, name, rect, draggable = False, grab = False):
 
-		clickndrag.Plane.__init__(self, name, rect, draggable, grab)
+		planes.Plane.__init__(self, name, rect, draggable, grab)
 
 		# custom extensions for movement, color
 		#
@@ -91,21 +91,21 @@ class ColorChangeSquare(clickndrag.Plane):
 		if self.moving:
 			self.rect.move_ip(self.vector[0], self.vector[1])
 
-class DropZone(clickndrag.Plane):
+class DropZone(planes.Plane):
 
 	def dropped_upon(self, plane, coordinates):
 
-		clickndrag.Plane.dropped_upon(self, plane, coordinates)
+		planes.Plane.dropped_upon(self, plane, coordinates)
 
 		plane.moving = False
 
-class DropDisplay(clickndrag.Display):
+class DropDisplay(planes.Display):
 
 	def dropped_upon(self, plane, coordinates):
 
 		if isinstance(plane, ColorChangeSquare):
 
-			clickndrag.Display.dropped_upon(self, plane, coordinates)
+			planes.Display.dropped_upon(self, plane, coordinates)
 
 			plane.moving = True
 

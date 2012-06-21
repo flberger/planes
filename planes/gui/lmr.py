@@ -1,10 +1,10 @@
-"""lmr - clickndrag.gui widgets with left-mid-right backgrounds.
+"""lmr - planes.gui widgets with left-mid-right backgrounds.
 
    Copyright 2012 Florian Berger <fberger@florian-berger.de>
 
    Module doctests:
 
-   >>> display = clickndrag.Display((300, 300))
+   >>> display = planes.Display((300, 300))
    >>> display.image.fill((128, 128, 128))
    <rect(0, 0, 300, 300)>
    >>> def exit(plane):
@@ -40,24 +40,24 @@
    SystemExit
 """
 
-# This file is part of clickndrag.
+# This file is part of planes.
 #
-# clickndrag is free software: you can redistribute it and/or modify
+# planes is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# clickndrag is distributed in the hope that it will be useful,
+# planes is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with clickndrag.  If not, see <http://www.gnu.org/licenses/>.
+# along with planes.  If not, see <http://www.gnu.org/licenses/>.
 
 # work started on 27. Feb 2012
 
-import clickndrag.gui
+import planes.gui
 import pygame
 import os.path
 
@@ -100,51 +100,51 @@ class LMRStyle:
 
 # Create some default styles
 #
-ORANGE_BUTTON_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+ORANGE_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                             "button-orange-32px-l.png"),
-                               os.path.join(clickndrag.gui.RESOURCE_PATH,
+                               os.path.join(planes.gui.RESOURCE_PATH,
                                             "button-orange-32px-m.png"),
-                               os.path.join(clickndrag.gui.RESOURCE_PATH,
+                               os.path.join(planes.gui.RESOURCE_PATH,
                                             "button-orange-32px-r.png"),
                                (0, 0, 0))
 
-WHITE_BUTTON_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+WHITE_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                            "button-white-32px-l.png"),
-                              os.path.join(clickndrag.gui.RESOURCE_PATH,
+                              os.path.join(planes.gui.RESOURCE_PATH,
                                            "button-white-32px-m.png"),
-                              os.path.join(clickndrag.gui.RESOURCE_PATH,
+                              os.path.join(planes.gui.RESOURCE_PATH,
                                            "button-white-32px-r.png"),
                               (0, 0, 0))
 
-GREY_BUTTON_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+GREY_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                           "button-grey-32px-l.png"),
-                             os.path.join(clickndrag.gui.RESOURCE_PATH,
+                             os.path.join(planes.gui.RESOURCE_PATH,
                                           "button-grey-32px-m.png"),
-                             os.path.join(clickndrag.gui.RESOURCE_PATH,
+                             os.path.join(planes.gui.RESOURCE_PATH,
                                           "button-grey-32px-r.png"),
                              (0, 0, 0))
 
-BLACK_BUTTON_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+BLACK_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                            "button-black-32px-l.png"),
-                              os.path.join(clickndrag.gui.RESOURCE_PATH,
+                              os.path.join(planes.gui.RESOURCE_PATH,
                                            "button-black-32px-m.png"),
-                              os.path.join(clickndrag.gui.RESOURCE_PATH,
+                              os.path.join(planes.gui.RESOURCE_PATH,
                                            "button-black-32px-r.png"),
                               (255, 255, 255))
 
-GREY_OPTION_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+GREY_OPTION_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                           "option-grey-32px-l.png"),
-                             os.path.join(clickndrag.gui.RESOURCE_PATH,
+                             os.path.join(planes.gui.RESOURCE_PATH,
                                           "option-grey-32px-m.png"),
-                             os.path.join(clickndrag.gui.RESOURCE_PATH,
+                             os.path.join(planes.gui.RESOURCE_PATH,
                                           "option-grey-32px-r.png"),
                              (0, 0, 0))
 
-ORANGE_OPTION_STYLE = LMRStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+ORANGE_OPTION_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                             "option-orange-32px-l.png"),
-                               os.path.join(clickndrag.gui.RESOURCE_PATH,
+                               os.path.join(planes.gui.RESOURCE_PATH,
                                             "option-orange-32px-m.png"),
-                               os.path.join(clickndrag.gui.RESOURCE_PATH,
+                               os.path.join(planes.gui.RESOURCE_PATH,
                                             "option-orange-32px-r.png"),
                                (0, 0, 0))
 
@@ -218,8 +218,8 @@ class LMRWidget:
 
         return
 
-class LMRButton(LMRWidget, clickndrag.gui.Button):
-    """A clickndrag.gui.Button with LMR background.
+class LMRButton(LMRWidget, planes.gui.Button):
+    """A planes.gui.Button with LMR background.
     """
 
     def __init__(self, label, width, callback, style = GREY_BUTTON_STYLE):
@@ -241,7 +241,7 @@ class LMRButton(LMRWidget, clickndrag.gui.Button):
         # Now call base class.
         # This will also call redraw().
         #
-        clickndrag.gui.Button.__init__(self,
+        planes.gui.Button.__init__(self,
                                        label,
                                        self.background.get_rect(),
                                        callback)
@@ -262,7 +262,7 @@ class LMRButton(LMRWidget, clickndrag.gui.Button):
 
             # Text is centered on rect.
             #
-            fontsurf = clickndrag.gui.SMALL_FONT.render(self.text,
+            fontsurf = planes.gui.SMALL_FONT.render(self.text,
                                                         True,
                                                         self.style.text_color)
 
@@ -286,8 +286,8 @@ class LMRButton(LMRWidget, clickndrag.gui.Button):
 
         return
 
-class LMROption(LMRWidget, clickndrag.gui.Option):
-    """A clickndrag.gui.Option with LMR background.
+class LMROption(LMRWidget, planes.gui.Option):
+    """A planes.gui.Option with LMR background.
 
        Additional attributes:
 
@@ -312,9 +312,9 @@ class LMROption(LMRWidget, clickndrag.gui.Option):
 
         self.original_background = self.background
 
-        # Call base class. This calls through to clickndrag.gui.Label.
+        # Call base class. This calls through to planes.gui.Label.
         #
-        clickndrag.gui.Option.__init__(self, name, text, self.background.get_rect())
+        planes.gui.Option.__init__(self, name, text, self.background.get_rect())
 
         return
 
@@ -331,7 +331,7 @@ class LMROption(LMRWidget, clickndrag.gui.Option):
 
         # Text is centered on rect.
         #
-        fontsurf = clickndrag.gui.SMALL_FONT.render(self.text,
+        fontsurf = planes.gui.SMALL_FONT.render(self.text,
                                                     True,
                                                     self.style.text_color)
 
@@ -378,8 +378,8 @@ class LMROption(LMRWidget, clickndrag.gui.Option):
 
         return
 
-class LMROptionList(clickndrag.gui.OptionList):
-    """A clickndrag.gui.OptionList with LMROption elements.
+class LMROptionList(planes.gui.OptionList):
+    """A planes.gui.OptionList with LMROption elements.
 
        Options are LMROption subplanes of OptionList, named option0, option1,
        ..., optionN
@@ -423,7 +423,7 @@ class LMROptionList(clickndrag.gui.OptionList):
         # This is still a Container.
         # Create a transparent background. This will also disable the border.
         #
-        clickndrag.gui.Container.__init__(self,
+        planes.gui.Container.__init__(self,
                                           name,
                                           background_color = (128, 128, 128, 0))
 
@@ -449,8 +449,8 @@ class LMROptionList(clickndrag.gui.OptionList):
 
         return
 
-class LMRPlusMinusBox(clickndrag.gui.PlusMinusBox):
-    """A clickndrag.gui.PlusMinusBox with LMRButtons.
+class LMRPlusMinusBox(planes.gui.PlusMinusBox):
+    """A planes.gui.PlusMinusBox with LMRButtons.
        The value is accessible as PlusMinusBox.textbox.text
     """
 
@@ -468,9 +468,9 @@ class LMRPlusMinusBox(clickndrag.gui.PlusMinusBox):
 
         minusbutton.text = "-"
 
-        textbox = clickndrag.gui.TextBox("textbox",
+        textbox = planes.gui.TextBox("textbox",
                                          pygame.Rect((minusbutton.rect.width, 0),
-                                                     (clickndrag.gui.PIX_PER_CHAR * charwidth,
+                                                     (planes.gui.PIX_PER_CHAR * charwidth,
                                                       minusbutton.rect.height)))
 
         plusbutton = LMRButton("plus", 32, self.plus_callback)
@@ -486,7 +486,7 @@ class LMRPlusMinusBox(clickndrag.gui.PlusMinusBox):
         # Call base class.
         # Leave optional arguments at their defaults.
         #
-        clickndrag.Plane.__init__(self, name, rect)
+        planes.Plane.__init__(self, name, rect)
 
         # Make transparent
         #

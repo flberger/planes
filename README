@@ -1,17 +1,17 @@
-README for Click'n'Drag
+README for planes
 =======================
 
 About
 -----
 
-Click'n'Drag is a hierarchical surface framework for PyGame.
+planes is a hierarchical surface framework for PyGame.
 
-The clickndrag module introduces the "Plane" class which extends PyGame's 
+The planes module introduces the "Plane" class which extends PyGame's 
 "Surface" functionality, offering a hierarchy of mouse-sensitive, draggable 
 Surfaces that can be used as sprites, windows, icons or other interactive 
 elements.
 
-In addition, the clickndrag.gui module uses clickndrag to provide basic GUI 
+In addition, the planes.gui module uses planes to provide basic GUI 
 elements like container, label, text box, option list and button.
 
 
@@ -33,9 +33,9 @@ Unzip the file, then at the command line run
 Examples
 --------
 
-A showcase python script will be installed along with clickndrag. Run
+A showcase python script will be installed along with planes. Run
 
-    clickndrag_interactive.py
+    planes_interactive.py
 
 
 Documentation

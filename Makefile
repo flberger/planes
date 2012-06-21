@@ -13,7 +13,7 @@ help:
 
 docs: clean
 	/home/florian/temp/python/pydoctor/bin/pydoctor --verbose \
-	                                                --add-package clickndrag \
+	                                                --add-package planes \
 	                                                --make-html \
                                                     --html-output doc/
 
@@ -23,10 +23,10 @@ clean:
 	rm -vf `find . -iname '*.pyc'`
 
 pylint:
-	pylint clickndrag ; pylint examples/clickndrag_interactive.py
+	pylint planes ; pylint examples/planes_interactive.py
 
 errors:
-	pylint --errors-only clickndrag ; pylint --errors-only examples/clickndrag_interactive.py
+	pylint --errors-only planes ; pylint --errors-only examples/planes_interactive.py
 
 ifdef PYTHON
 
@@ -68,4 +68,4 @@ freshmeat:
 
 MANIFEST.in: docs
 	rm -fv MANIFEST.in
-	for i in `ls clickndrag/Vera* NEWS doc/*` ; do echo "include $$i" >> MANIFEST.in ; done
+	for i in `ls planes/Vera* NEWS doc/*` ; do echo "include $$i" >> MANIFEST.in ; done

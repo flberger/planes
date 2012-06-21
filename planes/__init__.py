@@ -1,22 +1,22 @@
-"""Click'n'Drag
+"""planes
    A Hierarchical Surface Framework for PyGame
    Copyright 2010 Florian Berger <fberger@florian-berger.de>
 """
 
-# This file is part of clickndrag.
+# This file is part of planes.
 #
-# clickndrag is free software: you can redistribute it and/or modify
+# planes is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# clickndrag is distributed in the hope that it will be useful,
+# planes is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with clickndrag.  If not, see <http://www.gnu.org/licenses/>.
+# along with planes.  If not, see <http://www.gnu.org/licenses/>.
 
 # Planned in mind at the Mosel valley in late July 2010
 # Actual work started on 01. Oct 2010
@@ -563,7 +563,7 @@ class Plane:
             parent_name = self.parent.name
 
 
-        repr_str = "<clickndrag.Plane name='{0}' image={1} rendersurface={2} rect={3} parent='{4}' subplanes_list={5} draggable={6} grab={7} last_image_id={8} last_rect={9} left_click_callback={10} right_click_callback={11} dropped_upon_callback={12} sync_master_plane={13}>"
+        repr_str = "<planes.Plane name='{0}' image={1} rendersurface={2} rect={3} parent='{4}' subplanes_list={5} draggable={6} grab={7} last_image_id={8} last_rect={9} left_click_callback={10} right_click_callback={11} dropped_upon_callback={12} sync_master_plane={13}>"
 
         return repr_str.format(self.name,
                                "{0}@{1}".format(self.image, id(self.image)),
@@ -581,8 +581,8 @@ class Plane:
                                self.sync_master_plane)
 
 class Display(Plane):
-    """Click'n'Drag main screen class.
-       A Display instance serves as the root Plane in clickndrag.
+    """planes main screen class.
+       A Display instance serves as the root Plane in planes.
 
        Additional attributes:
 
@@ -670,7 +670,7 @@ class Display(Plane):
 
     def process(self, event_list):
         """Process a pygame event list.
-           This is the main method of clickndrag and should be called once per
+           This is the main method of planes and should be called once per
            frame.
            It will also check mouseover conditions, even if event_list is empty.
         """

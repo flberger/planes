@@ -1,10 +1,10 @@
-"""tmb - clickndrag.gui widgets with top-mid-bottom backgrounds.
+"""tmb - planes.gui widgets with top-mid-bottom backgrounds.
 
    Copyright 2012 Florian Berger <fberger@florian-berger.de>
 
    Module doctests:
 
-   >>> display = clickndrag.Display((500, 350))
+   >>> display = planes.Display((500, 350))
    >>> display.image.fill((128, 128, 128))
    <rect(0, 0, 500, 350)>
    >>> ok_box = TMBOkBox("Welcome to a TMBOkBox!")
@@ -30,27 +30,27 @@
    SystemExit
 """
 
-# This file is part of clickndrag.
+# This file is part of planes.
 #
-# clickndrag is free software: you can redistribute it and/or modify
+# planes is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# clickndrag is distributed in the hope that it will be useful,
+# planes is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with clickndrag.  If not, see <http://www.gnu.org/licenses/>.
+# along with planes.  If not, see <http://www.gnu.org/licenses/>.
 
 # work started on 27. Feb 2012
 
 # TODO: GetStringDialog
 # TODO: OptionSelector
 
-import clickndrag.gui.lmr
+import planes.gui.lmr
 import pygame
 import os.path
 
@@ -89,29 +89,29 @@ class TMBStyle:
 
 # Create some default styles
 #
-C_256_STYLE = TMBStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+C_256_STYLE = TMBStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-256px-t.png"),
-                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                       os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-256px-m.png"),
-                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                       os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-256px-b.png"))
 
-C_128_STYLE = TMBStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+C_128_STYLE = TMBStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-128px-t.png"),
-                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                       os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-128px-m.png"),
-                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                       os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-128px-b.png"))
 
-C_512_STYLE = TMBStyle(os.path.join(clickndrag.gui.RESOURCE_PATH,
+C_512_STYLE = TMBStyle(os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-512px-t.png"),
-                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                       os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-512px-m.png"),
-                       os.path.join(clickndrag.gui.RESOURCE_PATH,
+                       os.path.join(planes.gui.RESOURCE_PATH,
                                     "container-512px-b.png"))
 
-class TMBContainer(clickndrag.gui.Container):
-    """A clickndrag.gui.Container with fixed width and TMB background.
+class TMBContainer(planes.gui.Container):
+    """A planes.gui.Container with fixed width and TMB background.
 
        Additional attributes:
 
@@ -137,7 +137,7 @@ class TMBContainer(clickndrag.gui.Container):
 
         # Call base
         #
-        clickndrag.gui.Container.__init__(self, name, padding)
+        planes.gui.Container.__init__(self, name, padding)
 
         self.style = style
 
@@ -159,7 +159,7 @@ class TMBContainer(clickndrag.gui.Container):
         # First add the subplane by calling the base class method.
         # This also cares for re-adding an already existing subplane.
         #
-        clickndrag.Plane.sub(self, plane)
+        planes.Plane.sub(self, plane)
 
         # Existing subplanes are already incorporated in self.rect.
 
@@ -243,7 +243,7 @@ class TMBContainer(clickndrag.gui.Container):
 
         # Accept Plane name as well as Plane instance
         #
-        if isinstance(plane_identifier, clickndrag.Plane):
+        if isinstance(plane_identifier, planes.Plane):
 
             name = plane_identifier.name
 
@@ -254,7 +254,7 @@ class TMBContainer(clickndrag.gui.Container):
         #
         height_removed = self.subplanes[name].rect.height + self.padding
 
-        clickndrag.Plane.remove(self, name)
+        planes.Plane.remove(self, name)
 
         # Reposition remaining subplanes.
         #
@@ -273,7 +273,7 @@ class TMBContainer(clickndrag.gui.Container):
 
         return
 
-class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
+class TMBOkBox(TMBContainer, planes.gui.OkBox):
     """A box which displays a message and an LMR OK button over a TMB background.
        It is destroyed when OK is clicked.
        The message will be wrapped at newline characters.
@@ -294,32 +294,32 @@ class TMBOkBox(TMBContainer, clickndrag.gui.OkBox):
         #
         TMBContainer.__init__(self, str(id(self)), style, padding = 5)
 
-        # Adapted from clickndrag.gui.OkBox
+        # Adapted from planes.gui.OkBox
         #
         lines = message.split("\n")
 
         for line_no in range(len(lines)):
 
-            self.sub(clickndrag.gui.Label("message_line_{0}".format(line_no),
+            self.sub(planes.gui.Label("message_line_{0}".format(line_no),
                                           lines[line_no],
                                           pygame.Rect((0, 0),
-                                                      (len(lines[line_no]) * clickndrag.gui.PIX_PER_CHAR, 30)),
+                                                      (len(lines[line_no]) * planes.gui.PIX_PER_CHAR, 30)),
                                           background_color = (128, 128, 128, 0)))
 
 
         if button_style is not None:
 
-            self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok, button_style))
+            self.sub(planes.gui.lmr.LMRButton("OK", 50, self.ok, button_style))
 
         else:
 
             # Use default style
             #
-            self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok))
+            self.sub(planes.gui.lmr.LMRButton("OK", 50, self.ok))
 
         return
 
-class TMBOptionSelector(TMBContainer, clickndrag.gui.OptionSelector):
+class TMBOptionSelector(TMBContainer, planes.gui.OptionSelector):
     """A TMBOptionSelector wraps an lmr.LMROptionList and an OK button over a TMB background, calling a callback when a selection is confirmed.
     """
 
@@ -346,13 +346,13 @@ class TMBOptionSelector(TMBContainer, clickndrag.gui.OptionSelector):
         # Add options and OK button.
         # Calculate width to leave some padding.
         #
-        ol = clickndrag.gui.lmr.LMROptionList("option_list",
+        ol = planes.gui.lmr.LMROptionList("option_list",
                                               option_list,
                                               self.rect.width - 40)
 
         self.sub(ol)
 
-        button = clickndrag.gui.lmr.LMRButton("OK",
+        button = planes.gui.lmr.LMRButton("OK",
                                               50,
                                               self.selection_made)
 
@@ -360,7 +360,7 @@ class TMBOptionSelector(TMBContainer, clickndrag.gui.OptionSelector):
 
         return
 
-class TMBGetStringDialog(TMBContainer, clickndrag.gui.GetStringDialog):
+class TMBGetStringDialog(TMBContainer, planes.gui.GetStringDialog):
     """A combination of TMBContainer, Label, TextBox and Button that asks the user for a string.
     """
 
@@ -384,18 +384,18 @@ class TMBGetStringDialog(TMBContainer, clickndrag.gui.GetStringDialog):
         #
         TMBContainer.__init__(self, "get_string_dialog", style, padding = 5)
 
-        # Adapted from clickndrag.gui.GetStringDialog
+        # Adapted from planes.gui.GetStringDialog
         #
         self.callback = callback
 
         # Transparent label
         #
-        self.sub(clickndrag.gui.Label("prompt",
+        self.sub(planes.gui.Label("prompt",
                                       prompt,
                                       pygame.Rect((0, 0), (200, 30)),
                                       background_color = (128, 128, 128, 0)))
 
-        textbox = clickndrag.gui.TextBox("textbox",
+        textbox = planes.gui.TextBox("textbox",
                                          pygame.Rect((0, 0), (200, 30)),
                                          return_callback = self.return_key)
 
@@ -407,18 +407,18 @@ class TMBGetStringDialog(TMBContainer, clickndrag.gui.GetStringDialog):
         #
         if button_style is not None:
 
-            self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok, button_style))
+            self.sub(planes.gui.lmr.LMRButton("OK", 50, self.ok, button_style))
 
         else:
 
             # Use default style
             #
-            self.sub(clickndrag.gui.lmr.LMRButton("OK", 50, self.ok))
+            self.sub(planes.gui.lmr.LMRButton("OK", 50, self.ok))
 
         return
 
-class TMBFadingContainer(TMBContainer, clickndrag.gui.FadingContainer):
-    """A clickndrag.gui.FadingContainer with fixed width and TMB background.
+class TMBFadingContainer(TMBContainer, planes.gui.FadingContainer):
+    """A planes.gui.FadingContainer with fixed width and TMB background.
     """
 
     def __init__(self,
@@ -433,7 +433,7 @@ class TMBFadingContainer(TMBContainer, clickndrag.gui.FadingContainer):
         #
         TMBContainer.__init__(self, name, style, padding)
 
-        # Copied from clickndrag.gui.FadingContainer.__init__()
+        # Copied from planes.gui.FadingContainer.__init__()
         #
         self.display_duration = display_duration
 

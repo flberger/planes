@@ -1,4 +1,4 @@
-"""Click'n'Drag Graphical User Interface Module
+"""planes Graphical User Interface Module
 
    Copyright 2010 Florian Berger <fberger@florian-berger.de>
 
@@ -17,26 +17,26 @@
        A pygame.font.Font instance, small pointsize.
 """
 
-# This file is part of clickndrag.
+# This file is part of planes.
 #
-# clickndrag is free software: you can redistribute it and/or modify
+# planes is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# clickndrag is distributed in the hope that it will be useful,
+# planes is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with clickndrag.  If not, see <http://www.gnu.org/licenses/>.
+# along with planes.  If not, see <http://www.gnu.org/licenses/>.
 
 # work started on 28. Oct 2010
 
-# TODO: Make current Fabula Editor style the clickndrag.gui default style
+# TODO: Make current Fabula Editor style the planes.gui default style
 
-import clickndrag
+import planes
 import pygame
 import os.path
 import sys
@@ -91,8 +91,8 @@ def draw_border(plane, color):
 
     return
 
-class Label(clickndrag.Plane):
-    """A clickndrag.Plane which displays a text.
+class Label(planes.Plane):
+    """A planes.Plane which displays a text.
 
        Additional attributes:
 
@@ -123,7 +123,7 @@ class Label(clickndrag.Plane):
 
         # Call base class init
         #
-        clickndrag.Plane.__init__(self, name, rect, draggable = False, grab = False)
+        planes.Plane.__init__(self, name, rect, draggable = False, grab = False)
 
         if text is not None:
 
@@ -159,7 +159,7 @@ class Label(clickndrag.Plane):
 
         self.redraw()
 
-        clickndrag.Plane.update(self)
+        planes.Plane.update(self)
 
         return
 
@@ -284,7 +284,7 @@ class OutlinedText(Label):
         return
 
 class Button(Label):
-    """A clickndrag plane which displays a text and reacts on mouse clicks.
+    """A planes plane which displays a text and reacts on mouse clicks.
 
        Additional attributes:
 
@@ -402,7 +402,7 @@ class Button(Label):
 
         return
 
-class Container(clickndrag.Plane):
+class Container(planes.Plane):
     """A Container for Planes.
        If a subplane is added via sub(), the container places it below any existing
        subplanes and resizes itself to fit the width and height of the subplanes.
@@ -423,7 +423,7 @@ class Container(clickndrag.Plane):
 
         # Call base class
         #
-        clickndrag.Plane.__init__(self, name, pygame.Rect((0, 0), (0, 0)))
+        planes.Plane.__init__(self, name, pygame.Rect((0, 0), (0, 0)))
 
         self.padding = padding
 
@@ -472,7 +472,7 @@ class Container(clickndrag.Plane):
         # First add the subplane by calling the base class method.
         # This also cares for re-adding an already existing subplane.
         #
-        clickndrag.Plane.sub(self, plane)
+        planes.Plane.sub(self, plane)
 
         # Containers have a 1px black border. Observe this when calculating width
         # and height.
@@ -516,7 +516,7 @@ class Container(clickndrag.Plane):
 
         # Accept Plane name as well as Plane instance
         #
-        if isinstance(plane_identifier, clickndrag.Plane):
+        if isinstance(plane_identifier, planes.Plane):
 
             name = plane_identifier.name
 
@@ -527,7 +527,7 @@ class Container(clickndrag.Plane):
         #
         height_removed = self.subplanes[name].rect.height + self.padding
 
-        clickndrag.Plane.remove(self, name)
+        planes.Plane.remove(self, name)
 
         # Reposition remaining subplanes.
         #
@@ -917,7 +917,7 @@ class GetStringDialog(Container):
 
         return
 
-class ScrollingPlane(clickndrag.Plane):
+class ScrollingPlane(planes.Plane):
     """This class implements a fixed-dimension plane with a scroll bar to scroll its content plane.
        Subplane structure:
 
@@ -941,17 +941,17 @@ class ScrollingPlane(clickndrag.Plane):
 
         # Call base class
         #
-        clickndrag.Plane.__init__(self, name, rect, draggable, grab, clicked_callback, dropped_upon_callback)
+        planes.Plane.__init__(self, name, rect, draggable, grab, clicked_callback, dropped_upon_callback)
 
         self.image.fill(BACKGROUND_COLOR)
 
-        self.sub(clickndrag.Plane("content", pygame.Rect((0, 0),
+        self.sub(planes.Plane("content", pygame.Rect((0, 0),
                                                          (self.rect.width - 12, self.rect.height))))
 
         content_plane.rect.topleft = (0, 0)
         self.content.sub(content_plane)
 
-        scrollbar_container = clickndrag.Plane("scrollbar_container",
+        scrollbar_container = planes.Plane("scrollbar_container",
                                                pygame.Rect((self.rect.width - 12, 0),
                                                            (12, self.rect.height)))
 
@@ -983,7 +983,7 @@ class ScrollingPlane(clickndrag.Plane):
 
         # Scrollbar height reflects the proportions
         #
-        self.scrollbar_container.sub(clickndrag.Plane("scrollbar", pygame.Rect((2, 2),
+        self.scrollbar_container.sub(planes.Plane("scrollbar", pygame.Rect((2, 2),
                                                                           (8, int(self.rect.height / content_plane.rect.height * self.rect.height)))))
 
         # Half-bright color taken from Button.clicked()
@@ -992,7 +992,7 @@ class ScrollingPlane(clickndrag.Plane):
 
         return
 
-class PlusMinusBox(clickndrag.Plane):
+class PlusMinusBox(planes.Plane):
     """This class implements a TextBox with plus and minus buttons attached, to change a numerical value.
        The value is accessible as PlusMinusBox.textbox.text
     """
@@ -1027,7 +1027,7 @@ class PlusMinusBox(clickndrag.Plane):
         # Call base class.
         # Leave optional arguments at their defaults.
         #
-        clickndrag.Plane.__init__(self, name, rect)
+        planes.Plane.__init__(self, name, rect)
 
         textbox.text = str(value)
 
@@ -1105,7 +1105,7 @@ class FadingContainer(Container):
 
         # Call base class
         #
-        clickndrag.Plane.update(self)
+        planes.Plane.update(self)
 
         if self.display_duration > 0:
 
@@ -1125,7 +1125,7 @@ class FadingContainer(Container):
 
         # Call base class
         #
-        clickndrag.Plane.render(self)
+        planes.Plane.render(self)
 
         if self.display_duration <= 0:
 
