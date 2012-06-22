@@ -1,6 +1,27 @@
 NEWS for planes
 ===============
 
+0.5.0
+-----
+
+Released on 22 June 2012.
+
+'clickndrag' has been renamed to 'planes', this is the first release under the 
+new name.
+
+Planes now handle mouseovers, by default highlighting the Plane. GUI buttons and 
+options will highlight by default. Added PlusMinusBox GUI widget.
+
+Added modules gui.lmr and gui.tmb which enable bitmap image backgrounds for 
+planes GUI widgets. Included a set of default background images.
+
+Improved transparency for GUI widgets.
+
+Added FadingContainer GUI widget which will fade out over time.
+
+Numerous fixes and improvements, along with a documentation update.
+
+
 0.4.1
 -----
 
