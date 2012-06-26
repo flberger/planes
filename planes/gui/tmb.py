@@ -188,7 +188,7 @@ class TMBContainer(planes.gui.Container):
 
         # Center subplane.
         #
-        plane.rect.centerx = self.rect.centerx
+        plane.rect.centerx = int(self.rect.width / 2)
 
         # Recreate background
         # Default to SRCALPHA.

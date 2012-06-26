@@ -25,7 +25,7 @@
 
 import pygame
 
-VERSION = "0.5.0"
+VERSION = "0.5.1a"
 
 class Plane:
     """A Plane is a surface in a hierarchy of surfaces.

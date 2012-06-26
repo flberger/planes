@@ -506,7 +506,7 @@ class Container(planes.Plane):
         for name in self.subplanes_list:
 
             rect = self.subplanes[name].rect
-            rect.left = int((self.rect.width - rect.width) / 2)
+            rect.centerx = int(self.rect.width / 2)
 
         self.redraw()
 
