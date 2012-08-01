@@ -21,7 +21,10 @@
 # Planned in mind at the Mosel valley in late July 2010
 # Actual work started on 01. Oct 2010
 
+# TODO: add Plane.offset(x, y) to offset all subplanes - without touching their rect -> only while rendering
 # TODO: Surface.get_flags has all sorts of interesting information to optimise performance.
+# TODO: Planes *so* needs live performance reporting. Maybe not via log file, but as some sort of a live display via TTY or socket.
+# TODO: replace Plane.subplanes and Planes.subplanes_list with collections.OrderedDict and OrderedDict.keys()?
 
 import pygame
 
@@ -47,10 +50,10 @@ class Plane:
            subplanes.
 
        Plane.rect
-           The render position on the parent plane.
+           The render position of this Plane on the parent Plane.
 
        Plane.parent
-           The parent plane.
+           The parent plane. Initially None.
 
        Plane.subplanes
            Dict of subplanes, identified by their name.
@@ -283,12 +286,18 @@ class Plane:
         #
         return self.subplanes[name]
 
-    def render(self):
+    def render(self, displayrect = None):
         """Draw a composite surface of this plane and all subplanes, in order of their addition.
-           Returns True if anything has been rendered (i.e. if
+
+           displayrect is the Rect of the Display, displaced relatively to this
+           Plane's Rect, so collision of subplanes can be tested using
+           Rect.colliderect(displayrect).
+
+           Returns True if anything has been rendered (i.e. when
            Plane.rendersurface has changed), False otherwise.
-           This method wil highlight subplanes that have the Plane.mousover flag
-           set.
+
+           This method will highlight subplanes that have the Plane.mousover
+           flag set.
         """
 
         # We only need to render if self.rendersurface does not point
@@ -298,103 +307,133 @@ class Plane:
 
             return False
 
-        else:
-            # Is this correct? Maybe the user has updated the image, but
-            # when there are no subplanes, there is no need to render.
+        # Still here? Then it does not. But is this correct? Maybe the user has
+        # updated the image, but when there are no subplanes, there is no need
+        # to render.
+        #
+        if not self.subplanes:
+
+            # Fix the pointer
             #
-            if not self.subplanes:
+            self.rendersurface = self.image
 
-                # Fix the pointer
-                #
-                self.rendersurface = self.image
+            return True
 
-                return True
+        # At this point, we know that rendersurface differs from image and that
+        # there are subplanes.
+
+        # If the image of this plane or any subplane has changed or if a
+        # subplane has moved: redraw everything.
+        #
+        # (The alternative would be to check for rect collisions to see where
+        # the background can be restored by using image, or caching inbetween
+        # rendering steps).
+        #
+        # TODO: This doesn't catch draw and blit operations outside render()!
+        #
+        subplane_changed = False
+
+        if displayrect is None:
+
+            # That means we are the Display and are just starting the rendering
+            # cascade.
+            #
+            displayrect = self.rect
+
+        for plane in (self.subplanes[name] for name in self.subplanes_list):
+
+            # Only render if actually intersecting with Display
+            # TODO: bookkeeping: count rendered and not rendered Planes
+            #
+            if plane.rect.colliderect(displayrect):
+
+                displayrect_to_pass = displayrect.move(- plane.rect.left,
+                                                       - plane.rect.top)
+
+                if plane.render(displayrect_to_pass):
+
+                    subplane_changed = True
+
+                elif plane.rect != plane.last_rect:
+
+                    subplane_changed = True
+
+                    # We need a copy!
+                    #
+                    plane.last_rect = pygame.Rect(plane.rect)
 
             else:
-                # At this point, we know that rendersurface differs from image
-                # and that there are subplanes.
 
-                # If the image of this plane or any subplane has changed or if
-                # a subplane has moved: redraw everything.
-                # (The alternative would be to check for rect collisions to see
-                # where the background can be restored by using image, or
-                # caching inbetween rendering steps).
-                # TODO: This doesn't catch draw and blit operations outside render()!
+                # TODO: count unrendered planes
                 #
-                subplane_changed = False
+                pass
 
-                for name in self.subplanes_list:
+        if id(self.image) != self.last_image_id or subplane_changed:
 
-                    plane = self.subplanes[name]
+            # Instead of clearing an existing Surface, we copy Plane.image. This
+            # is a little slower but has the huge benefit of creating an RGBA
+            # Surface with per pixel alpha when needed.
+            #
+            self.rendersurface = self.image.copy()
 
-                    if plane.render():
+            # Subplanes are already rendered. Force-blit them in order.
+            # Obey mouseover flag.
+            #
+            surface = None
 
-                        subplane_changed = True
+            for subplane in (self.subplanes[name] for name in self.subplanes_list):
 
-                    elif plane.rect != plane.last_rect:
+                # Again, only blit if actually intersecting with Display
+                # TODO: bookkeeping: count rendered and not rendered Planes
+                #
+                if subplane.rect.colliderect(displayrect):
 
-                        subplane_changed = True
-
-                        # We need a copy!
-                        #
-                        plane.last_rect = pygame.Rect(plane.rect)
-
-                if id(self.image) != self.last_image_id or subplane_changed:
-
-                    # Instead of clearing an existing Surface, we copy
-                    # Plane.image. This is a little slower but has the huge
-                    # benefit of creating an RGBA Surface with per pixel alpha
-                    # if needed.
+                    # First blit ordinary rendersurface
                     #
-                    self.rendersurface = self.image.copy()
+                    self.rendersurface.blit(subplane.rendersurface,
+                                            subplane.rect)
 
-                    # Subplanes are already rendered. Force-blit them in order.
-                    # Obey mouseover flag.
+                    # Add a highlight on top if mouseover is set
                     #
-                    surface = None
+                    if subplane.mouseover:
 
-                    for name in self.subplanes_list:
+                        overlay = subplane.rendersurface.copy()
 
-                        # First blit ordinary rendersurface
+                        # Only premultiply Surfaces with the SRCALPHA flag, will
+                        # raise an exception otherwise.
                         #
-                        self.rendersurface.blit(self.subplanes[name].rendersurface,
-                                                self.subplanes[name].rect)
+                        if overlay.get_flags() & 0x00010000:
 
-                        # Add a highlight on top if mouseover is set
-                        #
-                        if self.subplanes[name].mouseover:
-
-                            overlay = self.subplanes[name].rendersurface.copy()
-
-                            # Only premultiply Surfaces with the SRCALPHA flag,
-                            # will raise an exceptions otherwise.
+                            # Premultiply alpha channel to RGB. Otherwise
+                            # invisible RGB values will be added by BLEND_ADD.
+                            # Technique suggested by Rene Dudfield
+                            # <renesd@gmail.com> on pygame-users@seul.org
+                            # on 19 Dec 2011
                             #
-                            if overlay.get_flags() & 0x00010000:
+                            overlay = pygame.image.fromstring(pygame.image.tostring(overlay,
+                                                                                    "RGBA_PREMULT"),
+                                                              overlay.get_size(),
+                                                              "RGBA")
 
-                                # Premultiply alpha channel to RGB. Otherwise
-                                # invisible RGB values will be added by BLEND_ADD.
-                                # Technique suggested by Rene Dudfield
-                                # <renesd@gmail.com> on pygame-users@seul.org on
-                                # 19 Dec 2011
-                                #
-                                overlay = pygame.image.fromstring(pygame.image.tostring(overlay,
-                                                                                        "RGBA_PREMULT"),
-                                                                  overlay.get_size(),
-                                                                  "RGBA")
+                        overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
+                        overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
 
-                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
-                            overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
-
-                            self.rendersurface.blit(overlay,
-                                                    self.subplanes[name].rect,
-                                                    special_flags = pygame.BLEND_ADD)
-
-                    self.last_image_id = id(self.image)
-
-                    return True
+                        self.rendersurface.blit(overlay,
+                                                subplane.rect,
+                                                special_flags = pygame.BLEND_ADD)
 
                 else:
-                    return False
+
+                    # TODO: count unblitted planes
+                    #
+                    pass
+
+            self.last_image_id = id(self.image)
+
+            return True
+
+        else:
+            return False
 
     def get_plane_at(self, coordinates):
         """Return the (sub)plane and the succeeding parent coordinates at the given coordinates.

@@ -27,12 +27,74 @@ import planes
 
 # TODO: add resources directory
 
+LONG_DESCRIPTION = '''About
+-----
+
+planes is a hierarchical surface framework for PyGame.
+
+The planes module introduces the "Plane" class which extends PyGame's
+"Surface" functionality, offering a hierarchy of mouse-sensitive,
+draggable Surfaces that can be used as sprites, windows, icons or other
+interactive elements.
+
+In addition, the planes.gui module uses planes to provide basic GUI
+elements like container, label, text box, option list and button.
+
+Prerequisites
+-------------
+
+Python >= 2.6 http://www.python.org
+
+PyGame >= 1.9.1 http://pygame.org/
+
+Installation
+------------
+
+Unzip the file, then at the command line run
+
+::
+
+    python setup.py install
+
+Examples
+--------
+
+A showcase python script will be installed along with planes. Run
+
+::
+
+    planes_interactive.py
+
+Documentation
+-------------
+
+API documentation is included and will be installed during install.
+
+Links
+-----
+
+planes on Launchpad: https://launchpad.net/planes
+
+planes on Freecode: http://freecode.com/projects/planes
+
+planes on ohloh: https://www.ohloh.net/p/planes
+
+planes on the Python Package Index: http://pypi.python.org/pypi/planes
+
+planes on pygame.org: http://pygame.org/project-planes-2392-4051.html
+
+Author
+------
+
+Florian Berger'''
+
 distutils.core.setup(name = "planes",
                      version = planes.VERSION,
                      author = "Florian Berger",
                      author_email = "fberger@florian-berger.de",
-                     url = "http://florian-berger.de/software/planes/",
+                     url = "http://florian-berger.de/en/software/planes/",
                      description = "planes - A Hierarchical Surface Framework for Pygame",
+                     long_description = LONG_DESCRIPTION,
                      license = "GPL",
                      packages = ["planes",
                                  "planes.gui"],

@@ -10,6 +10,9 @@ help:
 	@echo '    commit'
 	@echo '    sign'
 	@echo '    freshmeat'
+	@echo '    pypi'
+	@echo '    lp'
+	@echo '    README.rst'
 
 docs: clean
 	/home/florian/temp/python/pydoctor/bin/pydoctor --verbose \
@@ -36,12 +39,18 @@ user_install:
 sdist:
 	$(PYTHON) setup.py sdist --force-manifest --formats=bztar,zip
 
+pypi:
+	$(PYTHON) setup.py register
+
 else
 
 user_install:
 	@echo Please supply Python executable as PYTHON=executable.
 
 sdist:
+	@echo Please supply Python executable as PYTHON=executable.
+
+pypi:
 	@echo Please supply Python executable as PYTHON=executable.
 
 endif
@@ -73,3 +82,10 @@ freshmeat:
 MANIFEST.in: docs
 	rm -fv MANIFEST.in
 	for i in `ls planes/gui/resources/Vera* planes/gui/resources/*png NEWS doc/*` ; do echo "include $$i" >> MANIFEST.in ; done
+
+lp:
+	bzr launchpad-login fberger-fbmd
+	bzr push lp:~fberger-fbmd/planes/trunk
+
+README.rst: README
+	pandoc --output README.rst README
