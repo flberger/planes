@@ -27,6 +27,7 @@
 # TODO: replace Plane.subplanes and Planes.subplanes_list with collections.OrderedDict and OrderedDict.keys()?
 
 import pygame
+import time
 
 VERSION = "0.5.1a"
 
@@ -62,15 +63,16 @@ class Plane:
            A list of subplane names, in order of their addition
 
        Plane.draggable
-           If True, this Plane can be dragged and dropped.
+           Boolean flag. If True, this Plane can be dragged and dropped.
 
        Plane.grab
-           If True, this Plane will remove dropped Planes from
+           Boolean flag. If True, this Plane will remove dropped Planes from
            their parent Plane and make it a subplane of this one.
            Handled in Plane.dropped_upon()
 
        Plane.highlight
-           If True, the Plane be highlighted when the mouse cursor moves over it.
+           Boolean flag. If True, the Plane be highlighted when the mouse cursor
+           moves over it.
 
        Plane.last_image_id
            Caches object id of the image at last rendering for efficiency.
@@ -305,6 +307,10 @@ class Plane:
         #
         if self.rendersurface is self.image:
 
+            STATS.unchanged_planes += 1
+
+            STATS.total_pixels += self.rect.width * self.rect.height
+
             return False
 
         # Still here? Then it does not. But is this correct? Maybe the user has
@@ -317,10 +323,14 @@ class Plane:
             #
             self.rendersurface = self.image
 
+            STATS.total_pixels += self.rect.width * self.rect.height
+
             return True
 
         # At this point, we know that rendersurface differs from image and that
         # there are subplanes.
+
+        STATS.total_pixels += self.rect.width * self.rect.height * 2
 
         # If the image of this plane or any subplane has changed or if a
         # subplane has moved: redraw everything.
@@ -343,7 +353,7 @@ class Plane:
         for plane in (self.subplanes[name] for name in self.subplanes_list):
 
             # Only render if actually intersecting with Display
-            # TODO: bookkeeping: count rendered and not rendered Planes
+            # TODO: bookkeeping: count rendered Planes
             #
             if plane.rect.colliderect(displayrect):
 
@@ -364,9 +374,7 @@ class Plane:
 
             else:
 
-                # TODO: count unrendered planes
-                #
-                pass
+                STATS.render_skip += 1
 
         if id(self.image) != self.last_image_id or subplane_changed:
 
@@ -424,15 +432,16 @@ class Plane:
 
                 else:
 
-                    # TODO: count unblitted planes
-                    #
-                    pass
+                    STATS.blit_skip += 1
 
             self.last_image_id = id(self.image)
 
             return True
 
         else:
+
+            STATS.unchanged_planes += 1
+
             return False
 
     def get_plane_at(self, coordinates):
@@ -464,6 +473,10 @@ class Plane:
            be synced to that of the master Plane, using Plane.offset.
            Compare pygame.sprite.Sprite.update.
         """
+
+        # update() will be called for all planes.
+        #
+        STATS.total_planes += 1
 
         # Subplanes may be destroyed in update(). So, create a list copy in case
         # self.subplanes changes during iteration.
@@ -639,6 +652,13 @@ class Display(Plane):
 
        Display.mouse_buttons
            A dict mapping Pygame mouse button numbers to description strings.
+
+       Display.show_stats
+           Boolean flag to indicate whether to display performance statistics.
+           Set in Display.process() by examining user input. Initially False.
+
+       Display.font
+           A pygame.font.Font instance using the system default font.
     """
 
     def __init__(self, resolution_tuple, fullscreen = False):
@@ -685,6 +705,18 @@ class Display(Plane):
         self.last_mouseover_plane = None
 
         self.mouse_buttons = {1: "left", 3: "right"}
+
+        self.show_stats = False
+
+        self.font = pygame.font.SysFont("Bitstream Vera Sans,DejaVu Sans,Verdana",
+                                        14)
+
+        # Convenience Surface for statistics display.
+        # See Display.render()
+        #
+        self._stats_surface = pygame.Surface((320, 256))
+
+        self._stats_surface.convert()
 
         return
 
@@ -780,6 +812,21 @@ class Display(Plane):
                     #
                     self.render(force = True)
 
+            # Hardwire F12 key to stats display.
+            # Catch it before forwarding keys to key_sensitive_plane.
+            #
+            elif (event.type == pygame.KEYDOWN
+                  and event.key == pygame.K_F12):
+
+                # Reverse
+                #
+                if self.show_stats:
+
+                    self.show_stats = False
+
+                else:
+                    self.show_stats = True
+
             elif (event.type == pygame.KEYDOWN
                   and self.key_sensitive_plane is not None
                   and self.key_sensitive_plane.parent is not None):
@@ -839,9 +886,13 @@ class Display(Plane):
            If force is True, blit to Pygame display regardless.
         """
 
-        # Test for Plane.render() first to trigger the rendering
-        #
-        if Plane.render(self) or force or self.dragged_plane is not None:
+        starttime = time.clock()
+
+        rendered_something = Plane.render(self)
+
+        STATS.log_render_time(time.clock() - starttime)
+
+        if rendered_something or force or self.dragged_plane is not None:
 
             self.display.blit(self.rendersurface, (0, 0))
 
@@ -864,4 +915,198 @@ class Display(Plane):
                     #
                     self.dragged_plane = None
 
+        if self.show_stats:
+
+            # Font.render(text, antialias, color, background)
+
+            antialias = True
+
+            color = (255, 255, 255)
+
+            background = (64, 64, 64)
+
+            padding = 5
+
+            lineheight = self.font.get_height() + padding
+
+            self._stats_surface.fill(background)
+
+            y = 3
+
+            self._stats_surface.blit(self.font.render("planes {} Runtime Statistics".format(VERSION),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Total planes: {}".format(STATS.total_planes),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Total pixels: {:.1f} M, {:.2f} MB RGB video RAM".format(STATS.total_pixels / 1000000, STATS.total_pixels * 24 / 8 / 1024 / 1024),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Unchanged planes: {}".format(STATS.unchanged_planes),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Rendering skipped: {}".format(STATS.render_skip),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Blitting skipped: {}".format(STATS.blit_skip),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Render time: {:.1f} ms".format(STATS.render_time * 1000),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Mean render time: {:.1f} ms".format(STATS.mean_render_time * 1000),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Mean rendering capacity: {} renderings / s".format(STATS.renders_per_second),
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+
+            self.display.blit(self._stats_surface, (10, 10))
+
+            # Update and reset stats counter
+            #
+            STATS.update(self)
+
         return
+
+class Stats:
+    """A Stats instance stores and computes several runtime statistics.
+
+       Attributes:
+
+       Stats.total_planes
+           Total number of planes.
+
+       Stats.total_pixels
+           Total number of pixels allocated for all planes.
+
+       Stats.unchanged_planes
+           Number of planes whose bitmap did not change in the last run.
+
+       Stats.render_skip
+           Number of planes for which rendering has been skipped because they
+           are outside the screen.
+
+       Stats.blit_skip
+           Number of planes for which blitting has been skipped because they
+           are outside the screen.
+
+       Stats.render_time
+           Time of last call to Display.render().
+
+       Stats.mean_render_time
+           Mean of the time of the last 30 calls to Display.render().
+
+       Stats.renders_per_second
+           Given Stats.mean_render_time, how many renders could be carried out
+           in one second in theory. Note that this is not the actual FPS, which
+           is largely determined by the application deploying the planes module.
+    """
+
+    # TODO: A Stats instance could be an iterator, yielding text Surfaces and rendering positions.
+
+    def __init__(self):
+        """Initialise.
+        """
+
+        self.total_planes = 0
+
+        self.total_pixels = 0
+
+        self.unchanged_planes = 0
+
+        self.render_skip = 0
+
+        self.blit_skip = 0
+
+        self.render_time = 0
+
+        self._render_time_list = []
+
+        self.mean_render_time = 0
+
+        self.renders_per_second = 0
+
+        return
+
+    def update(self, display):
+        """Actively update stats from the display instance given, and reset frame-to-frame counters.
+        """
+
+        self.total_planes = 0
+
+        self.total_pixels = 0
+
+        self.unchanged_planes = 0
+
+        self.render_skip = 0
+
+        self.blit_skip = 0
+
+        # self.render_time will be entirely handled from the outside and needs
+        # no reset.
+
+        if len(self._render_time_list):
+
+            self.mean_render_time = sum(self._render_time_list) / len(self._render_time_list)
+
+        if self.mean_render_time > 0:
+
+            self.renders_per_second = int(1 / self.mean_render_time)
+
+        return
+
+    def log_render_time(self, render_time):
+        """Set Stats.render_time to the time given, and register that time for computing the mean.
+        """
+
+        self. render_time = render_time
+
+        self._render_time_list.append(render_time)
+
+        # Keep it at 30 values
+        #
+        if len(self._render_time_list) > 30:
+
+            self._render_time_list.pop(0)
+
+        return
+
+# As there will only ever be one Display instance, we can keep a global Stats
+# instance and do not need to do it on a per-Display base.
+#
+STATS = Stats()
