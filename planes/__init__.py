@@ -718,6 +718,11 @@ class Display(Plane):
 
         self._stats_surface.convert()
 
+        # Make transparent. Currently has only a limited effect, since it might
+        # be blitted over itself in render().
+        #
+        self._stats_surface.set_alpha(196, pygame.RLEACCEL)
+
         return
 
     def key_sensitive(self, plane):
