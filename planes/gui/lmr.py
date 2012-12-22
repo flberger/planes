@@ -100,51 +100,51 @@ class LMRStyle:
 
 # Create some default styles
 #
-ORANGE_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
+ORANGE_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.GFX_PATH,
                                             "button-orange-32px-l.png"),
-                               os.path.join(planes.gui.RESOURCE_PATH,
+                               os.path.join(planes.gui.GFX_PATH,
                                             "button-orange-32px-m.png"),
-                               os.path.join(planes.gui.RESOURCE_PATH,
+                               os.path.join(planes.gui.GFX_PATH,
                                             "button-orange-32px-r.png"),
                                (0, 0, 0))
 
-WHITE_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
+WHITE_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.GFX_PATH,
                                            "button-white-32px-l.png"),
-                              os.path.join(planes.gui.RESOURCE_PATH,
+                              os.path.join(planes.gui.GFX_PATH,
                                            "button-white-32px-m.png"),
-                              os.path.join(planes.gui.RESOURCE_PATH,
+                              os.path.join(planes.gui.GFX_PATH,
                                            "button-white-32px-r.png"),
                               (0, 0, 0))
 
-GREY_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
+GREY_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.GFX_PATH,
                                           "button-grey-32px-l.png"),
-                             os.path.join(planes.gui.RESOURCE_PATH,
+                             os.path.join(planes.gui.GFX_PATH,
                                           "button-grey-32px-m.png"),
-                             os.path.join(planes.gui.RESOURCE_PATH,
+                             os.path.join(planes.gui.GFX_PATH,
                                           "button-grey-32px-r.png"),
                              (0, 0, 0))
 
-BLACK_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
+BLACK_BUTTON_STYLE = LMRStyle(os.path.join(planes.gui.GFX_PATH,
                                            "button-black-32px-l.png"),
-                              os.path.join(planes.gui.RESOURCE_PATH,
+                              os.path.join(planes.gui.GFX_PATH,
                                            "button-black-32px-m.png"),
-                              os.path.join(planes.gui.RESOURCE_PATH,
+                              os.path.join(planes.gui.GFX_PATH,
                                            "button-black-32px-r.png"),
                               (255, 255, 255))
 
-GREY_OPTION_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
+GREY_OPTION_STYLE = LMRStyle(os.path.join(planes.gui.GFX_PATH,
                                           "option-grey-32px-l.png"),
-                             os.path.join(planes.gui.RESOURCE_PATH,
+                             os.path.join(planes.gui.GFX_PATH,
                                           "option-grey-32px-m.png"),
-                             os.path.join(planes.gui.RESOURCE_PATH,
+                             os.path.join(planes.gui.GFX_PATH,
                                           "option-grey-32px-r.png"),
                              (0, 0, 0))
 
-ORANGE_OPTION_STYLE = LMRStyle(os.path.join(planes.gui.RESOURCE_PATH,
+ORANGE_OPTION_STYLE = LMRStyle(os.path.join(planes.gui.GFX_PATH,
                                             "option-orange-32px-l.png"),
-                               os.path.join(planes.gui.RESOURCE_PATH,
+                               os.path.join(planes.gui.GFX_PATH,
                                             "option-orange-32px-m.png"),
-                               os.path.join(planes.gui.RESOURCE_PATH,
+                               os.path.join(planes.gui.GFX_PATH,
                                             "option-orange-32px-r.png"),
                                (0, 0, 0))
 

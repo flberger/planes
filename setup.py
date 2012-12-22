@@ -25,8 +25,6 @@ import glob
 import os.path
 import planes
 
-# TODO: add resources directory
-
 LONG_DESCRIPTION = '''About
 -----
 
@@ -88,6 +86,24 @@ Author
 
 Florian Berger'''
 
+# Need paths relative to planes.gui for setup()
+#
+RESOURCES = [os.path.join("gfx", "*.png"),
+             os.path.join("fonts", "*.ttf"),
+             os.path.join("fonts", "*.txt")]
+
+DOCS = glob.glob(os.path.join("doc", "*.*"))
+
+# Python 2.x doesn't honour the 'package_dir' and 'package_data' arguments.
+# Generate MANIFEST.in containing the necessary files.
+#
+print("regenerating MANIFEST.in for Python 2.x")
+MANIFEST = open("MANIFEST.in", "wt")
+MANIFEST.write("include COPYING\n")
+MANIFEST.writelines(["include " + os.path.join("planes", "gui", path) + "\n" for path in RESOURCES])
+MANIFEST.writelines(["include {0}\n".format(path) for path in DOCS])
+MANIFEST.close()
+
 distutils.core.setup(name = "planes",
                      version = planes.VERSION,
                      author = "Florian Berger",
@@ -102,6 +118,8 @@ distutils.core.setup(name = "planes",
                      provides = ["planes",
                                  "planes.gui"],
                      scripts = ["examples/planes_interactive.py"],
-                     package_data = {"planes" : ["Vera.ttf", "VeraBd.ttf"]},
+                     package_dir = {"planes" : "planes",
+                                    "planes.gui" : os.path.join("planes", "gui")},
+                     package_data = {"planes.gui" : RESOURCES},
                      data_files = [("share/doc/planes-{0}".format(planes.VERSION),
-                                    glob.glob(os.path.join("doc", "*.*")) + ["NEWS"])])
+                                    DOCS)])

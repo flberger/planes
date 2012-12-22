@@ -1,12 +1,14 @@
 *pyc
 .bzrignore
 commit.txt
-*.ttf
 *.png
 dist
 build
 MANIFEST
+MANIFEST.in
 user_install-filelist.txt
 __pycache__
 freshmeat-submit.txt
 README.rst
+planes/gui/fonts/*.txt
+planes/gui/fonts/*.ttf

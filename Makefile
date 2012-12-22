@@ -37,7 +37,7 @@ user_install:
 	$(PYTHON) setup.py install --user --record user_install-filelist.txt
 
 sdist:
-	$(PYTHON) setup.py sdist --force-manifest --formats=bztar,zip
+	$(PYTHON) setup.py sdist --force-manifest --formats=zip
 
 pypi:
 	$(PYTHON) setup.py register
@@ -78,10 +78,6 @@ freshmeat:
 	@echo RETURN to submit to freshmeat.net using freshmeat-submit.txt, CTRL-C to cancel:
 	@read DUMMY
 	freshmeat-submit < freshmeat-submit.txt
-
-MANIFEST.in: docs
-	rm -fv MANIFEST.in
-	for i in `ls planes/gui/resources/Vera* planes/gui/resources/*png NEWS doc/*` ; do echo "include $$i" >> MANIFEST.in ; done
 
 lp:
 	bzr launchpad-login fberger-fbmd

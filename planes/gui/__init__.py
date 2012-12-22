@@ -46,13 +46,14 @@ import unicodedata
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
 
-RESOURCE_PATH = os.path.join(os.path.dirname(__file__), "resources")
+FONT_PATH = os.path.join(os.path.dirname(__file__), "fonts")
+GFX_PATH = os.path.join(os.path.dirname(__file__), "gfx")
 
 # Check for cx_Freeze
 #
 if "frozen" in sys.__dict__.keys() and sys.frozen:
 
-    RESOURCE_PATH = sys.path[1]
+    FONT_PATH = sys.path[1]
 
 # Pixels per character, for width estimation of text renderings
 #
@@ -66,8 +67,8 @@ pygame.font.init()
 # Taken from fabula.PygameUserInterface.
 #
 try:
-    regular_font_file = os.path.join(RESOURCE_PATH, "Vera.ttf")
-    bold_font_file = os.path.join(RESOURCE_PATH, "VeraBd.ttf")
+    regular_font_file = os.path.join(FONT_PATH, "Vera.ttf")
+    bold_font_file = os.path.join(FONT_PATH, "VeraBd.ttf")
 
     BIG_FONT = pygame.font.Font(regular_font_file, 30)
     SMALL_FONT = pygame.font.Font(regular_font_file, 12)

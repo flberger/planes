@@ -109,6 +109,8 @@ class Plane:
           Initially None.
     """
 
+    # TODO: it should be possible to initialise a Plane with a Pygame Surface, for convenvience.
+    #
     def __init__(self,
                  name,
                  rect,
@@ -259,6 +261,7 @@ class Plane:
         # by setting their last_rect to None.
         #
         for plane in self.subplanes.values():
+
             plane.last_rect = None
 
         return
@@ -304,6 +307,8 @@ class Plane:
 
         # We only need to render if self.rendersurface does not point
         # to self.image.
+        #
+        # TODO: This is completely inconvenient if Plane.image is changed from the outside. How to signal that? Even resetting Plane.last_rect doesn't help here.
         #
         if self.rendersurface is self.image:
 
