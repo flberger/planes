@@ -262,7 +262,7 @@ class LMRButton(LMRWidget, planes.gui.Button):
 
             # Text is centered on rect.
             #
-            fontsurf = planes.gui.SMALL_FONT.render(self.text,
+            fontsurf = planes.gui.FONTS.small_font.render(self.text,
                                                         True,
                                                         self.style.text_color)
 
@@ -331,7 +331,7 @@ class LMROption(LMRWidget, planes.gui.Option):
 
         # Text is centered on rect.
         #
-        fontsurf = planes.gui.SMALL_FONT.render(self.text,
+        fontsurf = planes.gui.FONTS.small_font.render(self.text,
                                                     True,
                                                     self.style.text_color)
 

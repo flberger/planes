@@ -10,11 +10,8 @@
    HIGHLIGHT_COLOR
        Defaults to (191, 95, 0).
 
-   BIG_FONT
-       A pygame.font.Font instance, large pointsize.
-
-   SMALL_FONT
-       A pygame.font.Font instance, small pointsize.
+   FONTS
+       An instance of Fonts, a font manager.
 """
 
 # This file is part of planes.
@@ -56,29 +53,186 @@ if "frozen" in sys.__dict__.keys() and sys.frozen:
     FONT_PATH = sys.path[1]
 
 # Pixels per character, for width estimation of text renderings
+# TODO: merge with Fonts manager
 #
 PIX_PER_CHAR = 8
 
-# Initialise the font module. This can safely be called more than once.
+class Fonts:
+    """A font manager.
+
+       Attributes:
+
+       Fonts.font_names
+           A list of font names that should be available. Use Fonts.by_name()
+           to load and return a pygame.font.Font instance. This will raise an
+           exception if the font is not available.
+
+       Fonts.font_sizes
+           A list of font sizes that should be available. Use Fonts.by_size()
+           to load and return a pygame.font.Font instance. This will raise an
+           exception if the font is not available.
+
+       Fonts.fonts_by_name
+           A dict mapping names of loaded fonts to pygame.font.Font instances.
+           Using Fonts.by_name() instead of this dict is recommended, as it
+           will load missing fonts.
+
+       Fonts.fonts_by_size
+           A dict mapping pixel sizes of loaded fonts to pygame.font.Font
+           instances. Using Fonts.by_size() instead of this dict is recommended,
+           as it will load missing fonts.
+
+       Fonts.big_font
+           A default pygame.font.Font instance, large pointsize. Always
+           available.
+
+       Fonts.small_font
+           A default pygame.font.Font instance, small pointsize. Always
+           available.
+
+       Fonts.bold_font
+           A default pygame.font.Font instance, bold face. Always available.
+    """
+
+    def __init__(self):
+        """Initialise.
+        """
+
+        # Initialise the font module. This can safely be called more than once.
+        #
+        pygame.font.init()
+
+        # {<font name> : (<font file>, <pixel size>)}
+        #
+        self._font_dict = {"04B-08" : ("04B_08__.ttf", 8),
+                           "04B-19" : ("04B_19__.ttf", 14),
+                           "BitLow" : ("bitlow.ttf", 9),
+                           "Tempesta Seven Compressed Bold" :
+                               ("pf_tempesta_seven_compressed_bold.ttf", 8),
+                           "Tempesta Seven Extended Bold" :
+                               ("pf_tempesta_seven_extended_bold.ttf", 8),
+                           "Tempesta Seven" : ("pf_tempesta_seven.ttf", 8),
+                           "Sans Nouveaux" : ("px_sans_nouveaux.ttf", 8),
+                           "Silkscreen" : ("slkscr.ttf", 8),
+                           "Bitstream Vera Sans Bold" : ("VeraBd.ttf", 12),
+                           "Bitstream Vera Sans" : ("Vera.ttf", 12)}
+
+        self.font_names = list(self._font_dict.keys())
+
+        self.font_sizes = [file_size[1] for file_size in self._font_dict.values()]
+
+        self.fonts_by_name = {}
+
+        self.fonts_by_size = {}
+
+        # Initialise default font instances.
+        # Taken from fabula.PygameUserInterface.
+        #
+        try:
+            regular_font_file = os.path.join(FONT_PATH,
+                                             self._font_dict["Bitstream Vera Sans"][0])
+
+            bold_font_file = os.path.join(FONT_PATH,
+                                          self._font_dict["Bitstream Vera Sans Bold"][0])
+
+
+            self.small_font = pygame.font.Font(regular_font_file,
+                                               self._font_dict["Bitstream Vera Sans"][1])
+
+            self.fonts_by_name["Bitstream Vera Sans"] = self.small_font
+            self.fonts_by_size[self._font_dict["Bitstream Vera Sans"][1]] = self.small_font
+
+            # TODO: change to different larger font
+            #
+            self.big_font = pygame.font.Font(regular_font_file,
+                                             30)
+
+            self.fonts_by_size[30] = self.big_font
+
+            self.bold_font = pygame.font.Font(bold_font_file,
+                                              self._font_dict["Bitstream Vera Sans Bold"][1])
+
+        except:
+            # TODO: log used font: pygame.font.get_default_font()
+            #print("Could not load {0}".format(os.path.join(os.path.dirname(__file__), "Vera.ttf")))
+            self.big_font = pygame.font.Font(None, 40)
+            self.small_font = self.bold_font = pygame.font.Font(None, 20)
+
+        return
+
+    def by_name(self, font_name, scale = 1):
+        """Return a pygame.font.Font instance identified by font_name.
+
+           scale is a scale factor >= 1. If omitted, the default size will
+           be used.
+
+           This method will raise a KeyError if the font can not be found.
+        """
+
+        font = None
+
+        if font_name in self.fonts_by_name.keys():
+
+            font = self.fonts_by_name[font_name]
+
+        elif font_name in self.font_names:
+
+            size = self._font_dict[font_name][1] * int(scale)
+
+            font = pygame.font.Font(os.path.join(FONT_PATH,
+                                                 self._font_dict[font_name][0]),
+                                    size)
+
+            self.fonts_by_name[font_name] = font
+
+            # Overwrite possibly existing font.
+            #
+            self.fonts_by_size[size] = font
+
+        else:
+            raise KeyError("cannot load unknown font: '{0}'".format(font_name))
+
+        return font
+
+    def by_size(self, size):
+        """Return a pygame.font.Font instance identified by size.
+           This method will raise a KeyError if the font can not be found.
+        """
+
+        # TODO: it is undefined which font will be returned, as it depends on which font of that size has been loaded. Make this deterministic?
+
+        font = None
+
+        if size in self.fonts_by_size.keys():
+
+            font = self.fonts_by_size[size]
+
+        elif size in self.font_sizes:
+
+            # There is some unloaded font of that size.
+            #
+            for font_name in self._font_dict.keys():
+
+                if self._font_dict[font_name][1] == size:
+
+                    font = pygame.font.Font(os.path.join(FONT_PATH,
+                                                         self._font_dict[font_name][0]),
+                                            self._font_dict[font_name][1])
+
+                    self.fonts_by_name[font_name] = font
+
+                    # Overwrite possibly existing font.
+                    #
+                    self.fonts_by_size[size] = font
+
+        else:
+            raise KeyError("could not find a font for size '{0}'".format(size))
+
+        return font
+
+# Create a singleton fonts manager.
 #
-pygame.font.init()
-
-# Initialise font instances.
-# Taken from fabula.PygameUserInterface.
-#
-try:
-    regular_font_file = os.path.join(FONT_PATH, "Vera.ttf")
-    bold_font_file = os.path.join(FONT_PATH, "VeraBd.ttf")
-
-    BIG_FONT = pygame.font.Font(regular_font_file, 30)
-    SMALL_FONT = pygame.font.Font(regular_font_file, 12)
-    BOLD_FONT = pygame.font.Font(bold_font_file, 12)
-
-except:
-    # TODO: log used font: pygame.font.get_default_font()
-    #print("Could not load {0}".format(os.path.join(os.path.dirname(__file__), "Vera.ttf")))
-    BIG_FONT = pygame.font.Font(None, 40)
-    SMALL_FONT = BOLD_FONT = pygame.font.Font(None, 20)
+FONTS = Fonts()
 
 def draw_border(plane, color):
     """Draw a border around plane.
@@ -176,7 +330,7 @@ class Label(planes.Plane):
 
             # Text is centered on rect.
             #
-            fontsurf = SMALL_FONT.render(self.text,
+            fontsurf = FONTS.small_font.render(self.text,
                                          True,
                                          self.text_color)
 
@@ -237,7 +391,7 @@ class OutlinedText(Label):
 
             # Black outline
             #
-            font_surface = BOLD_FONT.render(self.text,
+            font_surface = FONTS.bold_font.render(self.text,
                                             True,
                                             (0, 0, 0))
 
@@ -257,7 +411,7 @@ class OutlinedText(Label):
 
             # Center
             #
-            font_surface = BOLD_FONT.render(self.text,
+            font_surface = FONTS.bold_font.render(self.text,
                                             True,
                                             self.text_color)
 
@@ -824,7 +978,7 @@ class TextBox(Label):
             # Give background for speedup.
             # Clever use of a dict to avoid an 'if'! :-)
             #
-            fontsurf = SMALL_FONT.render(self.text + {True: "|", False: ""}[self.active],
+            fontsurf = FONTS.small_font.render(self.text + {True: "|", False: ""}[self.active],
                                          True,
                                          (0, 0, 0),
                                          self.current_color)
