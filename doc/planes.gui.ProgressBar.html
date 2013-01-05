@@ -3,88 +3,95 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;planes.gui.OptionSelector&rdquo;</title>
+    <title>API docs for &ldquo;planes.gui.ProgressBar&rdquo;</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class p.g.OptionSelector(<a href="planes.gui.Container.html">Container</a>):</h1>
+    <h1 class="class">Class p.g.ProgressBar(<a href="planes.Plane.html">planes.Plane</a>):</h1>
     <p>
       <span id="part">Part of <a href="planes.html">planes</a>.<a href="planes.gui.html">gui</a></span>
       
-      <a href="classIndex.html#planes.gui.OptionSelector">View In Hierarchy</a>
+      <a href="classIndex.html#planes.gui.ProgressBar">View In Hierarchy</a>
     </p>
     <div>
-      <p>Known subclasses: <a href="planes.gui.tmb.TMBOptionSelector.html">planes.gui.tmb.TMBOptionSelector</a></p>
+      
     </div>
-    <pre>An OptionSelector wraps an OptionList and an OK button, calling a callback when a selection is confirmed.
-    </pre>
+    <pre>A horizontal progress bar, filling from left to right.
+Additional attributes:
+
+ProgressBar.percent
+    An integer 0..100.
+
+ProgressBar.text
+    text is a string to be rendered on top of the bar. Initially an
+    empty string.
+
+ProgressBar.label
+    A Label instance displaying ProgressBar.text.
+
+ProgressBar.color
+    color is a tuple (R, G, B) giving the color of the bar.
+
+ProgressBar.background_color
+    background_color is a tuple (R, G, B) giving the background color of
+    the bar.</pre>
 
     
     
     <div id="splitTables">
-      <table class="children sortable" id="id27">
+      <table class="children sortable" id="id46">
   
   
 <tr class="method">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.OptionSelector.html#__init__">__init__</a></td>
-    <td><tt>Initialise the OptionSelector.</tt></td>
+    <td><a href="planes.gui.ProgressBar.html#__init__">__init__</a></td>
+    <td><tt>Initialise.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.OptionSelector.html#selection_made">selection_made</a></td>
-    <td><tt>Button callback called when the user confirmed an option from the list.</tt></td>
+    <td><a href="planes.gui.ProgressBar.html#update">update</a></td>
+    <td><tt>Update ProgressBar.label.text to ProgressBar.text, then call the base class method.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.gui.ProgressBar.html#render">render</a></td>
+    <td><tt>Update ProgressBar.image to reflect ProgressBar.percent, then call the base class method.</tt></td>
   </tr>
   
 </table>
       
         <p>
-          Inherited from <a href="planes.gui.Container.html">Container</a>:
+          Inherited from <a href="planes.Plane.html">Plane</a>:
         </p>
-        <table class="children sortable" id="id28">
+        <table class="children sortable" id="id47">
   
   
 <tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.Container.html#redraw">redraw</a></td>
-    <td><tt>Redraw Container.image from the dimensions in Containter.rect.</tt></td>
+    <td><a href="planes.Plane.html#sub">sub</a></td>
+    <td><tt>Remove the Plane given from its current parent and add it as a subplane of this Plane.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.Container.html#sub">sub</a></td>
-    <td><tt>Resize the container, update the position of plane and add it as a subplane.</tt></td>
+    <td><a href="planes.Plane.html#remove">remove</a></td>
+    <td><tt>Remove subplane by name or Plane instance.</tt></td>
   </tr><tr class="basemethod">
     
     
     <td>Method</td>
-    <td><a href="planes.gui.Container.html#remove">remove</a></td>
-    <td><tt>Remove the subplane, then reposition remaining subplanes and resize the container.</tt></td>
+    <td><a href="planes.Plane.html#remove_all">remove_all</a></td>
+    <td><tt>Convenience method to call Plane.remove() for all subplanes.</tt></td>
   </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="planes.gui.Container.html#remove_all">remove_all</a></td>
-    <td><tt>Remove all subplanes and shrink accordingly.</tt></td>
-  </tr>
-  
-</table>
-      
-        <p>
-          Inherited from <a href="planes.Plane.html">Plane</a> (via <a href="planes.gui.Container.html">Container</a>):
-        </p>
-        <table class="children sortable" id="id29">
-  
-  
-<tr class="basemethod">
     
     
     <td>Method</td>
@@ -94,20 +101,8 @@
     
     
     <td>Method</td>
-    <td><a href="planes.Plane.html#render">render</a></td>
-    <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
     <td><a href="planes.Plane.html#get_plane_at">get_plane_at</a></td>
     <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
-  </tr><tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="planes.Plane.html#update">update</a></td>
-    <td><tt>Update hook.</tt></td>
   </tr><tr class="basemethod">
     
     
@@ -167,7 +162,7 @@
     
 
     <div class="function">
-  <a name="planes.gui.OptionSelector.__init__">
+  <a name="planes.gui.ProgressBar.__init__">
     
   </a>
   <a name="__init__">
@@ -176,33 +171,57 @@
   <div class="functionHeader">
     
     def
-    __init__(self, name, option_list, callback, width=200, lineheight=30, background_color=None):
+    __init__(self, name, rect, percent, text='', color=(0, 0, 255), background_color=None):
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overrides <a href="planes.gui.Container.html#__init__">planes.gui.Container.__init__</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBOptionSelector.html">planes.gui.tmb.TMBOptionSelector</a></div>
-    <pre>Initialise the OptionSelector.
-option_list is a list of strings to be displayed as options.
-callback is a function to be called with the selected Option instance
-as argument once the selection is made.</pre>
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#__init__">planes.Plane.__init__</a></div>
+    <pre>Initialise.
+
+percent must be an integer 0..100.
+
+text is a string to be rendered on top of the bar.
+
+color is a tuple (R, G, B) giving the color of the bar.
+
+background_color is a tuple (R, G, B) giving the background color of
+the bar.</pre>
   </div>
 </div><div class="function">
-  <a name="planes.gui.OptionSelector.selection_made">
+  <a name="planes.gui.ProgressBar.update">
     
   </a>
-  <a name="selection_made">
+  <a name="update">
     
   </a>
   <div class="functionHeader">
     
     def
-    selection_made(self, plane):
+    update(self):
     
   </div>
   <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#update">planes.Plane.update</a></div>
+    <pre>Update ProgressBar.label.text to ProgressBar.text, then call the base class method.
+        </pre>
+  </div>
+</div><div class="function">
+  <a name="planes.gui.ProgressBar.render">
     
-    <pre>Button callback called when the user confirmed an option from the list.
-Calls OptionSelector.callback(self.option_list.selected) and destroys the OptionSelector.</pre>
+  </a>
+  <a name="render">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    render(self, displayrect=None):
+    
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <a href="planes.Plane.html#render">planes.Plane.render</a></div>
+    <pre>Update ProgressBar.image to reflect ProgressBar.percent, then call the base class method.
+        </pre>
   </div>
 </div>
     <address>
