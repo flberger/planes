@@ -222,6 +222,8 @@ class LMRButton(LMRWidget, planes.gui.Button):
     """A planes.gui.Button with LMR background.
     """
 
+    # TODO: Use Label font argument.
+
     def __init__(self, label, width, callback, style = GREY_BUTTON_STYLE):
         """Initialise the Button.
 

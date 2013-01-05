@@ -166,6 +166,8 @@ class Fonts:
            scale is a scale factor >= 1. If omitted, the default size will
            be used.
 
+           Fonts.font_names has a list of font names that should be available.
+
            This method will raise a KeyError if the font can not be found.
         """
 
@@ -196,6 +198,9 @@ class Fonts:
 
     def by_size(self, size):
         """Return a pygame.font.Font instance identified by size.
+
+           Fonts.font_sizes has a list of font sizes that should be available.
+
            This method will raise a KeyError if the font can not be found.
         """
 
@@ -269,9 +274,15 @@ class Label(planes.Plane):
 
        Label.text_color
            The text color, initially (0, 0, 0).
+
+       Label.font
+           The PyGame.font.Font instante used for this Label.
     """
 
-    def __init__(self, name, text, rect, background_color = None, text_color = (0, 0, 0)):
+    def __init__(self, name, text, rect,
+                 background_color = None,
+                 text_color = (0, 0, 0),
+                 font = FONTS.small_font):
         """Initialise the Label.
            text is the text to be written on the Label. If text is None, it is
            replaced by an empty string.
@@ -305,6 +316,8 @@ class Label(planes.Plane):
 
         self.text_color = text_color
 
+        self.font = font
+
         self.redraw()
 
         return
@@ -330,7 +343,7 @@ class Label(planes.Plane):
 
             # Text is centered on rect.
             #
-            fontsurf = FONTS.small_font.render(self.text,
+            fontsurf = self.font.render(self.text,
                                          True,
                                          self.text_color)
 
@@ -360,20 +373,36 @@ class OutlinedText(Label):
           A tuple (R, G, B) holding the color of the text.
     """
 
-    def __init__(self, name, text, text_color = (255, 255, 255)):
+    # TODO: Use Label font argument.
+
+    def __init__(self, name, text,
+                 text_color = (255, 255, 255), font = None):
         """Initialise the OutlinedText.
            text is the text to be written on the Label. If text is None, it is
            replaced by an empty string.
         """
 
-        # Call the base class.
         # Use a dummy rect, the final rect will be set in redraw().
         #
-        Label.__init__(self,
-                       name,
-                       text,
-                       pygame.rect.Rect((0, 0), (0, 0)),
-                       text_color = text_color)
+        rect = pygame.rect.Rect((0, 0), (0, 0))
+
+        # Call the base class.
+        #
+        if font is None:
+
+            Label.__init__(self,
+                           name,
+                           text,
+                           rect,
+                           text_color = text_color)
+
+        else:
+            Label.__init__(self,
+                           name,
+                           text,
+                           rect,
+                           text_color = text_color,
+                           font = font)
 
         return
 
@@ -391,7 +420,7 @@ class OutlinedText(Label):
 
             # Black outline
             #
-            font_surface = FONTS.bold_font.render(self.text,
+            font_surface = self.font.render(self.text,
                                             True,
                                             (0, 0, 0))
 
@@ -411,7 +440,7 @@ class OutlinedText(Label):
 
             # Center
             #
-            font_surface = FONTS.bold_font.render(self.text,
+            font_surface = self.font.render(self.text,
                                             True,
                                             self.text_color)
 
@@ -452,6 +481,8 @@ class Button(Label):
        Button.clicked_counter
            Counted down when the button is clicked and displays a different color
     """
+
+    # TODO: Use Label font argument.
 
     def __init__(self, label, rect, callback, background_color = None, text_color = (0, 0, 0)):
         """Initialise the Button.
@@ -895,6 +926,8 @@ class TextBox(Label):
        TextBox.active
            Boolean flag whether this TextBox is active, initally False.
     """
+
+    # TODO: Use Label font argument.
 
     def __init__(self, name, rect, return_callback = None, background_color = (250, 250, 250)):
         """Initialise the TextBox.
