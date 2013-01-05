@@ -357,9 +357,7 @@ class Label(planes.Plane):
 
             # Text is centered on rect.
             #
-            fontsurf = self.font.render(self.text,
-                                         True,
-                                         self.text_color)
+            fontsurf = self.font.render(self.text, True, self.text_color)
 
             centered_rect = fontsurf.get_rect()
 
@@ -1348,3 +1346,99 @@ class FadingContainer(Container):
         # Always return True to force a redraw
         #
         return True
+
+class ProgressBar(planes.Plane):
+    """A horizontal progress bar, filling from left to right.
+       Additional attributes:
+
+       ProgressBar.percent
+           An integer 0..100.
+
+       ProgressBar.text
+           text is a string to be rendered on top of the bar. Initially an
+           empty string.
+
+       ProgressBar.label
+           A Label instance displaying ProgressBar.text.
+
+       ProgressBar.color
+           color is a tuple (R, G, B) giving the color of the bar.
+
+       ProgressBar.background_color
+           background_color is a tuple (R, G, B) giving the background color of
+           the bar.
+    """
+
+    def __init__(self, name, rect, percent, text = "", color = (0, 0, 255),
+                 background_color = None):
+        """Initialise.
+
+           percent must be an integer 0..100.
+
+           text is a string to be rendered on top of the bar.
+
+           color is a tuple (R, G, B) giving the color of the bar.
+
+           background_color is a tuple (R, G, B) giving the background color of
+           the bar.
+        """
+
+        # Call base class
+        #
+        planes.Plane.__init__(self, name, rect)
+
+        self.percent = percent
+
+        self.text = text
+
+        # By default, make the label as big as the bar
+        #
+        self.label = Label("{0}-label".format(self.name), self.text,
+                           pygame.Rect((0, 0), self.rect.size),
+                           background_color = (128, 128, 128, 0),
+                           text_color = (255, 255, 255))
+
+        self.sub(self.label)
+
+        self.color = color
+
+        self.background_color = background_color
+
+        return
+
+    def update(self):
+        """Update ProgressBar.label.text to ProgressBar.text, then call the base class method.
+        """
+
+        self.label.text = self.text
+
+        planes.Plane.update(self)
+
+        return
+
+    def render(self, displayrect = None):
+        """Update ProgressBar.image to reflect ProgressBar.percent, then call the base class method.
+        """
+
+        # Background
+        #
+        if self.background_color is None:
+
+            self.image = pygame.Surface(self.rect.size, flags = pygame.SRCALPHA)
+
+        else:
+            self.image.fill(self.background_color)
+
+        # Actual bar
+        # Leave 1px border.
+        #
+        width = int((self.percent / 100.0) * (self.rect.width - 2))
+
+        self.image.fill(self.color, pygame.Rect((1, 1),
+                                                (width, self.rect.height - 2)))
+
+        # Call base
+        #
+        planes.Plane.render(self, displayrect)
+
+        return
