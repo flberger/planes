@@ -129,28 +129,43 @@ class Fonts:
         # Taken from fabula.PygameUserInterface.
         #
         try:
-            regular_font_file = os.path.join(FONT_PATH,
-                                             self._font_dict["Bitstream Vera Sans"][0])
+            # Small
+            #
+            small_font_file = os.path.join(FONT_PATH,
+                                           self._font_dict["Sans Nouveaux"][0])
 
+            # Use multiple of default size
+            #
+            size = self._font_dict["Sans Nouveaux"][1] * 1
+
+            self.small_font = pygame.font.Font(small_font_file, size)
+
+            self.fonts_by_name["Sans Nouveaux"] = self.small_font
+            self.fonts_by_size[size] = self.small_font
+
+            # Big
+            #
+            big_font_file = os.path.join(FONT_PATH,
+                                         self._font_dict["Sans Nouveaux"][0])
+
+            # Use multiple of default size
+            #
+            size = self._font_dict["Sans Nouveaux"][1] * 4
+
+            self.big_font = pygame.font.Font(big_font_file, size)
+
+            self.fonts_by_size[size] = self.big_font
+
+            # Bold
+            #
             bold_font_file = os.path.join(FONT_PATH,
                                           self._font_dict["Bitstream Vera Sans Bold"][0])
 
-
-            self.small_font = pygame.font.Font(regular_font_file,
-                                               self._font_dict["Bitstream Vera Sans"][1])
-
-            self.fonts_by_name["Bitstream Vera Sans"] = self.small_font
-            self.fonts_by_size[self._font_dict["Bitstream Vera Sans"][1]] = self.small_font
-
-            # TODO: change to different larger font
-            #
-            self.big_font = pygame.font.Font(regular_font_file,
-                                             30)
-
-            self.fonts_by_size[30] = self.big_font
-
             self.bold_font = pygame.font.Font(bold_font_file,
                                               self._font_dict["Bitstream Vera Sans Bold"][1])
+
+            self.fonts_by_name["Bitstream Vera Sans Bold"] = self.bold_font
+            self.fonts_by_size[self._font_dict["Bitstream Vera Sans Bold"][1]] = self.bold_font
 
         except:
             # TODO: log used font: pygame.font.get_default_font()
@@ -173,11 +188,10 @@ class Fonts:
 
         font = None
 
-        if font_name in self.fonts_by_name.keys():
-
-            font = self.fonts_by_name[font_name]
-
-        elif font_name in self.font_names:
+        # Always create a new font instance to honour the scale argument.
+        # This effectively changes the scale of an already loaded font.
+        #
+        if font_name in self.font_names:
 
             size = self._font_dict[font_name][1] * int(scale)
 

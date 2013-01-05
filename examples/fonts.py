@@ -41,31 +41,37 @@ pygame.display.set_caption("planes Font Demo")
 
 # Display fonts
 #
+line_height = 27
 ypos = 10
 
-for i, font_name in enumerate(planes.gui.FONTS.font_names):
+for scale in (1, 2):
 
-    # Using default font for display
-    #
-    name_label = planes.gui.Label("desc{0}".format(i),
-                                  '{0}/{1}: "{2}"'.format(i + 1,
-                                                          len(planes.gui.FONTS.font_names),
-                                                          font_name),
-                                  pygame.Rect((10, ypos), (300, 30)),
-                                  text_color = (255, 255, 255))
+    for i, font_name in enumerate(planes.gui.FONTS.font_names):
 
-    font_label = planes.gui.Label("font{0}".format(i),
-                                  "The Quick Brown Fox Jumps Over The Lazy Dog",
-                                  pygame.Rect((320, ypos), (440, 30)),
-                                  text_color = (255, 255, 255),
-                                  font = planes.gui.FONTS.by_name(font_name, 2))
+        # Using default font for display
+        #
+        name_label = planes.gui.Label("desc{0}-{1}".format(i, scale),
+                                      '{0}/{1}: "{2}"'.format(i + 1,
+                                                              len(planes.gui.FONTS.font_names),
+                                                              font_name),
+                                      pygame.Rect((10, ypos),
+                                                  (300, line_height)),
+                                      text_color = (255, 255, 255))
 
-    print("adding '{0}'".format(font_name))
+        font_label = planes.gui.Label("font{0}-{1}".format(i, scale),
+                                      "The Quick Brown Fox Jumps Over The Lazy Dog",
+                                      pygame.Rect((320, ypos),
+                                                  (440, line_height)),
+                                      text_color = (255, 255, 255),
+                                      font = planes.gui.FONTS.by_name(font_name,
+                                                                      scale))
 
-    window.sub(name_label)
-    window.sub(font_label)
+        print("adding '{0}'".format(font_name))
 
-    ypos += 30 + 2
+        window.sub(name_label)
+        window.sub(font_label)
+
+        ypos += line_height + 2
 
 clock = pygame.time.Clock()
 fps = clock.get_fps
