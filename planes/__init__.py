@@ -308,9 +308,7 @@ class Plane:
         # We only need to render if self.rendersurface does not point
         # to self.image.
         #
-        # TODO: This is completely inconvenient if Plane.image is changed from the outside. How to signal that? Even resetting Plane.last_rect doesn't help here.
-        #
-        if self.rendersurface is self.image:
+        if self.rendersurface is self.image and id(self.image) == self.last_image_id:
 
             STATS.unchanged_planes += 1
 
@@ -327,6 +325,10 @@ class Plane:
             # Fix the pointer
             #
             self.rendersurface = self.image
+
+            # Fix cached id
+            #
+            self.last_image_id = id(self.image)
 
             STATS.total_pixels += self.rect.width * self.rect.height
 

@@ -1407,17 +1407,19 @@ class ProgressBar(planes.Plane):
         return
 
     def update(self):
-        """Update ProgressBar.label.text to ProgressBar.text, then call the base class method.
+        """Update ProgressBar.label.text to ProgressBar.text, redraw, then call the base class method.
         """
 
         self.label.text = self.text
+
+        self.redraw()
 
         planes.Plane.update(self)
 
         return
 
-    def render(self, displayrect = None):
-        """Update ProgressBar.image to reflect ProgressBar.percent, then call the base class method.
+    def redraw(self, displayrect = None):
+        """Update ProgressBar.image to reflect ProgressBar.percent.
         """
 
         # Background
@@ -1437,8 +1439,8 @@ class ProgressBar(planes.Plane):
         self.image.fill(self.color, pygame.Rect((1, 1),
                                                 (width, self.rect.height - 2)))
 
-        # Call base
+        # Force redraw in render()
         #
-        planes.Plane.render(self, displayrect)
+        self.last_image_id = None
 
         return
