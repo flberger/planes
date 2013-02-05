@@ -1163,6 +1163,7 @@ class ScrollingPlane(planes.Plane):
         def scrollbar_container_clicked(plane):
             """Clicked callback which repositions the content Plane and scrollbar according to the y-position of the mouse.
             """
+
             x, y = pygame.mouse.get_pos()
 
             new_y = y - self.rect.top
@@ -1179,7 +1180,7 @@ class ScrollingPlane(planes.Plane):
 
             return
 
-        scrollbar_container.clicked_callback = scrollbar_container_clicked
+        scrollbar_container.left_click_callback = scrollbar_container_clicked
 
         self.sub(scrollbar_container)
 
