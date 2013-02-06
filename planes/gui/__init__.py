@@ -1178,6 +1178,11 @@ class ScrollingPlane(planes.Plane):
             content_plane = self.content.subplanes[self.content.subplanes_list[0]]
             content_plane.rect.top = int(0 - new_y / self.rect.height * content_plane.rect.height)
 
+            # Invalidate last_image_id to trigger a redraw
+            # TODO: changing content_plane.rect.top above should invalidate last_rect, why is this necessary?
+            #
+            content_plane.last_image_id = None
+
             return
 
         scrollbar_container.left_click_callback = scrollbar_container_clicked
