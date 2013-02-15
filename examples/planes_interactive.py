@@ -25,8 +25,12 @@
 # work started on 04. November 2010
 
 import sys
-import readline
 import traceback
+
+try:
+    import readline
+except ImportError:
+    print("The readline module could not be imported. Line editing will be very basic.")
 
 # Add current and parent directory. One of them is supposed to contain the
 # planes package.
