@@ -6,6 +6,7 @@ help:
 	@echo '    errors'
 	@echo '    user_install'
 	@echo '    sdist'
+	@echo '    exe'
 	@echo '    commit.txt'
 	@echo '    commit'
 	@echo '    sign'
@@ -36,11 +37,15 @@ ifdef PYTHON
 user_install:
 	$(PYTHON) setup.py install --user --record user_install-filelist.txt
 
-sdist:
+sdist: resources.zip
 	$(PYTHON) setup.py sdist --force-manifest --formats=zip
 
 pypi:
 	$(PYTHON) setup.py register
+
+exe: sdist
+	rm -rf build/exe.*
+	$(PYTHON) setup.py build
 
 else
 
@@ -51,6 +56,9 @@ sdist:
 	@echo Please supply Python executable as PYTHON=executable.
 
 pypi:
+	@echo Please supply Python executable as PYTHON=executable.
+
+exe: sdist
 	@echo Please supply Python executable as PYTHON=executable.
 
 endif
@@ -85,3 +93,6 @@ lp:
 
 README.rst: README
 	pandoc --output README.rst README
+
+resources.zip:
+	cd planes/gui/ && rm -fv resources.zip && find fonts/ gfx/ > MANIFEST && zip -9 -r resources.zip MANIFEST fonts/ gfx/

@@ -39,18 +39,53 @@ import pygame
 import os.path
 import sys
 import unicodedata
+import zipfile
 
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
 
-FONT_PATH = os.path.join(os.path.dirname(__file__), "fonts")
-GFX_PATH = os.path.join(os.path.dirname(__file__), "gfx")
+PATH = None
 
 # Check for cx_Freeze
 #
 if "frozen" in sys.__dict__.keys() and sys.frozen:
 
-    FONT_PATH = sys.path[1]
+    PATH = sys.path[1]
+
+else:
+    PATH = os.path.dirname(__file__)
+
+FONT_PATH = os.path.join(PATH, "fonts")
+GFX_PATH = os.path.join(PATH, "gfx")
+
+# Make sure resources are present
+#
+if not (os.path.exists(FONT_PATH) and os.path.exists(GFX_PATH)):
+
+    print("WARNING: planes.gui: resource directories not found, extracting 'resources.zip' to '{0}'".format(PATH))
+
+    if not os.path.exists(os.path.join(PATH, "resources.zip")):
+
+        raise IOError("'resources.zip' not found. Please fix the installation of the 'planes' package.")
+
+    zf = zipfile.ZipFile(os.path.join(PATH, "resources.zip"))
+
+    # It would be way better to read files directly from the zip file.
+    # But, contrary to the documentation, this is currently unsupported
+    # by PyGame. See "Segfault on loading font from StringIO" at
+    # http://blog.gmane.org/gmane.comp.python.pygame/month=20120101
+    #
+    zf.extractall(PATH)
+
+    zf.close()
+
+# TODO: still necessary after extracting zip?
+#
+# # Check for cx_Freeze
+# #
+# if "frozen" in sys.__dict__.keys() and sys.frozen:
+#
+#     FONT_PATH = sys.path[1]
 
 # Pixels per character, for width estimation of text renderings
 # TODO: merge with Fonts manager

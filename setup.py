@@ -20,10 +20,30 @@
 
 # work started on 10. December 2010
 
-import distutils.core
 import glob
 import os.path
 import planes
+
+# Fallback
+#
+from distutils.core import setup
+
+SCRIPTS = [os.path.join("examples", "square_clicking-planes.py"),
+           os.path.join("examples", "fonttest.py")]
+
+EXECUTABLES = []
+
+try:
+    import cx_Freeze
+
+    setup = cx_Freeze.setup
+
+    EXECUTABLES = [cx_Freeze.Executable(path) for path in SCRIPTS]
+
+except ImportError:
+
+    print("Warning: the cx_Freeze module could not be imported. You will not be able to build binary packages.")
+
 
 LONG_DESCRIPTION = '''About
 -----
@@ -86,12 +106,6 @@ Author
 
 Florian Berger'''
 
-# Need paths relative to planes.gui for setup()
-#
-RESOURCES = [os.path.join("gfx", "*.png"),
-             os.path.join("fonts", "*.ttf"),
-             os.path.join("fonts", "*.txt")]
-
 DOCS = glob.glob(os.path.join("doc", "*.*"))
 
 # Python 2.x doesn't honour the 'package_dir' and 'package_data' arguments.
@@ -100,26 +114,33 @@ DOCS = glob.glob(os.path.join("doc", "*.*"))
 print("regenerating MANIFEST.in for Python 2.x")
 MANIFEST = open("MANIFEST.in", "wt")
 MANIFEST.write("include COPYING\n")
-MANIFEST.writelines(["include " + os.path.join("planes", "gui", path) + "\n" for path in RESOURCES])
+MANIFEST.write("include " + os.path.join("planes", "gui", "resources.zip") + "\n")
 MANIFEST.writelines(["include {0}\n".format(path) for path in DOCS])
 MANIFEST.close()
 
-distutils.core.setup(name = "planes",
-                     version = planes.VERSION,
-                     author = "Florian Berger",
-                     author_email = "fberger@florian-berger.de",
-                     url = "http://florian-berger.de/en/software/planes/",
-                     description = "planes - A Hierarchical Surface Framework for Pygame",
-                     long_description = LONG_DESCRIPTION,
-                     license = "GPL",
-                     packages = ["planes",
-                                 "planes.gui"],
-                     requires = ["pygame (>=1.9.1)"],
-                     provides = ["planes",
-                                 "planes.gui"],
-                     scripts = ["examples/planes_interactive.py"],
-                     package_dir = {"planes" : "planes",
-                                    "planes.gui" : os.path.join("planes", "gui")},
-                     package_data = {"planes.gui" : RESOURCES},
-                     data_files = [("share/doc/planes-{0}".format(planes.VERSION),
-                                    DOCS)])
+setup(name = "planes",
+      version = planes.VERSION,
+      author = "Florian Berger",
+      author_email = "fberger@florian-berger.de",
+      url = "http://florian-berger.de/en/software/planes/",
+      description = "planes - A Hierarchical Surface Framework for Pygame",
+      long_description = LONG_DESCRIPTION,
+      license = "GPL",
+      packages = ["planes",
+                  "planes.gui"],
+      requires = ["pygame (>=1.9.1)"],
+      provides = ["planes",
+                  "planes.gui"],
+      scripts = SCRIPTS,
+      package_dir = {"planes" : "planes",
+                     "planes.gui" : os.path.join("planes", "gui")},
+      package_data = {"planes.gui" : ["resources.zip"]},
+      data_files = [("share/doc/planes-{0}".format(planes.VERSION),
+                     DOCS)],
+      executables = EXECUTABLES,
+      options = {"build_exe" :
+                 {"include_files" :
+                  [(os.path.join("planes", "gui", "resources.zip"),
+                    os.path.basename(os.path.join("planes", "gui", "resources.zip")))]
+                 }
+                })

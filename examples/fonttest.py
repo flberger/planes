@@ -32,6 +32,7 @@ sys.path.append("./")
 
 import pygame
 import planes.gui
+import traceback
 
 print("creating window")
 
