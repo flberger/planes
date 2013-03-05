@@ -3,14 +3,14 @@
   "DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <title>API docs for &ldquo;planes.Plane&rdquo;</title>
+    <title>planes.Plane : API documentation</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
     <link href="apidocs.css" type="text/css" rel="stylesheet" />
     
     
   </head>
   <body>
-    <h1 class="class">Class p.Plane:</h1>
+    <h1 class="class">p.Plane : class documentation</h1>
     <p>
       <span id="part">Part of <a href="planes.html">planes</a></span>
       
@@ -75,6 +75,14 @@ Plane.right_click_callback
     Callback function when this plane has been clicked with the right
     mouse button.
 
+Plane.up_click_callback
+    Callback function when the mouse wheel has been moved up above this
+    Plane.
+
+Plane.down_click_callback
+    Callback function when the mouse wheel has been moved down above this
+    Plane.
+
 Plane.dropped_upon_callback
     Callback function when a plane has been dropped upon this plane.
 
@@ -106,7 +114,7 @@ Plane.offset
     
     <td>Method</td>
     <td><a href="planes.Plane.html#__init__">__init__</a></td>
-    <td><tt>Initialize the Plane.</tt></td>
+    <td><span class="undocumented">No summary</span></td>
   </tr><tr class="method">
     
     
@@ -142,19 +150,19 @@ Plane.offset
     
     <td>Method</td>
     <td><a href="planes.Plane.html#get_plane_at">get_plane_at</a></td>
-    <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.</tt></td>
+    <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates. Subplanes are tested in reverse order of their addition (i.e. latest first).</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
     <td><a href="planes.Plane.html#update">update</a></td>
-    <td><tt>Update hook.</tt></td>
+    <td><span class="undocumented">No summary</span></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
     <td><a href="planes.Plane.html#clicked">clicked</a></td>
-    <td><tt>Called when there is a MOUSEDOWN event on this plane.</tt></td>
+    <td><tt>Called when there is a MOUSEDOWN event on this plane. If click callbacks are set, the appropriate one is called with this Plane as argument.</tt></td>
   </tr><tr class="method">
     
     
@@ -184,13 +192,13 @@ Plane.offset
     
     <td>Method</td>
     <td><a href="planes.Plane.html#mouseover_callback">mouseover_callback</a></td>
-    <td><tt>Callback function when the mouse cursor moves over this plane.</tt></td>
+    <td><tt>Callback function when the mouse cursor moves over this plane. The default implementation sets Plan.mouseover to True when Plane.highlight is set.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
     <td><a href="planes.Plane.html#mouseout_callback">mouseout_callback</a></td>
-    <td><tt>Callback function when the mouse cursor has left this plane.</tt></td>
+    <td><tt>Callback function when the mouse cursor has left this plane. The default implementation sets Plan.mouseover to False.</tt></td>
   </tr><tr class="method">
     
     
@@ -217,7 +225,7 @@ Plane.offset
   <div class="functionHeader">
     
     def
-    __init__(self, name, rect, draggable=False, grab=False, highlight=False, left_click_callback=None, right_click_callback=None, dropped_upon_callback=None):
+    __init__(self, name, rect, draggable=False, grab=False, highlight=False, left_click_callback=None, right_click_callback=None, up_click_callback=None, down_click_callback=None, dropped_upon_callback=None):
     
   </div>
   <div class="functionBody">
@@ -326,7 +334,7 @@ replaced by the new plane.</pre>
     
   </div>
   <div class="functionBody">
-    <div class="interfaceinfo">overridden in <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>, <a href="planes.gui.ProgressBar.html">planes.gui.ProgressBar</a></div>
+    <div class="interfaceinfo">overridden in <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a></div>
     <pre>Draw a composite surface of this plane and all subplanes, in order of their addition.
 
 displayrect is the Rect of the Display, displaced relatively to this
@@ -394,8 +402,8 @@ Compare pygame.sprite.Sprite.update.</pre>
   <div class="functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.gui.Button.html">planes.gui.Button</a>, <a href="planes.gui.Option.html">planes.gui.Option</a></div>
     <pre>Called when there is a MOUSEDOWN event on this plane.
-If Plane.left_click_callback or Plane.right_click_callback are set,
-the appropriate is called with this Plane as argument.</pre>
+If click callbacks are set, the appropriate one is called with this
+Plane as argument.</pre>
   </div>
 </div><div class="function">
   <a name="planes.Plane.dropped_upon">
@@ -534,7 +542,7 @@ The default implementation sets Plan.mouseover to False.</pre>
   </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2013-01-05 19:04:09.
+      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2013-03-05 14:16:20.
     </address>
   </body>
 </html>

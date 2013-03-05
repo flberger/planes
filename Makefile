@@ -16,10 +16,10 @@ help:
 	@echo '    README.rst'
 
 docs: clean
-	/home/florian/temp/python/pydoctor/bin/pydoctor --verbose \
-	                                                --add-package planes \
-	                                                --make-html \
-                                                    --html-output doc/
+	pydoctor --verbose \
+	         --add-package planes \
+	         --make-html \
+             --html-output doc/
 
 clean:
 	rm -vf `find . -iname '*.log'`

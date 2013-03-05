@@ -1,6 +1,6 @@
 """planes Graphical User Interface Module
 
-   Copyright 2010 Florian Berger <fberger@florian-berger.de>
+   Copyright 2010-2013 by Florian Berger <fberger@florian-berger.de>
 
    Global variables:
 

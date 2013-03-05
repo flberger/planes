@@ -1,6 +1,6 @@
 """tmb - planes.gui widgets with top-mid-bottom backgrounds.
 
-   Copyright 2012 Florian Berger <fberger@florian-berger.de>
+   Copyright 2012, 2013 by Florian Berger <fberger@florian-berger.de>
 
    Module doctests:
 

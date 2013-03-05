@@ -1,6 +1,6 @@
 """lmr - planes.gui widgets with left-mid-right backgrounds.
 
-   Copyright 2012 Florian Berger <fberger@florian-berger.de>
+   Copyright 2012, 2013 by Florian Berger <fberger@florian-berger.de>
 
    Module doctests:
 

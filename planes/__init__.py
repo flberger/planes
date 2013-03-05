@@ -1,6 +1,6 @@
 """planes
    A Hierarchical Surface Framework for PyGame
-   Copyright 2010 Florian Berger <fberger@florian-berger.de>
+   Copyright 2010-2013 by Florian Berger <fberger@florian-berger.de>
 """
 
 # This file is part of planes.
