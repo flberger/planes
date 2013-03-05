@@ -29,7 +29,7 @@
 import pygame
 import time
 
-VERSION = "0.5.1a"
+VERSION = "0.6.0"
 
 class Plane:
     """A Plane is a surface in a hierarchy of surfaces.

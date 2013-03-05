@@ -1,6 +1,23 @@
 NEWS for planes
 ===============
 
+0.6.0
+-----
+
+Released on 5 March 2013.
+
+planes now logs runtime statistics and displays them when F12 is pressed. There 
+is a font manager class now, and planes comes bundled with a selection of free 
+fonts for instant use. A font usage example is inculded. There is a new widget 
+planes.gui.ProgressBar. All gfx and font resources are now bundled in a 
+'resources.zip' file which is distributed along with planes. planes now uses 
+cx_Freeze to build executables. Added mouse wheel support for the Plane class 
+and the PlusMinusBox widget specifically. Optimized Plane.render() a little to 
+checks whether subplanes actually intersect with Display.rect. Bug fixes and 
+enhancements in Plane.render(), gui.Container.sub(), and 
+'planes_interactive.py'. Docs update.
+
+
 0.5.0
 -----
 
