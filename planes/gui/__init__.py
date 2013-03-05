@@ -631,9 +631,9 @@ class Button(Label):
 
             self.redraw()
 
-            # Call base class implementation which will call the callback
-            #
-            Label.clicked(self, button_name)
+        # Call base class implementation which will call the callback
+        #
+        Label.clicked(self, button_name)
 
         return
 
@@ -1250,16 +1250,23 @@ class PlusMinusBox(planes.Plane):
                              pygame.Rect((0, 0), (PIX_PER_CHAR, PIX_PER_CHAR * 2)),
                              self.minus_callback)
 
+        minusbutton.down_click_callback = self.minus_callback
+
         minusbutton.text = "-"
 
         textbox = TextBox("textbox",
                           pygame.Rect((minusbutton.rect.width, 0),
                                       (PIX_PER_CHAR * charwidth, PIX_PER_CHAR * 2)))
 
+        textbox.down_click_callback = self.minus_callback
+        textbox.up_click_callback = self.plus_callback
+
         plusbutton = Button("plus",
                             pygame.Rect((minusbutton.rect.width + textbox.rect.width, 0),
                                         (PIX_PER_CHAR, PIX_PER_CHAR * 2)),
                             self.plus_callback)
+
+        plusbutton.up_click_callback = self.plus_callback
 
         plusbutton.text = "+"
 

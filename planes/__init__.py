@@ -88,6 +88,14 @@ class Plane:
            Callback function when this plane has been clicked with the right
            mouse button.
 
+       Plane.up_click_callback
+           Callback function when the mouse wheel has been moved up above this
+           Plane.
+
+       Plane.down_click_callback
+           Callback function when the mouse wheel has been moved down above this
+           Plane.
+
        Plane.dropped_upon_callback
            Callback function when a plane has been dropped upon this plane.
 
@@ -119,6 +127,8 @@ class Plane:
                  highlight = False,
                  left_click_callback = None,
                  right_click_callback = None,
+                 up_click_callback = None,
+                 down_click_callback = None,
                  dropped_upon_callback = None):
         """Initialize the Plane.
            name is the name of the plane which can also be used
@@ -183,6 +193,8 @@ class Plane:
         #
         self.left_click_callback = left_click_callback
         self.right_click_callback = right_click_callback
+        self.up_click_callback = up_click_callback
+        self.down_click_callback = down_click_callback
         self.dropped_upon_callback = dropped_upon_callback
 
         # Master plane for synchronous movements
@@ -501,8 +513,8 @@ class Plane:
 
     def clicked(self, button_name):
         """Called when there is a MOUSEDOWN event on this plane.
-           If Plane.left_click_callback or Plane.right_click_callback are set,
-           the appropriate is called with this Plane as argument.
+           If click callbacks are set, the appropriate one is called with this
+           Plane as argument.
         """
 
         if button_name == "left" and self.left_click_callback is not None:
@@ -512,6 +524,14 @@ class Plane:
         elif button_name == "right" and self.right_click_callback is not None:
 
             self.right_click_callback(self)
+
+        elif button_name == "up" and self.up_click_callback is not None:
+
+            self.up_click_callback(self)
+
+        elif button_name == "down" and self.down_click_callback is not None:
+
+            self.down_click_callback(self)
 
         return
 
@@ -711,7 +731,10 @@ class Display(Plane):
 
         self.last_mouseover_plane = None
 
-        self.mouse_buttons = {1: "left", 3: "right"}
+        self.mouse_buttons = {1: "left",
+                              3: "right",
+                              4: "up",
+                              5: "down"}
 
         self.show_stats = False
 

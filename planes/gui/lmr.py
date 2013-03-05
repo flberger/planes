@@ -468,6 +468,8 @@ class LMRPlusMinusBox(planes.gui.PlusMinusBox):
         #
         minusbutton = LMRButton("minus", 32, self.minus_callback)
 
+        minusbutton.down_click_callback = self.minus_callback
+
         minusbutton.text = "-"
 
         textbox = planes.gui.TextBox("textbox",
@@ -475,7 +477,12 @@ class LMRPlusMinusBox(planes.gui.PlusMinusBox):
                                                      (planes.gui.PIX_PER_CHAR * charwidth,
                                                       minusbutton.rect.height)))
 
+        textbox.down_click_callback = self.minus_callback
+        textbox.up_click_callback = self.plus_callback
+
         plusbutton = LMRButton("plus", 32, self.plus_callback)
+
+        plusbutton.up_click_callback = self.plus_callback
 
         plusbutton.text = "+"
 
