@@ -244,9 +244,9 @@ class LMRButton(LMRWidget, planes.gui.Button):
         # This will also call redraw().
         #
         planes.gui.Button.__init__(self,
-                                       label,
-                                       self.background.get_rect(),
-                                       callback)
+                                   label,
+                                   self.background.get_rect(),
+                                   callback)
 
         return
 
@@ -265,8 +265,8 @@ class LMRButton(LMRWidget, planes.gui.Button):
             # Text is centered on rect.
             #
             fontsurf = planes.gui.FONTS.small_font.render(self.text,
-                                                        True,
-                                                        self.style.text_color)
+                                                          True,
+                                                          self.style.text_color)
 
             centered_rect = fontsurf.get_rect()
 

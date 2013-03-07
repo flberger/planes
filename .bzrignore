@@ -8,7 +8,7 @@ MANIFEST
 MANIFEST.in
 user_install-filelist.txt
 __pycache__
-freshmeat-submit.txt
+freecode-submit.txt
 README.rst
 planes/gui/fonts/*.txt
 planes/gui/fonts/*.ttf

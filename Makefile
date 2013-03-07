@@ -10,7 +10,7 @@ help:
 	@echo '    commit.txt'
 	@echo '    commit'
 	@echo '    sign'
-	@echo '    freshmeat'
+	@echo '    freecode'
 	@echo '    pypi'
 	@echo '    lp'
 	@echo '    README.rst'
@@ -82,10 +82,10 @@ sign:
 	for i in dist/*.*z* ; do gpg --sign --armor --detach $$i ; done
 	gpg --verify --multifile dist/*.asc
 
-freshmeat:
-	@echo RETURN to submit to freshmeat.net using freshmeat-submit.txt, CTRL-C to cancel:
+freecode:
+	@echo RETURN to submit to freecode.com using freecode-submit.txt, CTRL-C to cancel:
 	@read DUMMY
-	freshmeat-submit < freshmeat-submit.txt
+	freecode-submit < freecode-submit.txt
 
 lp:
 	bzr launchpad-login fberger-fbmd

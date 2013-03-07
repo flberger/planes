@@ -50,7 +50,9 @@ PATH = None
 #
 if "frozen" in sys.__dict__.keys() and sys.frozen:
 
-    PATH = sys.path[1]
+    # Hard-coded path
+    #
+    PATH = os.path.join("planes", "gui")
 
 else:
     PATH = os.path.dirname(__file__)
@@ -78,14 +80,6 @@ if not (os.path.exists(FONT_PATH) and os.path.exists(GFX_PATH)):
     zf.extractall(PATH)
 
     zf.close()
-
-# TODO: still necessary after extracting zip?
-#
-# # Check for cx_Freeze
-# #
-# if "frozen" in sys.__dict__.keys() and sys.frozen:
-#
-#     FONT_PATH = sys.path[1]
 
 # Pixels per character, for width estimation of text renderings
 # TODO: merge with Fonts manager
@@ -331,7 +325,7 @@ class Label(planes.Plane):
     def __init__(self, name, text, rect,
                  background_color = None,
                  text_color = (0, 0, 0),
-                 font = FONTS.small_font):
+                 font = None):
         """Initialise the Label.
            text is the text to be written on the Label. If text is None, it is
            replaced by an empty string.
@@ -365,7 +359,12 @@ class Label(planes.Plane):
 
         self.text_color = text_color
 
-        self.font = font
+        if font is None:
+
+            self.font = FONTS.small_font
+
+        else:
+            self.font = font
 
         self.redraw()
 

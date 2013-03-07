@@ -4,16 +4,15 @@ README for planes
 About
 -----
 
-planes is a hierarchical surface framework for PyGame.
+planes is a hierarchical surface framework for PyGame, extending it
+with a hierarchy of mouse-sensitive, draggable Surfaces that can be
+used as sprites, windows, icons or other interactive elements.
 
-The planes module introduces the "Plane" class which extends PyGame's 
-"Surface" functionality, offering a hierarchy of mouse-sensitive, draggable 
-Surfaces that can be used as sprites, windows, icons or other interactive 
-elements.
+In addition, the planes.gui module provides basic GUI elements like
+container, label, text box, option list and button.
 
-In addition, the planes.gui module uses planes to provide basic GUI 
-elements like container, label, text box, option list and button.
-
+planes is quite powerful, but sadly lacks a tutorial to get started.
+This will be added in the beta (0.9.x) releases.
 
 Prerequisites
 -------------
