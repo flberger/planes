@@ -28,6 +28,7 @@
 
 import pygame
 import time
+import random
 
 VERSION = "0.6.1a"
 
@@ -631,6 +632,19 @@ class Plane:
         self.last_rect = None
 
         return
+
+    def random_name(self):
+        """Return a random string that is not in Plane.subplanes_list.
+           This is a convenience function to produce names for subplanes.
+        """
+
+        name = None
+
+        while name is None or name in self.subplanes_list:
+
+            name = "subplane{0}".format(str(random.randint(0, 99999)))
+
+        return name
 
     def __repr__(self):
         """Readable string representation.
