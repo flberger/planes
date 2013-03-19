@@ -982,63 +982,63 @@ class Display(Plane):
 
             y = 3
 
-            self._stats_surface.blit(self.font.render("planes {} Runtime Statistics".format(VERSION),
+            self._stats_surface.blit(self.font.render("planes {0} Runtime Statistics".format(VERSION),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Total planes: {}".format(STATS.total_planes),
+            self._stats_surface.blit(self.font.render("Total planes: {0}".format(STATS.total_planes),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Total pixels: {:.1f} M, {:.2f} MB RGB video RAM".format(STATS.total_pixels / 1000000, STATS.total_pixels * 24 / 8 / 1024 / 1024),
+            self._stats_surface.blit(self.font.render("Total pixels: {0:.1f} M, {1:.2f} MB RGB video RAM".format(STATS.total_pixels / 1000000, STATS.total_pixels * 24 / 8 / 1024 / 1024),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Unchanged planes: {}".format(STATS.unchanged_planes),
+            self._stats_surface.blit(self.font.render("Unchanged planes: {0}".format(STATS.unchanged_planes),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Rendering skipped: {}".format(STATS.render_skip),
+            self._stats_surface.blit(self.font.render("Rendering skipped: {0}".format(STATS.render_skip),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Blitting skipped: {}".format(STATS.blit_skip),
+            self._stats_surface.blit(self.font.render("Blitting skipped: {0}".format(STATS.blit_skip),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Render time: {:.1f} ms".format(STATS.render_time * 1000),
+            self._stats_surface.blit(self.font.render("Render time: {0:.1f} ms".format(STATS.render_time * 1000),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Mean render time: {:.1f} ms".format(STATS.mean_render_time * 1000),
+            self._stats_surface.blit(self.font.render("Mean render time: {0:.1f} ms".format(STATS.mean_render_time * 1000),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Mean rendering capacity: {} renderings / s".format(STATS.renders_per_second),
+            self._stats_surface.blit(self.font.render("Mean rendering capacity: {0} renderings / s".format(STATS.renders_per_second),
                                                       antialias,
                                                       color,
                                                       background), (padding, y))
