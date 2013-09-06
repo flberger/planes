@@ -704,10 +704,27 @@ class Container(planes.Plane):
         """Resize the container, update the position of plane and add it as a subplane.
         """
 
+        # Cares for re-adding an already existing subplane.
+        #
+        existing_rect = pygame.Rect((0, 0), (0, 0))
+
+        if plane.name in self.subplanes_list:
+
+            # Collision!
+            #
+            existing_rect = self.subplanes[plane.name].rect
+
         # First add the subplane by calling the base class method.
-        # This also cares for re-adding an already existing subplane.
         #
         planes.Plane.sub(self, plane)
+
+        if plane.rect == existing_rect:
+
+            # Oh yeah, in that case, no adjustments required
+            #
+            self.redraw()
+
+            return
 
         # Containers have a 1px black border. Observe this when calculating width
         # and height.
@@ -732,7 +749,7 @@ class Container(planes.Plane):
         else:
             plane.rect.topleft = (0, self.rect.height - 1)
 
-            self.rect.height = self.rect.height + plane.rect.height + self.padding
+            self.rect.height = self.rect.height + plane.rect.height - existing_rect.height + self.padding
 
         # Re-center all subplanes.
         #

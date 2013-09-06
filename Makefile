@@ -12,7 +12,7 @@ help:
 	@echo '    sign'
 	@echo '    freecode'
 	@echo '    pypi'
-	@echo '    lp'
+	@echo '    bitbucket'
 	@echo '    README.rst'
 
 docs: clean
