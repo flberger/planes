@@ -780,6 +780,7 @@ class Display(Plane):
         # TODO: there should be a class containing keydown(), activate(), deactivate()
 
         if self.key_sensitive_plane:
+
             self.key_sensitive_plane.deactivate()
 
         self.key_sensitive_plane = plane

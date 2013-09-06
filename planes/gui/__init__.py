@@ -33,6 +33,7 @@
 
 # TODO: Make current Fabula Editor style the planes.gui default style
 # TODO: Include some freely available game fonts
+# TODO: OptionSelector severely drains framerate. Maybe only in lmr/tmb implementation? Check.
 
 import planes
 import pygame
@@ -1238,6 +1239,8 @@ class PlusMinusBox(planes.Plane):
     """This class implements a TextBox with plus and minus buttons attached, to change a numerical value.
        The value is accessible as PlusMinusBox.textbox.text
     """
+
+    # TODO: Changing PlusMinusBox.minus_callback etc. after instantiation has no effect, as the buttons are already created with references to the original callbacks. Provide and easy way to change the callbacks after creation.
 
     def __init__(self, name, charwidth, value = 0):
         """Initialise.
