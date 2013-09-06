@@ -1,5 +1,7 @@
+syntax: glob
+
 *pyc
-.bzrignore
+.hgignore
 commit.txt
 *.png
 dist

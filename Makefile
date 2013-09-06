@@ -64,18 +64,16 @@ exe: sdist
 endif
 
 commit.txt:
-	# single line because bzr diff returns false when there are diffs
-	#
-	bzr diff > commit.txt ; nano commit.txt
+	hg diff > commit.txt ; nano commit.txt
 
-commit:
+commit: commit.txt
 	@echo commit.txt:
 	@echo ------------------------------------------------------
 	@cat commit.txt
 	@echo ------------------------------------------------------
 	@echo RETURN to commit using commit.txt, CTRL-C to cancel:
 	@read DUMMY
-	bzr commit --file commit.txt && rm -v commit.txt
+	hg commit --logfile commit.txt && rm -v commit.txt
 
 sign:
 	rm -vf dist/*.asc
@@ -87,9 +85,8 @@ freecode:
 	@read DUMMY
 	freecode-submit < freecode-submit.txt
 
-lp:
-	bzr launchpad-login fberger-fbmd
-	bzr push lp:~fberger-fbmd/planes/trunk
+bitbucket:
+	hg push https://flberger@bitbucket.org/flberger/planes
 
 README.rst: README
 	pandoc --output README.rst README
