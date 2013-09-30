@@ -29,8 +29,21 @@
 import pygame
 import time
 import random
+import platform
 
 VERSION = "0.6.1a"
+
+# Set up hi-res timer.
+# Taken from exercises written for my Real-Time Interactive Systems course in 2013.
+#
+TIMER_FUNC = None
+
+if platform.system().lower() == "windows":
+
+    TIMER_FUNC = time.clock
+
+else:
+    TIMER_FUNC = time.time
 
 class Plane:
     """A Plane is a surface in a hierarchy of surfaces.
@@ -318,6 +331,10 @@ class Plane:
            flag set.
         """
 
+        # TODO: Taking the time, of course, takes time. Use in assert() and debug only?
+        #
+        timestamp = TIMER_FUNC()
+
         # We only need to render if self.rendersurface does not point
         # to self.image.
         #
@@ -326,6 +343,8 @@ class Plane:
             STATS.unchanged_planes += 1
 
             STATS.total_pixels += self.rect.width * self.rect.height
+
+            STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
 
             return False
 
@@ -344,6 +363,8 @@ class Plane:
             self.last_image_id = id(self.image)
 
             STATS.total_pixels += self.rect.width * self.rect.height
+
+            STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
 
             return True
 
@@ -456,11 +477,15 @@ class Plane:
 
             self.last_image_id = id(self.image)
 
+            STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
+
             return True
 
         else:
 
             STATS.unchanged_planes += 1
+
+            STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
 
             return False
 
@@ -758,7 +783,7 @@ class Display(Plane):
         # Convenience Surface for statistics display.
         # See Display.render()
         #
-        self._stats_surface = pygame.Surface((320, 256))
+        self._stats_surface = pygame.Surface((320, 600))
 
         self._stats_surface.convert()
 
@@ -1044,6 +1069,27 @@ class Display(Plane):
                                                       color,
                                                       background), (padding, y))
 
+            y += lineheight
+
+            self._stats_surface.blit(self.font.render("Plane render times:",
+                                                      antialias,
+                                                      color,
+                                                      background), (padding, y))
+
+            STATS.plane_times.sort()
+            STATS.plane_times.reverse()
+
+            # Use top ten
+            #
+            for time_name_tuple in STATS.plane_times[:10]:
+
+                y += lineheight
+
+                self._stats_surface.blit(self.font.render("    {0}: {1:.1f} ms".format(time_name_tuple[1],
+                                                                                   time_name_tuple[0]),
+                                                          antialias,
+                                                          color,
+                                                          background), (padding, y))
 
             self.display.blit(self._stats_surface, (10, 10))
 
@@ -1085,6 +1131,10 @@ class Stats:
            Given Stats.mean_render_time, how many renders could be carried out
            in one second in theory. Note that this is not the actual FPS, which
            is largely determined by the application deploying the planes module.
+
+       Stats.plane_times
+           A list of tuples (rendertime, name) giving the last render time of
+           each plane.
     """
 
     # TODO: A Stats instance could be an iterator, yielding text Surfaces and rendering positions.
@@ -1111,6 +1161,8 @@ class Stats:
 
         self.renders_per_second = 0
 
+        self.plane_times = []
+
         return
 
     def update(self, display):
@@ -1126,6 +1178,8 @@ class Stats:
         self.render_skip = 0
 
         self.blit_skip = 0
+
+        self.plane_times = []
 
         # self.render_time will be entirely handled from the outside and needs
         # no reset.
