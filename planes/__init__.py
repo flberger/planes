@@ -902,6 +902,23 @@ class Display(Plane):
                 else:
                     self.show_stats = True
 
+                    # Print the planes hierarchy to STDOUT
+                    # TODO: display on screen instead of STDOUT
+                    #
+                    def print_subplanes(plane, indent = 1):
+                        """Helper method to print an indented list of subplanes.
+                           To be called recursively.
+                        """
+                        if len(plane.subplanes_list):
+                            for subplane in plane.subplanes.values():
+                                print("|   " * (indent - 1) + "+---" + subplane.name)
+                                print_subplanes(subplane, indent + 1)
+                        return
+
+                    print("---------------------\nPlanes hierarchy dump\n---------------------")
+                    print(self.name)
+                    print_subplanes(self)
+
             elif (event.type == pygame.KEYDOWN
                   and self.key_sensitive_plane is not None
                   and self.key_sensitive_plane.parent is not None):
