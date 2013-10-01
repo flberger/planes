@@ -123,10 +123,13 @@ class TMBContainer(planes.gui.Container):
            Initially None, repainted in TMBContainer.sub().
     """
 
-    def __init__(self, name, style, padding = 0):
+    def __init__(self, name, style, padding = 0, colorkey = None):
         """Initialise.
 
            style is an instance of TMBStyle.
+
+           colorkey is a tuple (R, G, B) giving a colorkey to use instead of
+           a full alpha channel for faster rendering.
         """
 
         if not isinstance(style, TMBStyle):
@@ -146,6 +149,8 @@ class TMBContainer(planes.gui.Container):
         # Initialise rect width. This is fixed to the background width.
         #
         self.rect.width = self.style.top_img.get_width()
+
+        self.colorkey = colorkey
 
         return
 
@@ -229,7 +234,20 @@ class TMBContainer(planes.gui.Container):
            This also creates a new TMBContainer.rendersurface.
         """
 
-        self.image = self.background.copy()
+        if self.colorkey is None:
+
+            self.image = self.background.copy()
+
+        else:
+
+            # Use colorkey color as background, and switch from alpha usage
+            # to color keying
+
+            self.image = pygame.Surface(self.background.get_rect().size)
+            self.image.convert()
+            self.image.fill(self.colorkey)
+            self.image.blit(self.background, (0, 0))
+            self.image.set_colorkey(self.colorkey, pygame.RLEACCEL)
 
         self.rendersurface = self.image.copy()
 
