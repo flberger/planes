@@ -67,11 +67,21 @@ if not (os.path.exists(FONT_PATH) and os.path.exists(GFX_PATH)):
 
     print("WARNING: planes.gui: resource directories not found, extracting 'resources.zip' to '{0}'".format(PATH))
 
-    if not os.path.exists(os.path.join(PATH, "resources.zip")):
+    resources_path = None
+
+    if os.path.exists(os.path.join(PATH, "resources.zip")):
+
+        resources_path = os.path.join(PATH, "resources.zip")
+
+    elif os.path.exists("resources.zip"):
+
+        resources_path = "resources.zip"
+
+    if resources_path is None:
 
         raise IOError("'resources.zip' not found. Please fix the installation of the 'planes' package.")
 
-    zf = zipfile.ZipFile(os.path.join(PATH, "resources.zip"))
+    zf = zipfile.ZipFile(resources_path)
 
     # It would be way better to read files directly from the zip file.
     # But, contrary to the documentation, this is currently unsupported
