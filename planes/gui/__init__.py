@@ -333,6 +333,8 @@ class Label(planes.Plane):
            The PyGame.font.Font instante used for this Label.
     """
 
+    # TODO: make rect in __init__() optional, and offer auto size + padding instead.
+
     def __init__(self, name, text, rect,
                  background_color = None,
                  text_color = (0, 0, 0),

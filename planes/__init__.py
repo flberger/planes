@@ -31,7 +31,7 @@ import time
 import random
 import platform
 
-VERSION = "0.6.1a"
+VERSION = "0.6.1"
 
 # Set up hi-res timer.
 # Taken from exercises written for my Real-Time Interactive Systems course in 2013.
@@ -368,17 +368,17 @@ class Plane:
 
             return True
 
-        # At this point, we know that rendersurface differs from image and that
-        # there are subplanes.
+        # At this point, we know that rendersurface differs from image
+        # and that there are subplanes.
 
         STATS.total_pixels += self.rect.width * self.rect.height * 2
 
-        # If the image of this plane or any subplane has changed or if a
-        # subplane has moved: redraw everything.
+        # If the image of this plane or any subplane has changed or if
+        # a subplane has moved: redraw everything.
         #
-        # (The alternative would be to check for rect collisions to see where
-        # the background can be restored by using image, or caching inbetween
-        # rendering steps).
+        # (The alternative would be to check for rect collisions to
+        # see where the background can be restored by using image, or
+        # caching inbetween rendering steps).
         #
         # TODO: This doesn't catch draw and blit operations outside render()!
         #
@@ -391,6 +391,8 @@ class Plane:
             #
             displayrect = self.rect
 
+        subplanetimestamp = TIMER_FUNC()
+            
         for plane in (self.subplanes[name] for name in self.subplanes_list):
 
             # Only render if actually intersecting with Display
@@ -417,11 +419,16 @@ class Plane:
 
                 STATS.render_skip += 1
 
+        # Do note take render times of subplanes into account
+        #
+        timestamp += TIMER_FUNC() - subplanetimestamp
+                
         if id(self.image) != self.last_image_id or subplane_changed:
 
-            # Instead of clearing an existing Surface, we copy Plane.image. This
-            # is a little slower but has the huge benefit of creating an RGBA
-            # Surface with per pixel alpha when needed.
+            # Instead of clearing an existing Surface, we copy
+            # Plane.image. This is a little slower but has the huge
+            # benefit of creating an RGBA Surface with per pixel alpha
+            # when needed.
             #
             self.rendersurface = self.image.copy()
 
@@ -448,16 +455,16 @@ class Plane:
 
                         overlay = subplane.rendersurface.copy()
 
-                        # Only premultiply Surfaces with the SRCALPHA flag, will
-                        # raise an exception otherwise.
+                        # Only premultiply Surfaces with the SRCALPHA
+                        # flag, will raise an exception otherwise.
                         #
                         if overlay.get_flags() & 0x00010000:
 
-                            # Premultiply alpha channel to RGB. Otherwise
-                            # invisible RGB values will be added by BLEND_ADD.
-                            # Technique suggested by Rene Dudfield
-                            # <renesd@gmail.com> on pygame-users@seul.org
-                            # on 19 Dec 2011
+                            # Premultiply alpha channel to RGB.
+                            # Otherwise invisible RGB values will be
+                            # added by BLEND_ADD. Technique suggested
+                            # by Rene Dudfield <renesd@gmail.com> on
+                            # pygame-users@seul.org on 19 Dec 2011
                             #
                             overlay = pygame.image.fromstring(pygame.image.tostring(overlay,
                                                                                     "RGBA_PREMULT"),
@@ -512,10 +519,12 @@ class Plane:
         return (return_plane, return_coordinates)
 
     def update(self):
-        """Update hook.
-           The default implementation calls update() on all subplanes. If
-           Plane.sync_master_plane is not None, the position of this Plane will
-           be synced to that of the master Plane, using Plane.offset.
+        """Update hook. The default implementation calls update() on all subplanes.
+
+           If Plane.sync_master_plane is not None, the position of this
+           Plane will be synced to that of the master Plane, using
+           Plane.offset.
+
            Compare pygame.sprite.Sprite.update.
         """
 
@@ -629,7 +638,7 @@ class Plane:
 
     def mouseover_callback(self):
         """Callback function when the mouse cursor moves over this plane.
-           The default implementation sets Plan.mouseover to True when
+           The default implementation sets Plane.mouseover to True when
            Plane.highlight is set.
         """
 
@@ -1198,8 +1207,8 @@ class Stats:
 
         self.plane_times = []
 
-        # self.render_time will be entirely handled from the outside and needs
-        # no reset.
+        # self.render_time will be entirely handled from the outside and
+        # needs no reset.
 
         if len(self._render_time_list):
 
@@ -1227,7 +1236,7 @@ class Stats:
 
         return
 
-# As there will only ever be one Display instance, we can keep a global Stats
-# instance and do not need to do it on a per-Display base.
+# As there will only ever be one Display instance, we can keep a global
+# Stats instance and do not need to do it on a per-Display base.
 #
 STATS = Stats()
