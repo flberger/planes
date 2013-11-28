@@ -317,12 +317,8 @@ class Plane:
         #
         return self.subplanes[name]
 
-    def render(self, displayrect = None):
+    def render(self):
         """Draw a composite surface of this plane and all subplanes, in order of their addition.
-
-           displayrect is the Rect of the Display, displaced relatively to this
-           Plane's Rect, so collision of subplanes can be tested using
-           Rect.colliderect(displayrect).
 
            Returns True if anything has been rendered (i.e. when
            Plane.rendersurface has changed), False otherwise.
@@ -384,40 +380,23 @@ class Plane:
         #
         subplane_changed = False
 
-        if displayrect is None:
-
-            # That means we are the Display and are just starting the rendering
-            # cascade.
-            #
-            displayrect = self.rect
-
         subplanetimestamp = TIMER_FUNC()
             
         for plane in (self.subplanes[name] for name in self.subplanes_list):
 
-            # Only render if actually intersecting with Display
             # TODO: bookkeeping: count rendered Planes
             #
-            if plane.rect.colliderect(displayrect):
+            if plane.render():
 
-                displayrect_to_pass = displayrect.move(- plane.rect.left,
-                                                       - plane.rect.top)
+                subplane_changed = True
 
-                if plane.render(displayrect_to_pass):
+            elif plane.rect != plane.last_rect:
 
-                    subplane_changed = True
+                subplane_changed = True
 
-                elif plane.rect != plane.last_rect:
-
-                    subplane_changed = True
-
-                    # We need a copy!
-                    #
-                    plane.last_rect = pygame.Rect(plane.rect)
-
-            else:
-
-                STATS.render_skip += 1
+                # We need a copy!
+                #
+                plane.last_rect = pygame.Rect(plane.rect)
 
         # Do note take render times of subplanes into account
         #
@@ -439,48 +418,39 @@ class Plane:
 
             for subplane in (self.subplanes[name] for name in self.subplanes_list):
 
-                # Again, only blit if actually intersecting with Display
-                # TODO: bookkeeping: count rendered and not rendered Planes
+                # First blit ordinary rendersurface
                 #
-                if subplane.rect.colliderect(displayrect):
+                self.rendersurface.blit(subplane.rendersurface,
+                                        subplane.rect)
 
-                    # First blit ordinary rendersurface
+                # Add a highlight on top if mouseover is set
+                #
+                if subplane.mouseover:
+
+                    overlay = subplane.rendersurface.copy()
+
+                    # Only premultiply Surfaces with the SRCALPHA
+                    # flag, will raise an exception otherwise.
                     #
-                    self.rendersurface.blit(subplane.rendersurface,
-                                            subplane.rect)
+                    if overlay.get_flags() & 0x00010000:
 
-                    # Add a highlight on top if mouseover is set
-                    #
-                    if subplane.mouseover:
-
-                        overlay = subplane.rendersurface.copy()
-
-                        # Only premultiply Surfaces with the SRCALPHA
-                        # flag, will raise an exception otherwise.
+                        # Premultiply alpha channel to RGB.
+                        # Otherwise invisible RGB values will be
+                        # added by BLEND_ADD. Technique suggested
+                        # by Rene Dudfield <renesd@gmail.com> on
+                        # pygame-users@seul.org on 19 Dec 2011
                         #
-                        if overlay.get_flags() & 0x00010000:
+                        overlay = pygame.image.fromstring(pygame.image.tostring(overlay,
+                                                                                "RGBA_PREMULT"),
+                                                          overlay.get_size(),
+                                                          "RGBA")
 
-                            # Premultiply alpha channel to RGB.
-                            # Otherwise invisible RGB values will be
-                            # added by BLEND_ADD. Technique suggested
-                            # by Rene Dudfield <renesd@gmail.com> on
-                            # pygame-users@seul.org on 19 Dec 2011
-                            #
-                            overlay = pygame.image.fromstring(pygame.image.tostring(overlay,
-                                                                                    "RGBA_PREMULT"),
-                                                              overlay.get_size(),
-                                                              "RGBA")
+                    overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
+                    overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
 
-                        overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
-                        overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
-
-                        self.rendersurface.blit(overlay,
-                                                subplane.rect,
-                                                special_flags = pygame.BLEND_ADD)
-
-                else:
-
-                    STATS.blit_skip += 1
+                    self.rendersurface.blit(overlay,
+                                            subplane.rect,
+                                            special_flags = pygame.BLEND_ADD)
 
             self.last_image_id = id(self.image)
 
@@ -1062,13 +1032,6 @@ class Display(Plane):
 
             y += lineheight
 
-            self._stats_surface.blit(self.font.render("Rendering skipped: {0}".format(STATS.render_skip),
-                                                      antialias,
-                                                      color,
-                                                      background), (padding, y))
-
-            y += lineheight
-
             self._stats_surface.blit(self.font.render("Blitting skipped: {0}".format(STATS.blit_skip),
                                                       antialias,
                                                       color,
@@ -1139,10 +1102,6 @@ class Stats:
        Stats.unchanged_planes
            Number of planes whose bitmap did not change in the last run.
 
-       Stats.render_skip
-           Number of planes for which rendering has been skipped because they
-           are outside the screen.
-
        Stats.blit_skip
            Number of planes for which blitting has been skipped because they
            are outside the screen.
@@ -1175,8 +1134,6 @@ class Stats:
 
         self.unchanged_planes = 0
 
-        self.render_skip = 0
-
         self.blit_skip = 0
 
         self.render_time = 0
@@ -1200,8 +1157,6 @@ class Stats:
         self.total_pixels = 0
 
         self.unchanged_planes = 0
-
-        self.render_skip = 0
 
         self.blit_skip = 0
 
