@@ -33,10 +33,6 @@ Plane.name
 Plane.image
     The pygame.Surface for this Plane.
 
-Plane.rendersurface
-    A pygame.Surface displaying the composite of this plane and all
-    subplanes.
-
 Plane.rect
     The render position of this Plane on the parent Plane.
 
@@ -156,7 +152,13 @@ Plane.offset
     
     <td>Method</td>
     <td><a href="planes.Plane.html#update">update</a></td>
-    <td><span class="undocumented">No summary</span></td>
+    <td><tt>Update hook. The default implementation calls update() on all subplanes.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#del_image">del_image</a></td>
+    <td><tt>Convenience method, replacing this Plane's image with a transparent 1px x 1px Pygame Surface.</tt></td>
   </tr><tr class="method">
     
     
@@ -192,13 +194,19 @@ Plane.offset
     
     <td>Method</td>
     <td><a href="planes.Plane.html#mouseover_callback">mouseover_callback</a></td>
-    <td><tt>Callback function when the mouse cursor moves over this plane. The default implementation sets Plan.mouseover to True when Plane.highlight is set.</tt></td>
+    <td><tt>Callback function when the mouse cursor moves over this plane. The default implementation sets Plane.mouseover to True when Plane.highlight is set.</tt></td>
   </tr><tr class="method">
     
     
     <td>Method</td>
     <td><a href="planes.Plane.html#mouseout_callback">mouseout_callback</a></td>
     <td><tt>Callback function when the mouse cursor has left this plane. The default implementation sets Plan.mouseover to False.</tt></td>
+  </tr><tr class="method">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#random_name">random_name</a></td>
+    <td><tt>Return a random string that is not in Plane.subplanes_list. This is a convenience function to produce names for subplanes.</tt></td>
   </tr><tr class="method">
     
     
@@ -330,22 +338,20 @@ replaced by the new plane.</pre>
   <div class="functionHeader">
     
     def
-    render(self, displayrect=None):
+    render(self, rendersurface, offset_rect):
     
   </div>
   <div class="functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a></div>
     <pre>Draw a composite surface of this plane and all subplanes, in order of their addition.
 
-displayrect is the Rect of the Display, displaced relatively to this
-Plane's Rect, so collision of subplanes can be tested using
-Rect.colliderect(displayrect).
+rendersurface is a Pygame Surface to render to.
 
-Returns True if anything has been rendered (i.e. when
-Plane.rendersurface has changed), False otherwise.
+offset_rect is a Pygame Rect giving the offset and the
+clipping area.
 
-This method will highlight subplanes that have the Plane.mousover
-flag set.</pre>
+This method will highlight subplanes that have the
+Plane.mousover flag set.</pre>
   </div>
 </div><div class="function">
   <a name="planes.Plane.get_plane_at">
@@ -380,11 +386,34 @@ Subplanes are tested in reverse order of their addition (i.e. latest first).</pr
   </div>
   <div class="functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>, <a href="planes.gui.Label.html">planes.gui.Label</a>, <a href="planes.gui.ProgressBar.html">planes.gui.ProgressBar</a></div>
-    <pre>Update hook.
-The default implementation calls update() on all subplanes. If
-Plane.sync_master_plane is not None, the position of this Plane will
-be synced to that of the master Plane, using Plane.offset.
+    <pre>Update hook. The default implementation calls update() on all subplanes.
+
+If Plane.sync_master_plane is not None, the position of this
+Plane will be synced to that of the master Plane, using
+Plane.offset.
+
 Compare pygame.sprite.Sprite.update.</pre>
+  </div>
+</div><div class="function">
+  <a name="planes.Plane.del_image">
+    
+  </a>
+  <a name="del_image">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    del_image(self):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Convenience method, replacing this Plane's image with a transparent 1px x 1px Pygame Surface.
+
+Plane.rect is left as-is.
+
+Useful for container surfaces which have no background.</pre>
   </div>
 </div><div class="function">
   <a name="planes.Plane.clicked">
@@ -501,7 +530,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
   <div class="functionBody">
     
     <pre>Callback function when the mouse cursor moves over this plane.
-The default implementation sets Plan.mouseover to True when
+The default implementation sets Plane.mouseover to True when
 Plane.highlight is set.</pre>
   </div>
 </div><div class="function">
@@ -523,6 +552,24 @@ Plane.highlight is set.</pre>
 The default implementation sets Plan.mouseover to False.</pre>
   </div>
 </div><div class="function">
+  <a name="planes.Plane.random_name">
+    
+  </a>
+  <a name="random_name">
+    
+  </a>
+  <div class="functionHeader">
+    
+    def
+    random_name(self):
+    
+  </div>
+  <div class="functionBody">
+    
+    <pre>Return a random string that is not in Plane.subplanes_list.
+This is a convenience function to produce names for subplanes.</pre>
+  </div>
+</div><div class="function">
   <a name="planes.Plane.__repr__">
     
   </a>
@@ -542,7 +589,7 @@ The default implementation sets Plan.mouseover to False.</pre>
   </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2013-03-05 14:16:20.
+      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2013-12-03 19:47:44.
     </address>
   </body>
 </html>
