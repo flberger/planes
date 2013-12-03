@@ -21,6 +21,8 @@
 # Planned in mind at the Mosel valley in late July 2010
 # Actual work started on 01. Oct 2010
 
+# TODO: remove Plane.rendersurface !!!
+# TODO: allow Plane.image to be None for planes that are just containers for subplanes, to save the potentially expensive blit of their black Plane.image
 # TODO: add Plane.offset(x, y) to offset all subplanes - without touching their rect -> only while rendering
 # TODO: Surface.get_flags has all sorts of interesting information to optimise performance.
 # TODO: Planes *so* needs live performance reporting. Maybe not via log file, but as some sort of a live display via TTY or socket.
@@ -317,56 +319,68 @@ class Plane:
         #
         return self.subplanes[name]
 
-    def render(self):
+    def render(self, _rendersurface, offset_rect):
         """Draw a composite surface of this plane and all subplanes, in order of their addition.
 
+           _rendersurface, is the Pygame Surface to render to.
+
+           offset_rect is a Pygame Rect giving the offset and the
+           clipping area.
+        
            Returns True if anything has been rendered (i.e. when
            Plane.rendersurface has changed), False otherwise.
 
-           This method will highlight subplanes that have the Plane.mousover
-           flag set.
+           This method will highlight subplanes that have the
+           Plane.mousover flag set.
         """
+
+        #REMOVE
+        #print("{0}.render() starting".format(self.name))
 
         # TODO: Taking the time, of course, takes time. Use in assert() and debug only?
         #
         timestamp = TIMER_FUNC()
 
-        # We only need to render if self.rendersurface does not point
-        # to self.image.
+        # TODO: we'll render in any case now !!!
         #
-        if self.rendersurface is self.image and id(self.image) == self.last_image_id:
-
-            STATS.unchanged_planes += 1
-
-            STATS.total_pixels += self.rect.width * self.rect.height
-
-            STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
-
-            return False
-
-        # Still here? Then it does not. But is this correct? Maybe the user has
-        # updated the image, but when there are no subplanes, there is no need
-        # to render.
+        # # We only need to render if self.rendersurface does not point
+        # # to self.image.
+        # #
+        # if self.rendersurface is self.image and id(self.image) == self.last_image_id:
         #
-        if not self.subplanes:
-
-            # Fix the pointer
-            #
-            self.rendersurface = self.image
-
-            # Fix cached id
-            #
-            self.last_image_id = id(self.image)
-
-            STATS.total_pixels += self.rect.width * self.rect.height
-
-            STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
-
-            return True
+        #     STATS.unchanged_planes += 1
+        #
+        #     STATS.total_pixels += self.rect.width * self.rect.height
+        #
+        #     STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
+        #
+        #     return False
+        #
+        # # Still here? Then it does not. But is this correct? Maybe the user has
+        # # updated the image, but when there are no subplanes, there is no need
+        # # to render.
+        # #
+        # if not self.subplanes:
+        #
+        #     # Fix the pointer
+        #     #
+        #     self.rendersurface = self.image
+        #
+        #     # Fix cached id
+        #     #
+        #     self.last_image_id = id(self.image)
+        #
+        #     STATS.total_pixels += self.rect.width * self.rect.height
+        #
+        #     STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
+        #
+        #     return True
 
         # At this point, we know that rendersurface differs from image
         # and that there are subplanes.
 
+        # TODO: remove factor 2 once we got rid of rendersurfaces !!!
+        #
         STATS.total_pixels += self.rect.width * self.rect.height * 2
 
         # If the image of this plane or any subplane has changed or if
@@ -378,30 +392,11 @@ class Plane:
         #
         # TODO: This doesn't catch draw and blit operations outside render()!
         #
-        subplane_changed = False
-
-        subplanetimestamp = TIMER_FUNC()
-            
-        for plane in (self.subplanes[name] for name in self.subplanes_list):
-
-            # TODO: bookkeeping: count rendered Planes
-            #
-            if plane.render():
-
-                subplane_changed = True
-
-            elif plane.rect != plane.last_rect:
-
-                subplane_changed = True
-
-                # We need a copy!
-                #
-                plane.last_rect = pygame.Rect(plane.rect)
-
-        # Do note take render times of subplanes into account
+        # TODO: set to True for _rendersurface refactoring !!!
+        #subplane_changed = False
         #
-        timestamp += TIMER_FUNC() - subplanetimestamp
-                
+        subplane_changed = True
+
         if id(self.image) != self.last_image_id or subplane_changed:
 
             # Instead of clearing an existing Surface, we copy
@@ -409,25 +404,37 @@ class Plane:
             # benefit of creating an RGBA Surface with per pixel alpha
             # when needed.
             #
-            self.rendersurface = self.image.copy()
+            # TODO: obsolete when using passed rendersurface!!!
+            #self.rendersurface = self.image.copy()
 
             # Subplanes are already rendered. Force-blit them in order.
             # Obey mouseover flag.
             #
             surface = None
 
+            _rendersurface.set_clip(offset_rect)
+            
             for subplane in (self.subplanes[name] for name in self.subplanes_list):
 
                 # First blit ordinary rendersurface
                 #
-                self.rendersurface.blit(subplane.rendersurface,
-                                        subplane.rect)
+                # TODO: obsolete with new _rendersurface !!!
+                #self.rendersurface.blit(subplane.rendersurface,
+                #                        subplane.rect)
+                #
+                #REMOVE
+                #if subplane.name == "":
+                #print("{0}: blitting {1} with rect {2} to offset {3}".format(self.name, subplane.name, subplane.rect, offset_rect))
+
+                _rendersurface.blit(subplane.image, subplane.rect.move(offset_rect.topleft))
 
                 # Add a highlight on top if mouseover is set
                 #
                 if subplane.mouseover:
 
-                    overlay = subplane.rendersurface.copy()
+                    # TODO: fixed for new _rendersurface !!!
+                    #overlay = subplane.rendersurface.copy()
+                    overlay = subplane.image.copy()
 
                     # Only premultiply Surfaces with the SRCALPHA
                     # flag, will raise an exception otherwise.
@@ -448,15 +455,63 @@ class Plane:
                     overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
                     overlay.blit(overlay, (0, 0), special_flags = pygame.BLEND_MULT)
 
-                    self.rendersurface.blit(overlay,
-                                            subplane.rect,
-                                            special_flags = pygame.BLEND_ADD)
+                    # TODO: changed for _rendersurface
+                    #self.rendersurface.blit(overlay,
+                    _rendersurface.blit(overlay,
+                                        subplane.rect.move(offset_rect.topleft),
+                                        special_flags = pygame.BLEND_ADD)
+
+###
+                subplanetimestamp = TIMER_FUNC()
+
+                # TODO: bookkeeping: count rendered Planes - (but isn't that done by recursion?)
+
+                #REMOVE
+                #print("Creating subsurface of {0} ({1}, {2}) for {3} at {4}".format(self.name, _rendersurface, id(_rendersurface), plane.name, plane.rect))
+
+                # Avoid  "ValueError - subsurface rectangle outside
+                # surface area" by clipping the subsurface in
+                # _rendersurface.
+
+                # !!!
+                try:
+                    if subplane.render(_rendersurface,
+                                       pygame.Rect((subplane.rect.x + offset_rect.x,
+                                                    subplane.rect.y + offset_rect.y),
+                                                   self.rect.size)):
+                    #if subplane.render(_rendersurface.subsurface(subplane.rect)):
+
+                        subplane_changed = True
+
+                    elif subplane.rect != subplane.last_rect:
+
+                        subplane_changed = True
+
+                        # We need a copy!
+                        #
+                        subplane.last_rect = pygame.Rect(subplane.rect)
+                except:
+                    print("{0}.render({1}, {2})".format(subplane.name,
+                                                        _rendersurface,
+                                                        pygame.Rect((subplane.rect.x + offset_rect.x,
+                                                                     subplane.rect.y + offset_rect.y),
+                                                                     self.rect.size)))
+
+                    raise
+
+                # Do note take render times of subplanes into account
+                #
+                timestamp += TIMER_FUNC() - subplanetimestamp
+
+###
+            _rendersurface.set_clip(None)
 
             self.last_image_id = id(self.image)
 
             STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
 
-            return True
+            # TODO: not returning here !!!
+            #return True
 
         else:
 
@@ -464,8 +519,11 @@ class Plane:
 
             STATS.plane_times.append(((TIMER_FUNC() - timestamp)* 1000, self.name))
 
-            return False
+            # TODO: not returning here !!!
+            #return False
 
+        # TODO: return statement !!!
+        
     def get_plane_at(self, coordinates):
         """Return the (sub)plane and the succeeding parent coordinates at the given coordinates.
            Subplanes are tested in reverse order of their addition (i.e. latest first).
@@ -830,15 +888,23 @@ class Display(Plane):
                         # Use a copy for new coordinates etc.
                         #
                         self.dragged_plane = Plane("dragged_plane", clicked_plane.rect.copy())
-                        self.dragged_plane.rendersurface = clicked_plane.rendersurface.copy()
+
+                        # Changed for obsolete rendersurface !!!
+                        # Drag a composite of the Plane and all subplanes
+                        #
+                        self.dragged_plane.image = clicked_plane.image.copy()
+
+                        clicked_plane.render(self.dragged_plane.image,
+                                             pygame.Rect((0, 0), clicked_plane.rect.size))
 
                         # Keep original for reference
                         #
                         self.dragged_plane.source = clicked_plane
 
-                        # 2/3 transparency
+                        # 2/3 transparency. Only visible when there
+                        # are no per-pixel alphas.
                         #
-                        self.dragged_plane.rendersurface.set_alpha(170, pygame.RLEACCEL)
+                        self.dragged_plane.image.set_alpha(170, pygame.RLEACCEL)
 
             elif (event.type == pygame.MOUSEBUTTONUP
                   and event.button == 1):
@@ -959,13 +1025,18 @@ class Display(Plane):
 
         starttime = time.clock()
 
-        rendered_something = Plane.render(self)
+        # TODO: changed for _rendersurface !!!
+        #self.display.blit(self.rendersurface, (0, 0))
+        self.display.blit(self.image, (0, 0))
+
+        rendered_something = Plane.render(self, self.display, self.rect)
 
         STATS.log_render_time(time.clock() - starttime)
 
+        #REMOVE
+        #print("--- Display.render() done rendering. ---")
+        
         if rendered_something or force or self.dragged_plane is not None:
-
-            self.display.blit(self.rendersurface, (0, 0))
 
             if self.dragged_plane is not None:
 
@@ -978,7 +1049,7 @@ class Display(Plane):
                     #
                     self.dragged_plane.rect.center = pygame.mouse.get_pos()
 
-                    self.display.blit(self.dragged_plane.rendersurface,
+                    self.display.blit(self.dragged_plane.image,
                                       self.dragged_plane.rect)
 
                 else:

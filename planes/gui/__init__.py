@@ -1400,13 +1400,13 @@ class FadingContainer(Container):
 
         return
 
-    def render(self, displayrect = None):
+    def render(self, rendersurface, offset_rect):
         """Call Plane.render(), the pop the first value from self.alpha_steps and apply it as alpha.
         """
 
         # Call base class
         #
-        planes.Plane.render(self, displayrect)
+        planes.Plane.render(self, rendersurface, offset_rect)
 
         if self.display_duration <= 0:
 
