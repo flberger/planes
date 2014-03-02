@@ -34,48 +34,60 @@ import pygame
 import planes.gui
 import traceback
 
-print("creating window")
+WINDOW = planes.Display((800, 600))
 
-window = planes.Display((800, 600))
-window.image.fill((127, 127, 127))
-pygame.display.set_caption("planes Font Demo")
+def display_fonts(scale):
+    """Add planes with font examples.
+       `scale` is a float giving the scaling factor.
+    """
 
-# Display fonts
-#
-line_height = 27
-ypos = 10
+    line_height = 40
+    ypos = 30
 
-for scale in (1, 2):
+    print("Re-displaying with scale {0}".format(scale))
 
-    for i, font_name in enumerate(planes.gui.FONTS.font_names):
+    # TODO: Using _font_dict. Use new API once it exists.
+    #
+    for i, font_name in enumerate(planes.gui.FONTS._font_dict.keys()):
 
         # Using default font for display
-        #
-        name_label = planes.gui.Label("desc{0}-{1}".format(i, scale),
-                                      '{0}/{1}: "{2}"'.format(i + 1,
-                                                              len(planes.gui.FONTS.font_names),
-                                                              font_name),
+
+        number_label = planes.gui.Label("num{0}-{1}".format(i, scale),
+                                        '{0}'.format(i + 1),
                                       pygame.Rect((10, ypos),
-                                                  (300, line_height)),
+                                                  (30, line_height)),
                                       text_color = (255, 255, 255))
 
+        name_label = planes.gui.Label("desc{0}-{1}".format(i, scale),
+                                      '"{0}"'.format(font_name),
+                                      pygame.Rect((40 + 2, ypos),
+                                                  (200, line_height)),
+                                      text_color = (255, 255, 255))
+
+        px_label = planes.gui.Label("px{0}-{1}".format(i, scale),
+                                    '{0} px'.format(planes.gui.FONTS._font_dict[font_name][1] * scale),
+                                    pygame.Rect((240 + 2 * 2, ypos),
+                                                (40, line_height)),
+                                    text_color = (255, 255, 255))
+
         font_label = planes.gui.Label("font{0}-{1}".format(i, scale),
-                                      "The Quick Brown Fox Jumps Over The Lazy Dog",
-                                      pygame.Rect((320, ypos),
-                                                  (440, line_height)),
+                                      "The Quick Brown Fox Jumps Over The Lazy Dog 12345 CAPS",
+                                      pygame.Rect((280 + 3 * 2, ypos),
+                                                  (500, line_height)),
                                       text_color = (255, 255, 255),
                                       font = planes.gui.FONTS.by_name(font_name,
                                                                       scale))
 
         print("adding '{0}'".format(font_name))
 
-        window.sub(name_label)
-        window.sub(font_label)
+        WINDOW.sub(number_label)
+        WINDOW.sub(name_label)
+        WINDOW.sub(px_label)
+        WINDOW.sub(font_label)
 
         ypos += line_height + 2
 
-clock = pygame.time.Clock()
-fps = clock.get_fps
+    return
 
 def mainloop(framerate):
     """Runs a pygame / planes main loop.
@@ -85,6 +97,8 @@ def mainloop(framerate):
     """
 
     print("about to start main loop")
+
+    clock = pygame.time.Clock()
 
     while True:
         events = pygame.event.get()
@@ -96,9 +110,9 @@ def mainloop(framerate):
                 pygame.quit()
                 raise SystemExit
 
-        window.process(events)
-        window.update()
-        window.render()
+        WINDOW.process(events)
+        WINDOW.update()
+        WINDOW.render()
 
         pygame.display.flip()
 
@@ -106,7 +120,45 @@ def mainloop(framerate):
         #
         clock.tick(framerate)
 
-if __name__ == "__main__":
+    return
+
+def main():
+    """Main method.
+    """
+    WINDOW.image.fill((127, 127, 127))
+
+    pygame.display.set_caption("planes Font Demo")
+
+    plus_minus_box = planes.gui.PlusMinusBox("scale_pmbox", 2, value = 1)
+
+    plus_minus_box.rect.topleft = (10, 10)
+
+    def decrease_scale(plane):
+
+        # Call default
+        #
+        planes.gui.PlusMinusBox.minus_callback(plane.parent, plane)
+
+        display_fonts(int(plus_minus_box.textbox.text))
+
+        return
+
+    def increase_scale(plane):
+
+        # Call default
+        #
+        planes.gui.PlusMinusBox.plus_callback(plane.parent, plane)
+
+        display_fonts(int(plus_minus_box.textbox.text))
+
+        return
+
+    plus_minus_box.minus.left_click_callback = decrease_scale
+    plus_minus_box.plus.left_click_callback = increase_scale
+
+    WINDOW.sub(plus_minus_box)
+
+    display_fonts(1)
 
     print("starting main loop in main thread")
 
@@ -118,3 +170,9 @@ if __name__ == "__main__":
         print(traceback.format_exc())
         pygame.quit()
         raise SystemExit
+
+    return
+
+if __name__ == "__main__":
+
+    main()

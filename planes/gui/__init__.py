@@ -45,6 +45,8 @@ import zipfile
 BACKGROUND_COLOR = (150, 150, 150)
 HIGHLIGHT_COLOR = (191, 95, 0)
 
+FONT_ANTIALIAS = True
+
 PATH = None
 
 # Check for cx_Freeze
@@ -142,20 +144,20 @@ class Fonts:
         #
         pygame.font.init()
 
+        # TODO: Make name *and* size available via API.
+        
         # {<font name> : (<font file>, <pixel size>)}
         #
         self._font_dict = {"04B-08" : ("04B_08__.ttf", 8),
                            "04B-19" : ("04B_19__.ttf", 14),
                            "BitLow" : ("bitlow.ttf", 9),
-                           "Tempesta Seven Compressed Bold" :
-                               ("pf_tempesta_seven_compressed_bold.ttf", 8),
-                           "Tempesta Seven Extended Bold" :
-                               ("pf_tempesta_seven_extended_bold.ttf", 8),
-                           "Tempesta Seven" : ("pf_tempesta_seven.ttf", 8),
                            "Sans Nouveaux" : ("px_sans_nouveaux.ttf", 8),
                            "Silkscreen" : ("slkscr.ttf", 8),
                            "Bitstream Vera Sans Bold" : ("VeraBd.ttf", 12),
-                           "Bitstream Vera Sans" : ("Vera.ttf", 12)}
+                           "Bitstream Vera Sans" : ("Vera.ttf", 12),
+                           "Kharon4a Bold": ("kharon4a_bold.ttf", 8),
+                           "Kharon4a": ("kharon4a.ttf", 8),
+                           "Press Start 2P": ("pressstart2p.ttf", 8)}
 
         self.font_names = list(self._font_dict.keys())
 
@@ -211,7 +213,7 @@ class Fonts:
             # TODO: log used font: pygame.font.get_default_font()
             #print("Could not load {0}".format(os.path.join(os.path.dirname(__file__), "Vera.ttf")))
             self.big_font = pygame.font.Font(None, 40)
-            self.small_font = self.bold_font = pygame.font.Font(None, 20)
+            self.small_font = self.bold_font = pygame.font.Font(None, 24)
 
         return
 
@@ -233,7 +235,7 @@ class Fonts:
         #
         if font_name in self.font_names:
 
-            size = self._font_dict[font_name][1] * int(scale)
+            size = int(self._font_dict[font_name][1] * scale)
 
             font = pygame.font.Font(os.path.join(FONT_PATH,
                                                  self._font_dict[font_name][0]),
@@ -404,7 +406,7 @@ class Label(planes.Plane):
 
             # Text is centered on rect.
             #
-            fontsurf = self.font.render(self.text, True, self.text_color)
+            fontsurf = self.font.render(self.text, FONT_ANTIALIAS, self.text_color)
 
             centered_rect = fontsurf.get_rect()
 
@@ -480,7 +482,7 @@ class OutlinedText(Label):
             # Black outline
             #
             font_surface = self.font.render(self.text,
-                                            True,
+                                            FONT_ANTIALIAS,
                                             (0, 0, 0))
 
             target_surface = pygame.Surface(font_surface.get_rect().inflate(2, 2).size,
@@ -500,7 +502,7 @@ class OutlinedText(Label):
             # Center
             #
             font_surface = self.font.render(self.text,
-                                            True,
+                                            FONT_ANTIALIAS,
                                             self.text_color)
 
             target_surface.blit(font_surface, (1, 1))
@@ -1088,9 +1090,9 @@ class TextBox(Label):
             # Clever use of a dict to avoid an 'if'! :-)
             #
             fontsurf = FONTS.small_font.render(self.text + {True: "|", False: ""}[self.active],
-                                         True,
-                                         (0, 0, 0),
-                                         self.current_color)
+                                               FONT_ANTIALIAS,
+                                               (0, 0, 0),
+                                               self.current_color)
 
             # Text is left-aligned on rect, except when it is larger than the
             # Label, in which case it is right-aligned.

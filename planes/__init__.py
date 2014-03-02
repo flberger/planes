@@ -647,11 +647,13 @@ class Display(Plane):
         #
         pygame.init()
 
+        # TODO: Use flags = pygame.HWSURFACE | pygame.DOUBLEBUF ?
+        #
         flags = 0
 
         if fullscreen:
 
-            flags = pygame.FULLSCREEN
+            flags = flags | pygame.FULLSCREEN
 
         try:
             self.display = pygame.display.set_mode(resolution_tuple, flags)
@@ -660,7 +662,7 @@ class Display(Plane):
 
             # Microsoft Windows SDL error: "No available video device"
             # For a list see
-            # http://www.libsdl.org/cgi/docwiki.cgi/SDL_envvars
+            # http://wiki.libsdl.org/FAQUsingSDL
             #
             import os
 

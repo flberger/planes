@@ -14,6 +14,7 @@ help:
 	@echo '    pypi'
 	@echo '    bitbucket'
 	@echo '    README.rst'
+	@echo '    resources.zip'
 
 docs: clean
 	pydoctor --verbose \
