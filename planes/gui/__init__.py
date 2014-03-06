@@ -157,7 +157,9 @@ class Fonts:
                            "Bitstream Vera Sans" : ("Vera.ttf", 12),
                            "Kharon4a Bold": ("kharon4a_bold.ttf", 8),
                            "Kharon4a": ("kharon4a.ttf", 8),
-                           "Press Start 2P": ("pressstart2p.ttf", 8)}
+                           "Press Start 2P": ("pressstart2p.ttf", 8),
+                           "Archivo Narrow Regular": ("archivonarrow-regular.ttf", 14),
+                           "Archivo Narrow Bold": ("archivonarrow-bold.ttf", 16)}
 
         self.font_names = list(self._font_dict.keys())
 
