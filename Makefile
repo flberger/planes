@@ -65,7 +65,7 @@ exe: sdist
 endif
 
 commit.txt:
-	hg diff > commit.txt ; nano commit.txt
+	hg diff > commit.txt
 
 commit: commit.txt
 	@echo commit.txt:

@@ -333,6 +333,9 @@ class Label(planes.Plane):
        Label.text_color
            The text color, initially (0, 0, 0).
 
+       Label.cached_text_color
+           A cache for text color changes.
+
        Label.font
            The PyGame.font.Font instante used for this Label.
     """
@@ -374,7 +377,7 @@ class Label(planes.Plane):
                 self.image = pygame.Surface(self.rect.size,
                                             flags = pygame.SRCALPHA)
 
-        self.text_color = text_color
+        self.text_color = self.cached_text_color = text_color
 
         if font is None:
 
@@ -402,7 +405,8 @@ class Label(planes.Plane):
         """
 
         if (self.text != self.cached_text
-            or self.current_color != self.cached_color):
+            or self.current_color != self.cached_color
+            or self.text_color != self.cached_text_color):
 
             self.image.fill(self.current_color)
 
@@ -424,6 +428,7 @@ class Label(planes.Plane):
 
             self.cached_text = self.text
             self.cached_color = self.current_color
+            self.cached_text_color = self.text_color
 
         return
 
