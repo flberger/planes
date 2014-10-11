@@ -151,6 +151,16 @@ def add_PlusMinusBox(parent_plane, x, y):
     plus_minus_box.rect.left = x
     plus_minus_box.rect.top = y
 
+    def get_focus(plane):
+
+        # NOTE: Assuming parent_plane is the display
+        #
+        parent_plane.key_sensitive(plus_minus_box.textbox)
+
+        return
+
+    plus_minus_box.textbox.left_click_callback = get_focus
+
     parent_plane.sub(plus_minus_box)
 
     return
@@ -232,6 +242,16 @@ def add_LMRPlusMinusBox(parent_plane, x, y):
 
     lmr_plus_minus_box.rect.left = x
     lmr_plus_minus_box.rect.top = y
+
+    def get_focus(plane):
+
+        # NOTE: Assuming parent_plane is the display
+        #
+        parent_plane.key_sensitive(lmr_plus_minus_box.textbox)
+
+        return
+
+    lmr_plus_minus_box.textbox.left_click_callback = get_focus
 
     parent_plane.sub(lmr_plus_minus_box)
 
