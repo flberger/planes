@@ -1331,7 +1331,14 @@ class PlusMinusBox(planes.Plane):
         """Callback when minus is clicked.
         """
 
-        self.textbox.text = str(int(self.textbox.text) - 1)
+        try:
+            self.textbox.text = str(int(self.textbox.text) - 1)
+
+        except ValueError:
+
+            # Weird stuff in self.textbox.text. Ignore.
+            #
+            pass
 
         self.textbox.redraw()
 
@@ -1341,7 +1348,14 @@ class PlusMinusBox(planes.Plane):
         """Callback when plus is clicked.
         """
 
-        self.textbox.text = str(int(self.textbox.text) + 1)
+        try:
+            self.textbox.text = str(int(self.textbox.text) + 1)
+
+        except ValueError:
+
+            # Weird stuff in self.textbox.text. Ignore.
+            #
+            pass
 
         self.textbox.redraw()
 
