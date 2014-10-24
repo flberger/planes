@@ -1,6 +1,6 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
 <html>
   <head>
     <title>planes.gui.Container : API documentation</title>
@@ -19,7 +19,8 @@
     <div>
       <p>Known subclasses: <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>, <a href="planes.gui.GetStringDialog.html">planes.gui.GetStringDialog</a>, <a href="planes.gui.OkBox.html">planes.gui.OkBox</a>, <a href="planes.gui.OptionList.html">planes.gui.OptionList</a>, <a href="planes.gui.OptionSelector.html">planes.gui.OptionSelector</a>, <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></p>
     </div>
-    <pre>A Container for Planes.
+    <div class="docstring">
+      <pre>A Container for Planes.
 If a subplane is added via sub(), the container places it below any existing
 subplanes and resizes itself to fit the width and height of the subplanes.
 
@@ -30,14 +31,14 @@ Container.padding
 
 Container.background_color
     The original background color for this Container</pre>
+    </div>
 
     
-    
     <div id="splitTables">
-      <table class="children sortable" id="id19">
+      <table class="children sortable" id="id62">
   
   
-<tr class="method">
+  <tr class="method">
     
     
     <td>Method</td>
@@ -68,16 +69,15 @@ Container.background_color
     <td><a href="planes.gui.Container.html#remove_all">remove_all</a></td>
     <td><tt>Remove all subplanes and shrink accordingly.</tt></td>
   </tr>
-  
 </table>
-      
+      <invisible>
         <p>
           Inherited from <a href="planes.Plane.html">Plane</a>:
         </p>
-        <table class="children sortable" id="id20">
+        <table class="children sortable" id="id63">
   
   
-<tr class="basemethod">
+  <tr class="basemethod">
     
     
     <td>Method</td>
@@ -162,12 +162,9 @@ Container.background_color
     <td><a href="planes.Plane.html#__repr__">__repr__</a></td>
     <td><tt>Readable string representation.</tt></td>
   </tr>
-  
 </table>
-      
-      
+      </invisible>
     </div>
-    
     
     
 
@@ -184,7 +181,7 @@ Container.background_color
     __init__(self, name, padding=0, background_color=None):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overrides <a href="planes.Plane.html#__init__">planes.Plane.__init__</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>, <a href="planes.gui.GetStringDialog.html">planes.gui.GetStringDialog</a>, <a href="planes.gui.OkBox.html">planes.gui.OkBox</a>, <a href="planes.gui.OptionList.html">planes.gui.OptionList</a>, <a href="planes.gui.OptionSelector.html">planes.gui.OptionSelector</a>, <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></div>
     <pre>Initialise.
 Container.image is initialised to a 0x0 px Surface.</pre>
@@ -202,7 +199,7 @@ Container.image is initialised to a 0x0 px Surface.</pre>
     redraw(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></div>
     <pre>Redraw Container.image from the dimensions in Containter.rect.
 This also creates a new Container.rendersurface.</pre>
@@ -220,7 +217,7 @@ This also creates a new Container.rendersurface.</pre>
     sub(self, plane):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overrides <a href="planes.Plane.html#sub">planes.Plane.sub</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></div>
     <pre>Resize the container, update the position of plane and add it as a subplane.
         </pre>
@@ -238,7 +235,7 @@ This also creates a new Container.rendersurface.</pre>
     remove(self, plane_identifier):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overrides <a href="planes.Plane.html#remove">planes.Plane.remove</a></div><div class="interfaceinfo">overridden in <a href="planes.gui.tmb.TMBContainer.html">planes.gui.tmb.TMBContainer</a></div>
     <pre>Remove the subplane, then reposition remaining subplanes and resize the container.
         </pre>
@@ -256,14 +253,14 @@ This also creates a new Container.rendersurface.</pre>
     remove_all(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overrides <a href="planes.Plane.html#remove_all">planes.Plane.remove_all</a></div>
     <pre>Remove all subplanes and shrink accordingly.
         </pre>
   </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2014-03-02 16:11:09.
+      <a href="index.html">API Documentation</a> for planes, generated by <a href="https://launchpad.net/pydoctor/">pydoctor</a> at 2014-10-24 14:00:11.
     </address>
   </body>
 </html>

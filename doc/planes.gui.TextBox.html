@@ -1,6 +1,6 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
 <html>
   <head>
     <title>planes.gui.TextBox : API documentation</title>
@@ -19,7 +19,8 @@
     <div>
       
     </div>
-    <pre>A box where the user can type text.
+    <div class="docstring">
+      <pre>A box where the user can type text.
 
 To actually receive key events, the TextBox must be registered with the
 Display using Display.key_sensitive(TextBox).
@@ -31,14 +32,14 @@ TextBox.text
 
 TextBox.active
     Boolean flag whether this TextBox is active, initally False.</pre>
+    </div>
 
     
-    
     <div id="splitTables">
-      <table class="children sortable" id="id33">
+      <table class="children sortable" id="id76">
   
   
-<tr class="method">
+  <tr class="method">
     
     
     <td>Method</td>
@@ -69,32 +70,15 @@ TextBox.active
     <td><a href="planes.gui.TextBox.html#redraw">redraw</a></td>
     <td><tt>Redraw the TextBox if necessary. If the TextBox is active, display a cursor behind the text.</tt></td>
   </tr>
-  
 </table>
-      
-        <p>
-          Inherited from <a href="planes.gui.Label.html">Label</a>:
-        </p>
-        <table class="children sortable" id="id34">
-  
-  
-<tr class="basemethod">
-    
-    
-    <td>Method</td>
-    <td><a href="planes.gui.Label.html#update">update</a></td>
-    <td><tt>Renew the text on the label, then call the base class method.</tt></td>
-  </tr>
-  
-</table>
-      
+      <invisible>
         <p>
           Inherited from <a href="planes.Plane.html">Plane</a> (via <a href="planes.gui.Label.html">Label</a>):
         </p>
-        <table class="children sortable" id="id35">
+        <table class="children sortable" id="id78">
   
   
-<tr class="basemethod">
+  <tr class="basemethod">
     
     
     <td>Method</td>
@@ -191,12 +175,114 @@ TextBox.active
     <td><a href="planes.Plane.html#__repr__">__repr__</a></td>
     <td><tt>Readable string representation.</tt></td>
   </tr>
-  
 </table>
-      
-      
-    </div>
+      </invisible><invisible>
+        <p>
+          Inherited from <a href="planes.Plane.html">Plane</a> (via <a href="planes.gui.Label.html">Label</a>):
+        </p>
+        <table class="children sortable" id="id78">
+  
+  
+  <tr class="basemethod">
     
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#sub">sub</a></td>
+    <td><tt>Remove the Plane given from its current parent and add it as a subplane of this Plane.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#remove">remove</a></td>
+    <td><tt>Remove subplane by name or Plane instance.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#remove_all">remove_all</a></td>
+    <td><tt>Convenience method to call Plane.remove() for all subplanes.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#__getattr__">__getattr__</a></td>
+    <td><tt>Access subplanes as attributes.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#render">render</a></td>
+    <td><tt>Draw a composite surface of this plane and all subplanes, in order of their addition.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#get_plane_at">get_plane_at</a></td>
+    <td><tt>Return the (sub)plane and the succeeding parent coordinates at the given coordinates. Subplanes are tested in reverse order of their addition (i.e. latest first).</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#del_image">del_image</a></td>
+    <td><tt>Convenience method, replacing this Plane's image with a transparent 1px x 1px Pygame Surface.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#clicked">clicked</a></td>
+    <td><tt>Called when there is a MOUSEDOWN event on this plane. If click callbacks are set, the appropriate one is called with this Plane as argument.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#dropped_upon">dropped_upon</a></td>
+    <td><tt>If a plane is dropped on top of this one, call dropped_upon_callback() and conditionally grab it.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#destroy">destroy</a></td>
+    <td><tt>Remove this Plane from the parent plane, remove all subplanes and delete all pygame Surfaces.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#sync">sync</a></td>
+    <td><tt>Save the Plane given as master Plane and the position offset to that Plane for position synchronisation in Plane.update().</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#unsync">unsync</a></td>
+    <td><tt>Remove the position synchronisation to the sync master Plane.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#mouseover_callback">mouseover_callback</a></td>
+    <td><tt>Callback function when the mouse cursor moves over this plane. The default implementation sets Plane.mouseover to True when Plane.highlight is set.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#mouseout_callback">mouseout_callback</a></td>
+    <td><tt>Callback function when the mouse cursor has left this plane. The default implementation sets Plan.mouseover to False.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#random_name">random_name</a></td>
+    <td><tt>Return a random string that is not in Plane.subplanes_list. This is a convenience function to produce names for subplanes.</tt></td>
+  </tr><tr class="basemethod">
+    
+    
+    <td>Method</td>
+    <td><a href="planes.Plane.html#__repr__">__repr__</a></td>
+    <td><tt>Readable string representation.</tt></td>
+  </tr>
+</table>
+      </invisible>
+    </div>
     
     
 
@@ -213,7 +299,7 @@ TextBox.active
     __init__(self, name, rect, return_callback=None, background_color=(250, 250, 250)):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overrides <a href="planes.gui.Label.html#__init__">planes.gui.Label.__init__</a></div>
     <pre>Initialise the TextBox.
 If return_callback is given, return_callback(TextBox.text) will be
@@ -232,7 +318,7 @@ called when [RETURN] is pressed.</pre>
     keydown(self, keydown_event):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>If printable, add keydown_event.unicode to self.text.
         </pre>
@@ -250,7 +336,7 @@ called when [RETURN] is pressed.</pre>
     activate(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Call to show the user that the TextBox is ready for input.
 Sets TextBox.active to True.</pre>
@@ -268,7 +354,7 @@ Sets TextBox.active to True.</pre>
     deactivate(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Call to show the user that the TextBox no longer accepts input.
 Sets TextBox.active to False.</pre>
@@ -286,14 +372,14 @@ Sets TextBox.active to False.</pre>
     redraw(self, force=False):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overrides <a href="planes.gui.Label.html#redraw">planes.gui.Label.redraw</a></div>
     <pre>Redraw the TextBox if necessary.
 If the TextBox is active, display a cursor behind the text.</pre>
   </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2014-03-02 16:11:09.
+      <a href="index.html">API Documentation</a> for planes, generated by <a href="https://launchpad.net/pydoctor/">pydoctor</a> at 2014-10-24 14:00:11.
     </address>
   </body>
 </html>

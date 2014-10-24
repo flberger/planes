@@ -1,6 +1,6 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-  "DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
 <html>
   <head>
     <title>planes.Plane : API documentation</title>
@@ -19,7 +19,8 @@
     <div>
       <p>Known subclasses: <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.Container.html">planes.gui.Container</a>, <a href="planes.gui.Label.html">planes.gui.Label</a>, <a href="planes.gui.PlusMinusBox.html">planes.gui.PlusMinusBox</a>, <a href="planes.gui.ProgressBar.html">planes.gui.ProgressBar</a>, <a href="planes.gui.ScrollingPlane.html">planes.gui.ScrollingPlane</a></p>
     </div>
-    <pre>A Plane is a surface in a hierarchy of surfaces.
+    <div class="docstring">
+      <pre>A Plane is a surface in a hierarchy of surfaces.
 Concept-wise it bears some similarities to pygame.sprite.Sprite.
 
 Planes are currently not thread safe! Accessing a Plane from several
@@ -98,14 +99,14 @@ Plane.sync_master_plane
 Plane.offset
    A tuple (x, y) describing the offset to the sync master plane.
    Initially None.</pre>
+    </div>
 
     
-    
     <div id="splitTables">
-      <table class="children sortable" id="id4">
+      <table class="children sortable" id="id92">
   
   
-<tr class="method">
+  <tr class="method">
     
     
     <td>Method</td>
@@ -214,12 +215,9 @@ Plane.offset
     <td><a href="planes.Plane.html#__repr__">__repr__</a></td>
     <td><tt>Readable string representation.</tt></td>
   </tr>
-  
 </table>
       
-      
     </div>
-    
     
     
 
@@ -236,7 +234,7 @@ Plane.offset
     __init__(self, name, rect, draggable=False, grab=False, highlight=False, left_click_callback=None, right_click_callback=None, up_click_callback=None, down_click_callback=None, dropped_upon_callback=None):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.Container.html">planes.gui.Container</a>, <a href="planes.gui.Label.html">planes.gui.Label</a>, <a href="planes.gui.PlusMinusBox.html">planes.gui.PlusMinusBox</a>, <a href="planes.gui.ProgressBar.html">planes.gui.ProgressBar</a>, <a href="planes.gui.ScrollingPlane.html">planes.gui.ScrollingPlane</a></div>
     <pre>Initialize the Plane.
 name is the name of the plane which can also be used
@@ -260,16 +258,20 @@ Planes are filled with solid black color by default.</pre>
   <div class="functionHeader">
     
     def
-    sub(self, plane, insert_after=None):
+    sub(self, plane, insert_after=None, insert_before=None):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.gui.Container.html">planes.gui.Container</a></div>
     <pre>Remove the Plane given from its current parent and add it as a subplane of this Plane.
 
 If insert_after is given, the new subplane will be inserted
-immediately after the subplane with that name in Plane.subplanes_list,
-else it will simply be appended.
+immediately after the subplane with that name in Plane.subplanes_list.
+
+If insert_before is given, it will be inserter immediately
+before the subplane with the name given.
+
+Else it will simply be appended.
 
 If a subplane with the same name already exists, it is silently
 replaced by the new plane.</pre>
@@ -287,7 +289,7 @@ replaced by the new plane.</pre>
     remove(self, plane_identifier):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.gui.Container.html">planes.gui.Container</a></div>
     <pre>Remove subplane by name or Plane instance.
         </pre>
@@ -305,7 +307,7 @@ replaced by the new plane.</pre>
     remove_all(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.gui.Container.html">planes.gui.Container</a></div>
     <pre>Convenience method to call Plane.remove() for all subplanes.
         </pre>
@@ -323,7 +325,7 @@ replaced by the new plane.</pre>
     __getattr__(self, name):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Access subplanes as attributes.
         </pre>
@@ -341,7 +343,7 @@ replaced by the new plane.</pre>
     render(self, rendersurface, offset_rect):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.Display.html">planes.Display</a>, <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a></div>
     <pre>Draw a composite surface of this plane and all subplanes, in order of their addition.
 
@@ -366,7 +368,7 @@ Plane.mousover flag set.</pre>
     get_plane_at(self, coordinates):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Return the (sub)plane and the succeeding parent coordinates at the given coordinates.
 Subplanes are tested in reverse order of their addition (i.e. latest first).</pre>
@@ -384,7 +386,7 @@ Subplanes are tested in reverse order of their addition (i.e. latest first).</pr
     update(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.gui.FadingContainer.html">planes.gui.FadingContainer</a>, <a href="planes.gui.Label.html">planes.gui.Label</a>, <a href="planes.gui.ProgressBar.html">planes.gui.ProgressBar</a></div>
     <pre>Update hook. The default implementation calls update() on all subplanes.
 
@@ -407,7 +409,7 @@ Compare pygame.sprite.Sprite.update.</pre>
     del_image(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Convenience method, replacing this Plane's image with a transparent 1px x 1px Pygame Surface.
 
@@ -428,7 +430,7 @@ Useful for container surfaces which have no background.</pre>
     clicked(self, button_name):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     <div class="interfaceinfo">overridden in <a href="planes.gui.Button.html">planes.gui.Button</a>, <a href="planes.gui.Option.html">planes.gui.Option</a></div>
     <pre>Called when there is a MOUSEDOWN event on this plane.
 If click callbacks are set, the appropriate one is called with this
@@ -447,7 +449,7 @@ Plane as argument.</pre>
     dropped_upon(self, plane, coordinates):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>If a plane is dropped on top of this one, call dropped_upon_callback() and conditionally grab it.
 
@@ -473,7 +475,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
     destroy(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Remove this Plane from the parent plane, remove all subplanes and delete all pygame Surfaces.
         </pre>
@@ -491,7 +493,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
     sync(self, master_plane):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Save the Plane given as master Plane and the position offset to that Plane for position synchronisation in Plane.update().
         </pre>
@@ -509,7 +511,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
     unsync(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Remove the position synchronisation to the sync master Plane.
         </pre>
@@ -527,7 +529,7 @@ Plane.dropped_upon_callback(self, plane, coordinates)</pre>
     mouseover_callback(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Callback function when the mouse cursor moves over this plane.
 The default implementation sets Plane.mouseover to True when
@@ -546,7 +548,7 @@ Plane.highlight is set.</pre>
     mouseout_callback(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Callback function when the mouse cursor has left this plane.
 The default implementation sets Plan.mouseover to False.</pre>
@@ -564,7 +566,7 @@ The default implementation sets Plan.mouseover to False.</pre>
     random_name(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Return a random string that is not in Plane.subplanes_list.
 This is a convenience function to produce names for subplanes.</pre>
@@ -582,14 +584,14 @@ This is a convenience function to produce names for subplanes.</pre>
     __repr__(self):
     
   </div>
-  <div class="functionBody">
+  <div class="docstring functionBody">
     
     <pre>Readable string representation.
         </pre>
   </div>
 </div>
     <address>
-      <a href="index.html">API Documentation</a> for planes, generated by <a href="http://codespeak.net/~mwh/pydoctor/">pydoctor</a> at 2014-03-02 16:11:09.
+      <a href="index.html">API Documentation</a> for planes, generated by <a href="https://launchpad.net/pydoctor/">pydoctor</a> at 2014-10-24 14:00:11.
     </address>
   </body>
 </html>
