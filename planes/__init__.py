@@ -206,12 +206,16 @@ class Plane:
 
         return
 
-    def sub(self, plane, insert_after = None):
+    def sub(self, plane, insert_after = None, insert_before = None):
         """Remove the Plane given from its current parent and add it as a subplane of this Plane.
 
            If insert_after is given, the new subplane will be inserted
-           immediately after the subplane with that name in Plane.subplanes_list,
-           else it will simply be appended.
+           immediately after the subplane with that name in Plane.subplanes_list.
+
+           If insert_before is given, it will be inserter immediately
+           before the subplane with the name given.
+        
+           Else it will simply be appended.
 
            If a subplane with the same name already exists, it is silently
            replaced by the new plane.
@@ -228,6 +232,11 @@ class Plane:
         if insert_after is not None and insert_after in self.subplanes_list:
 
             self.subplanes_list.insert(self.subplanes_list.index(insert_after) + 1,
+                                       plane.name)
+
+        elif insert_before is not None and insert_before in self.subplanes_list:
+
+            self.subplanes_list.insert(self.subplanes_list.index(insert_before),
                                        plane.name)
 
         else:
